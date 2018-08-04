@@ -21,7 +21,7 @@ func main() {
     router.GET("/", Index)
     router.GET("/hello/:name", Hello)
 
-    err := http.ListenAndServe("0.0.0.0:9191", router)
+    err := http.ListenAndServe(":9191", router)
 
     if err != nil {
         log.Fatal(err)
