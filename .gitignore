@@ -1,0 +1,7 @@
+.vs
+build/api/*
+!build/api/.gitkeep
+build/frontend/*
+!build/frontend/.gitkeep
+src/api/gin-bin
+src/api/vendor
