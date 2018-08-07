@@ -5,3 +5,5 @@ build/frontend/*
 !build/frontend/.gitkeep
 src/api/gin-bin
 src/api/vendor
+src/frontend/dist
+src/frontend/node_modules

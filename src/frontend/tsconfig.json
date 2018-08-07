@@ -1,0 +1,15 @@
+{
+  "include": [
+    "./**/*"
+  ],
+  "compilerOptions": {
+    "target": "es6",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "outDir": "./dist",
+    "sourceMap": true
+  }
+}
