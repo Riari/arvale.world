@@ -7,7 +7,7 @@ const { VueLoaderPlugin } = require('vue-loader')
 const utils = require('./utils')
 
 module.exports = {
-  entry: './index.ts',
+  entry: './src/frontend/index.ts',
 
   resolve: {
     extensions: ['.ts', '.js', '.vue', '.json', '.css', '.scss']
@@ -72,12 +72,12 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       filename: 'index.html',
-      template: 'index.html',
+      template: 'src/frontend/index.html',
       inject: true
     }),
     new VueLoaderPlugin(),
     new CopyWebpackPlugin([{
-      from: 'static/images',
+      from: 'src/frontend/static/images',
       to: 'dist/static/images',
       toType: 'dir'
     }])

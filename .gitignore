@@ -3,7 +3,7 @@ build/api/*
 !build/api/.gitkeep
 build/frontend/*
 !build/frontend/.gitkeep
+node_modules
 src/api/gin-bin
 src/api/vendor
 src/frontend/dist
-src/frontend/node_modules

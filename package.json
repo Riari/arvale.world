@@ -4,14 +4,19 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "dev": "webpack-dev-server --progress --config webpack/dev.config.js",
-    "build": "webpack --config webpack/build.config.js",
-    "lint": "eslint --ext .js,.vue .",
-    "lint:fix": "eslint --ext .js,.vue . --fix"
+    "dev": "webpack-dev-server --progress --config src/frontend/webpack/dev.config.js",
+    "build": "webpack --config src/frontend/webpack/build.config.js",
+    "lint": "eslint --ext .js,.vue src/frontend",
+    "lint:fix": "eslint --ext .js,.vue src/frontend --fix"
   },
   "author": "Riari <riari@teamteatime.net>",
   "license": "ISC",
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.2",
+    "@fortawesome/free-solid-svg-icons": "^5.2.0",
+    "@fortawesome/vue-fontawesome": "^0.1.1",
+    "axios": "^0.18.0",
+    "flexboxgrid": "^6.3.1",
     "vue": "^2.5.17",
     "vue-router": "^3.0.1"
   },

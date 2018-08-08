@@ -13,7 +13,7 @@ module.exports = merge(baseConfig, {
 
   resolve: {
     alias: {
-      theme: path.resolve(__dirname, 'scss/theme')
+      theme: path.resolve(__dirname, 'src/frontend/scss/theme')
     },
   },
 
@@ -24,6 +24,12 @@ module.exports = merge(baseConfig, {
     compress: true,
     host: HOST,
     port: PORT,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:9090',
+        pathRewrite: {'^/api' : ''}
+      }
+    },
     open: true,
     overlay: { warnings: false, errors: true },
     publicPath: '/',
