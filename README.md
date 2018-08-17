@@ -5,7 +5,7 @@
 ## Setup
 
 1) Run `npm i` to install dependencies.
-2) Copy `src/api/config.example.json` to `src/api/config.json`.
+2) Copy `src/api/config/app.example.json` and `src/api/config/db.example.json` to `src/api/config/app.json` and `src/api/config/db.json` respectively.
 3) Run `docker-compose up` to build and rbing up the postgres database container.
 4) Install [sequelize-cli](https://github.com/sequelize/cli) with `npm i -g sequelize-cli`.
 5) Run `sequelize db:migrate` to run migrations.

@@ -72,5 +72,33 @@ export default class InputText extends Vue {
 </script>
 
 <style lang="scss">
+@import "../scss/variables";
 
+.inputText {
+  padding: .8em 1.2em;
+  margin: .5em 0;
+  border-radius: 3px;
+  border: 2px solid #fff;
+  background: #fff;
+  font-size: .9em;
+  font-family: 'Noto Sans', sans-serif;
+  color: $color-background;
+  box-shadow: 0 0 10px rgba(0, 0, 0, .3);
+  box-sizing: border-box;
+  transition: all .3s;
+
+  &::placeholder {
+    color: $color-background;
+    opacity: .5;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $color-primary;
+  }
+
+  &--fullWidth {
+    width: 100%;
+  }
+}
 </style>

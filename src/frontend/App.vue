@@ -40,8 +40,6 @@ html, body {
 h1, h2, h3 {
   font-family: 'Noto Sans', sans-serif;
   color: #fff;
-  text-shadow: 0 2px 3px rgba(0, 0, 0, 0.5);
-  text-transform: uppercase;
 }
 
 h1 {
@@ -54,6 +52,33 @@ h2 {
 
 h3 {
   font-size: 1.4em;
+}
+
+button {
+  padding: .8em 2em;
+  margin: 1em 0 0 0;
+  border-radius: 3px;
+  border: none;
+  background: $color-button-bg;
+  color: #fff;
+  font-family: 'Noto Sans', sans-serif;
+  font-size: .9em;
+  outline: none;
+  box-shadow: 0 0 10px rgba(0, 0, 0, .35);
+  box-sizing: border-box;
+
+  &:hover {
+    background: linear-gradient(to right, rgba(93,146,66,1) 0%,rgba(104,164,74,1) 50%,rgba(93,146,66,1) 100%);
+    box-shadow: 0 0 10px rgba(0, 0, 0, .35), inset 0 0 3px lighten($color-primary, 5%);
+  }
+
+  &:active {
+    background: darken($color-button-bg, 5%);
+  }
+
+  &.fullWidth {
+    width: 100%;
+  }
 }
 
 .fade-enter-active, .fade-leave-active {

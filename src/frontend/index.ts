@@ -8,8 +8,9 @@ import * as Cookie from 'js-cookie'
 import AuthService from './services/AuthService'
 
 import App from './App.vue'
-import Login from './pages/Login.vue'
+import LogIn from './pages/LogIn.vue'
 import News from './pages/News.vue'
+import SignUp from './pages/SignUp.vue'
 
 library.add(faAngleDown)
 
@@ -22,7 +23,8 @@ Vue.use(VueRouter)
 
 const routes = [
   { path: '/', component: News, meta: { title: 'News' } },
-  { path: '/user/login', component: Login, meta: { title: 'Log in' } }
+  { path: '/user/login', component: LogIn, meta: { title: 'Log In' } },
+  { path: '/user/signup', component: SignUp, meta: { title: 'Sign Up' } }
 ]
 
 const router = new VueRouter({
@@ -78,19 +80,19 @@ const store = new Vuex.Store({
           commit(LOGIN_SUCCESS, user)
         })
     },
-    login ({ commit }, credentials) {
+    logIn ({ commit }, credentials) {
       commit(LOGIN_PENDING)
 
       return new Promise((resolve, reject) => {
-        service.login(credentials.email, credentials.password)
+        service.logIn(credentials.email, credentials.password)
           .then(data => {
             commit(LOGIN_SUCCESS, data.user)
             resolve(data.user)
           })
       })
     },
-    logout ({ commit }) {
-      service.logout()
+    logOut ({ commit }) {
+      service.logOut()
       commit(LOGOUT)
     }
   }

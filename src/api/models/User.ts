@@ -1,7 +1,10 @@
-import { Table, Column, Model } from 'sequelize-typescript'
+import { Table, Column, Model, BelongsToMany } from 'sequelize-typescript'
+
+import Role from './Role'
+import UserRole from './UserRole'
 
 @Table({
-  tableName: 'Users',
+  tableName: 'users',
   timestamps: true
 })
 export default class User extends Model<User> {
@@ -14,5 +17,8 @@ export default class User extends Model<User> {
 
   @Column
   password: string
+
+  @BelongsToMany(() => Role, () => UserRole)
+  roles: Role[]
 
 }

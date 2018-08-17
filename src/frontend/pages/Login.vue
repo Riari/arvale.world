@@ -1,11 +1,9 @@
 <template>
   <div class="row center-xs">
-    <div class="col-xs-6">
-      <div class="panel">
-        <input-text v-model="credentials.email" type="email" placeholder="Email"></input-text>
-        <input-text v-model="credentials.password" type="password" placeholder="Password"></input-text>
-        <button @click="login">Log in</button>
-      </div>
+    <div class="col-xs-4">
+      <input-text :fullWidth="true" v-model="credentials.email" type="email" placeholder="Email"></input-text>
+      <input-text :fullWidth="true" v-model="credentials.password" type="password" placeholder="Password"></input-text>
+      <button class="fullWidth" @click="logIn">Log in</button>
     </div>
   </div>
 </template>
@@ -21,14 +19,14 @@ import AuthService from '../services/AuthService'
     InputText
   }
 })
-export default class Login extends Vue {
+export default class LogIn extends Vue {
   credentials = {
     email: null,
     password: null
   }
 
-  login () {
-    this.$store.dispatch('login', this.credentials)
+  logIn () {
+    this.$store.dispatch('logIn', this.credentials)
       .then(user => {
         alert(`Hello, ${user.name}! :D`)
       })

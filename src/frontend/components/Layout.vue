@@ -12,15 +12,22 @@
           </div>
         </transition>
 
-        <div class="user-links panel">
-          <template v-if="!$store.state.auth.isAuthenticated">
-            <router-link to="user/login">Log in</router-link>
-            <span class="separator"></span>
-            <router-link to="user/signup">Sign up</router-link>
-          </template>
-          <template v-else>
-            Hello, <router-link to="user">{{ $store.state.auth.user.name }}</router-link>
-          </template>
+        <div v-show="!$store.state.auth.isAuthenticated" class="user-links panel">
+          <router-link to="/user/login">Log in</router-link>
+          <span class="separator"></span>
+          <router-link to="/user/signup">Sign up</router-link>
+        </div>
+        <div
+          v-show="$store.state.auth.isAuthenticated"
+          class="account panel"
+        >
+          Hello, <span>{{ $store.state.auth.user.name }}</span> <i data-feather="chevron-down"></i>
+          <div class="menu">
+            <ul>
+              <li><router-link to="/user/account">Account settings <i data-feather="settings"></i></router-link></li>
+              <li><a @click="logout()" href="#">Log out <i data-feather="log-out"></i></a></li>
+            </ul>
+          </div>
         </div>
       </div>
 
@@ -40,6 +47,9 @@
 
       <div class="content">
         <h1>{{ heading }}</h1>
+        <div class="leaf">
+          <img src="../static/images/leaf.png">
+        </div>
         <slot name="content">
         </slot>
       </div>
@@ -50,6 +60,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import Component from 'vue-class-component'
+import feather from 'feather-icons'
 import NWNService from '../services/NWNService'
 
 @Component({
@@ -72,6 +83,8 @@ export default class Layout extends Vue {
       .catch(error => {
         this.server = { online: false }
       })
+
+    this.$nextTick(() => feather.replace())
   }
 }
 </script>
@@ -89,6 +102,7 @@ export default class Layout extends Vue {
     height: 1.4em;
     padding: .4em 1em .6em 1em;
     margin-left: 1.2em;
+    border-radius: 0;
     border-bottom-left-radius: 3px;
     border-bottom-right-radius: 3px;
   }
@@ -115,7 +129,7 @@ export default class Layout extends Vue {
     text-align: right;
 
     a {
-      color: $color-cta;
+      color: $color-highlight;
 
       &:hover {
         color: #fff;
@@ -134,6 +148,91 @@ export default class Layout extends Vue {
       margin: 0 .6em;
       vertical-align: middle;
       background: rgba(255, 255, 255, .2);
+    }
+  }
+
+  .account {
+    position: relative;
+    cursor: default;
+
+    &:hover {
+      background: transparentize(lighten($color-background, 10%), .1);
+
+      svg {
+        opacity: .5;
+      }
+
+      .menu {
+        display: block;
+      }
+    }
+
+    &:active {
+      background: transparentize(darken($color-background, 5%), .1);
+    }
+
+    .menu {
+      display: none;
+      z-index: 1000;
+      position: absolute;
+      top: 43px;
+      right: 0;
+      border-radius: 3px;
+      background: $color-background;
+      box-shadow: 0 0 10px 0 rgba(0, 0, 0, .35);
+
+      ul {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        text-align: right;
+
+        li {
+          white-space: nowrap;
+
+          &:not(:last-child) {
+            border-bottom: 1px solid lighten($color-background, 2%);
+          }
+
+          a {
+            display: block;
+            padding: .6em 1.2em;
+            color: #fff;
+
+            &:first-child {
+              border-top-left-radius: 3px;
+              border-top-right-radius: 3px;
+            }
+
+            &:last-child {
+              border-bottom-left-radius: 3px;
+              border-bottom-right-radius: 3px;
+            }
+
+            &:hover {
+              background: lighten($color-background, 4%);
+            }
+
+            svg {
+              width: 16px;
+              height: 16px;
+              margin: 0 -2px 0 4px;
+            }
+          }
+        }
+      }
+    }
+
+    span {
+      color: $color-highlight;
+    }
+
+    svg {
+      width: 22px;
+      height: 22px;
+      vertical-align: middle;
+      margin: -2px -2px 0 0;
+      opacity: .3;
     }
   }
 }
@@ -167,6 +266,14 @@ export default class Layout extends Vue {
   margin: 0 1em;
 
   h1 {
+    margin: .8em 0 0 0;
+    font-family: 'Cinzel Decorative', cursive;
+    text-align: center;
+    text-shadow: 0 0 3px rgba(34, 46, 77, 0.4), 0 0 50px rgba(34, 46, 77, 0.5);
+  }
+
+  .leaf {
+    margin-bottom: 1.2em;
     text-align: center;
   }
 }

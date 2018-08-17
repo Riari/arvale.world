@@ -3,7 +3,7 @@ import { HTTPResource } from './resources/HTTPResource'
 import * as Cookie from 'js-cookie'
 
 export default class AuthService extends HTTPResource {
-  login (email: string, password: string): Promise<any> {
+  logIn (email: string, password: string): Promise<any> {
     return new Promise((resolve, reject) => {
       this.client.post('auth/login', { email, password })
         .then(response => {
@@ -20,7 +20,7 @@ export default class AuthService extends HTTPResource {
     return this.client.get('auth/me')
   }
 
-  logout () {
+  logOut () {
     Cookie.remove('token')
   }
 }

@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt'
 import { Op } from 'sequelize'
 import Controller from './Controller'
 import User from '../models/User'
+import Role from '../models/Role'
 
 class AuthController extends Controller {
   config: any
@@ -58,7 +59,7 @@ class AuthController extends Controller {
   }
 
   login = (req: Request, res: Response) => {
-    User.findOne({ where: { email: req.body.email } }).then(user => {
+    User.findOne({ include: [Role], where: { email: req.body.email } }).then(user => {
       if (!user) {
         return res.status(404).send({ message: 'User not found.' })
       }
@@ -92,7 +93,7 @@ class AuthController extends Controller {
         return res.status(500).send({ message: 'Failed to authenticate token.' })
       }
 
-      User.findOne({ where: { id: decoded.id } }).then(user => {
+      User.findOne({ include: [Role], where: { id: decoded.id } }).then(user => {
         if (!user) {
           return res.status(404).send({ message: 'User not found.' })
         }
