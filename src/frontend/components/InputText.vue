@@ -77,24 +77,23 @@ export default class InputText extends Vue {
 .inputText {
   padding: .8em 1.2em;
   margin: .5em 0;
-  border-radius: 3px;
-  border: 2px solid #fff;
+  border: none;
   background: #fff;
   font-size: .9em;
   font-family: 'Noto Sans', sans-serif;
   color: $color-background;
-  box-shadow: 0 0 10px rgba(0, 0, 0, .3);
+  box-shadow: 0 3px 0 rgba(0, 0, 0, .25);
   box-sizing: border-box;
   transition: all .3s;
 
   &::placeholder {
     color: $color-background;
-    opacity: .5;
+    opacity: .65;
   }
 
   &:focus {
     outline: none;
-    border-color: $color-primary;
+    box-shadow: 0 3px 0 $color-background;
   }
 
   &--fullWidth {

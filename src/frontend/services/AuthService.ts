@@ -13,6 +13,7 @@ export default class AuthService extends HTTPResource {
 
           resolve(response.data)
         })
+        .catch(error => reject(error))
     })
   }
 

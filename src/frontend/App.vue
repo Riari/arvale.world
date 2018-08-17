@@ -58,22 +58,48 @@ button {
   padding: .8em 2em;
   margin: 1em 0 0 0;
   border-radius: 3px;
-  border: none;
-  background: $color-button-bg;
+  border: 1px solid rgba(0, 0, 0, .2);
+  background: linear-gradient(
+    to right,
+    darken($color-button-bg, 8%) 0%,
+    $color-button-bg 50%,
+    darken($color-button-bg, 8%) 100%
+  );
   color: #fff;
   font-family: 'Noto Sans', sans-serif;
-  font-size: .9em;
+  font-size: .8em;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, .2);
   outline: none;
-  box-shadow: 0 0 10px rgba(0, 0, 0, .35);
+  box-shadow: 0 3px 0 rgba(0, 0, 0, .25), inset 0 0 3px lighten($color-button-bg, 15%);
   box-sizing: border-box;
 
+  svg {
+    width: 18px;
+    height: 18px;
+    margin-top: -2px;
+    vertical-align: middle;
+  }
+
   &:hover {
-    background: linear-gradient(to right, rgba(93,146,66,1) 0%,rgba(104,164,74,1) 50%,rgba(93,146,66,1) 100%);
-    box-shadow: 0 0 10px rgba(0, 0, 0, .35), inset 0 0 3px lighten($color-primary, 5%);
+    background: linear-gradient(
+      to right,
+      darken($color-button-bg, 5%) 0%,
+      lighten($color-button-bg, 5%) 50%,
+      darken($color-button-bg, 5%) 100%
+    );
+    box-shadow: 0 3px 0 rgba(0, 0, 0, .25), inset 0 0 3px lighten($color-button-bg, 25%);
   }
 
   &:active {
-    background: darken($color-button-bg, 5%);
+    margin-top: 1.1em;
+    background: linear-gradient(
+      to bottom,
+      darken($color-button-bg, 10%) 0%,
+      darken($color-button-bg, 5%) 100%,
+    );
+    box-shadow: 0 2px 0 rgba(0, 0, 0, .25);
   }
 
   &.fullWidth {

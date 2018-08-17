@@ -273,7 +273,7 @@ export default class Layout extends Vue {
   }
 
   .leaf {
-    margin-bottom: 1.2em;
+    margin: .6em 0 1.2em 0;
     text-align: center;
   }
 }

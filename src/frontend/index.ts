@@ -11,6 +11,7 @@ import App from './App.vue'
 import LogIn from './pages/LogIn.vue'
 import News from './pages/News.vue'
 import SignUp from './pages/SignUp.vue'
+import { reject } from 'bluebird';
 
 library.add(faAngleDown)
 
@@ -89,6 +90,7 @@ const store = new Vuex.Store({
             commit(LOGIN_SUCCESS, data.user)
             resolve(data.user)
           })
+          .catch(error => reject(error))
       })
     },
     logOut ({ commit }) {
