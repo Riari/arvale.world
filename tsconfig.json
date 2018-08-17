@@ -1,15 +1,19 @@
 {
-  "include": [
-    "./**/*"
-  ],
   "compilerOptions": {
-    "target": "es6",
-    "module": "esnext",
-    "moduleResolution": "node",
-    "experimentalDecorators": true,
+    "module": "commonjs",
+    "target": "es2017",
+    "noImplicitAny": false,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "outDir": "./dist",
-    "sourceMap": true
-  }
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "sourceMap": true,
+    "outDir": "build"
+  },
+  "exclude": [
+    "node_modules"
+  ],
+  "include": [
+    "src/**/*.ts"
+  ]
 }

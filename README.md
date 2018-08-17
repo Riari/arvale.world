@@ -2,26 +2,34 @@
 
 [https://arvale.world/](https://arvale.world/)
 
+## Setup
+
+1) Run `npm i` to install dependencies.
+2) Copy `src/api/config.example.json` to `src/api/config.json`.
+3) Run `docker-compose up` to build and rbing up the postgres database container.
+4) Install [sequelize-cli](https://github.com/sequelize/cli) with `npm i -g sequelize-cli`.
+5) Run `sequelize db:migrate` to run migrations.
+
 ## API
 
-Written in Golang. Uses [Glide](https://github.com/Masterminds/glide) for dependency management and [Gin](https://github.com/codegangsta/gin) for automatic reloading on changes.
+Built on Node, TypeScript, Express and Postgres.
 
 ### Development
 
-Run `docker-compose up` to bring up the database and API containers, then `docker exec arvale-web-api glide up` to install dependencies. Code can be found in `./src/api`.
+Code can be found in `src/api`. Run `npm run dev:api` to bring up a dev server on localhost:9090.
 
-### Build
+### Debugging
 
-Run `docker exec arvale-web-api go build -o /go/build/api` to build the API binary.
+The dev server is configured to use node's `--inspect` flag by default, exposing a debugger on localhost:9229. VS Code debug config is included.
 
 ## Frontend
 
-Written in VueJS.
+Built on VueJS and TypeScript.
 
 ### Development
 
-Code can be found in `./src/frontend`. From there, run `npm i` to install dependencies and `npm run dev` to bring up a dev server on localhost:3500.
+Code can be found in `./src/frontend`. Run `npm run dev:frontend` to bring up a dev server on localhost:8080.
 
 ### Production
 
-Run `npm run build` to create a production build of the frontend.
+Run `npm run build:frontend` to create a production build of the frontend.

@@ -4,19 +4,10 @@ services:
   db:
     container_name: arvale-web-db
     image: postgres:latest
-    ports: 
+    ports:
       - 5432:5432
     environment:
       POSTGRES_PORT: 5432
-      POSTGRES_DB: postgres
+      POSTGRES_DB: arvale-web
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: secret
-  
-  api:
-    container_name: arvale-web-api
-    build: ./docker
-    volumes:
-      - ./build/api:/go/build
-      - ./src/api:/go/src/api
-    ports:
-      - 9090:9090

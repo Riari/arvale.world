@@ -1,9 +1,5 @@
-.vs
-build/api/*
-!build/api/.gitkeep
-build/frontend/*
-!build/frontend/.gitkeep
-node_modules
-src/api/gin-bin
-src/api/vendor
-src/frontend/dist
+/.vs
+/node_modules
+/src/api/config/app.json
+/src/api/config/db.json
+/src/frontend/dist

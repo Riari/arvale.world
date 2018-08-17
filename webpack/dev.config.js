@@ -1,5 +1,3 @@
-'use strict'
-
 const path = require('path')
 const webpack = require('webpack')
 const merge = require('webpack-merge')
@@ -34,6 +32,7 @@ module.exports = merge(baseConfig, {
     overlay: { warnings: false, errors: true },
     publicPath: '/',
     quiet: true,
+    historyApiFallback: true,
     watchOptions: {
       poll: true
     }
