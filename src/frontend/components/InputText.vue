@@ -78,6 +78,7 @@ export default class InputText extends Vue {
   padding: .8em 1.2em;
   margin: .5em 0;
   border: none;
+  border-radius: 2px;
   background: #fff;
   font-size: .9em;
   font-family: 'Noto Sans', sans-serif;
