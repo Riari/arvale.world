@@ -16,7 +16,7 @@ class AuthController extends Controller {
 
   createUser = (req: Request, res: Response) => {
     const validation = this.validate(req.body, {
-      name: 'required|min:3|max:20',
+      username: 'required|min:3|max:20',
       email: 'required|email',
       password: 'required|min:6|max:64'
     })
@@ -27,14 +27,14 @@ class AuthController extends Controller {
 
     User.findOne({
       where: {
-        [Op.or]: [{ name: req.body.name }, { email: req.body.email }]
+        [Op.or]: [{ name: req.body.username }, { email: req.body.email }]
       }
     }).then(user => {
       if (user) {
         let errors: any = {}
 
-        if (req.body.name == user.name) {
-          errors.name = ['Name is already in use.']
+        if (req.body.username == user.name) {
+          errors.username = ['Name is already in use.']
         }
 
         if (req.body.email === user.email) {
@@ -47,7 +47,7 @@ class AuthController extends Controller {
       const hashedPassword = bcrypt.hashSync(req.body.password, 8)
 
       User.create({
-        name: req.body.name,
+        name: req.body.username,
         email: req.body.email,
         password: hashedPassword
       }).then(user => {
@@ -59,6 +59,15 @@ class AuthController extends Controller {
   }
 
   login = (req: Request, res: Response) => {
+    const validation = this.validate(req.body, {
+      email: 'required|email',
+      password: 'required|min:6|max:64'
+    })
+
+    if (validation.fails()) {
+      return res.status(422).send(validation.errors)
+    }
+
     User.findOne({ include: [Role], where: { email: req.body.email } }).then(user => {
       if (!user) {
         return res.status(404).send({ message: 'User not found.' })

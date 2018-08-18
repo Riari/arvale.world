@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="inputWrapper">
     <textarea
       v-if="multiline"
       :class="classesCompiled"
@@ -23,7 +23,7 @@
       v-on:keyup="$emit('keyup', $event)"
     />
     <transition-group name="fade">
-      <div v-for="(error, index) in errors" :key="index" class="inputError">{{ $t(error) }}</div>
+      <div v-for="(error, index) in errors" :key="index" class="inputError">{{ error }}</div>
     </transition-group>
   </div>
 </template>
@@ -74,31 +74,54 @@ export default class InputText extends Vue {
 <style lang="scss">
 @import "../scss/variables";
 
-.inputText {
-  padding: .8em 1.2em;
-  margin: .5em 0;
-  border: none;
-  border-radius: 2px;
-  background: #fff;
-  font-size: .9em;
-  font-family: 'Noto Sans', sans-serif;
-  color: $color-background;
-  box-shadow: 0 3px 0 rgba(0, 0, 0, .25);
-  box-sizing: border-box;
-  transition: all .3s;
+.inputWrapper {
+  position: relative;
 
-  &::placeholder {
+  .inputText {
+    padding: .8em 1.2em;
+    margin: .5em 0;
+    border: none;
+    border-radius: 2px;
+    background: #fff;
+    font-size: .9em;
+    font-family: 'Noto Sans', sans-serif;
     color: $color-background;
-    opacity: .65;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 2px 4px;
+    box-sizing: border-box;
+    transition: box-shadow .2s;
+
+    &::placeholder {
+      color: $color-background;
+      opacity: .65;
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: #21469480 0px 0px 0px 3px;
+    }
+
+    &--fullWidth {
+      width: 100%;
+    }
+
+    &--error {
+      box-shadow: #c9002180 0px 0px 0px 3px;
+    }
   }
 
-  &:focus {
-    outline: none;
-    box-shadow: 0 3px 0 $color-background;
-  }
-
-  &--fullWidth {
-    width: 100%;
+  .inputError {
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    padding: .4em .6em;
+    margin-left: 15px;
+    border-radius: 3px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 2px 4px;
+    background: #c90021ee;
+    font-size: .9em;
+    color: #fff;
+    white-space: nowrap;
+    transform: translateY(-50%);
   }
 }
 </style>

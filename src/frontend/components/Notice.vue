@@ -46,7 +46,7 @@ export default class Notice extends Vue {
   margin: 1em 0;
   padding: .8em 1.2em;
   border-radius: 3px;
-  box-shadow: 0 3px 0 rgba(0, 0, 0, .25);
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 2px 4px, inset 0 0 0 1px rgba(0, 0, 0, .2);
   color: #fff;
 
   svg {

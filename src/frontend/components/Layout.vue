@@ -12,28 +12,42 @@
           </div>
         </transition>
 
+        <div class="admin-links panel">
+          <router-link to="/admin">Admin dashboard &nbsp; <i data-feather="sliders"></i></router-link>
+        </div>
+
         <div v-show="!$store.state.auth.isAuthenticated" class="user-links panel">
           <router-link to="/user/login">Log in</router-link>
           <span class="separator"></span>
           <router-link to="/user/signup">Sign up</router-link>
         </div>
-        <div
+        <router-link
           v-show="$store.state.auth.isAuthenticated"
+          to="/user/account"
           class="account panel"
+          @mouseenter.native="showUserMenu"
+          @mouseleave.native="hideUserMenu"
         >
           Hello, <span>{{ $store.state.auth.user.name }}</span> <i data-feather="chevron-down"></i>
-          <div class="menu">
+        </router-link>
+        <transition name="fade">
+          <div
+            v-show="isUserMenuVisible"
+            @mouseenter="showUserMenu"
+            @mouseleave="hideUserMenu"
+            class="user-menu"
+          >
             <ul>
               <li><router-link to="/user/account">Account settings <i data-feather="settings"></i></router-link></li>
-              <li><a @click="logout()" href="#">Log out <i data-feather="log-out"></i></a></li>
+              <li><a @click="logOut()" href="#">Log out <i data-feather="log-out"></i></a></li>
             </ul>
           </div>
-        </div>
+        </transition>
       </div>
 
       <div class="row main-bar">
         <div class="col-xs-3 text-center">
-          <router-link to="/">
+          <router-link class="logo" to="/">
             <img src="../static/images/logo.png">
           </router-link>
         </div>
@@ -72,19 +86,50 @@ import NWNService from '../services/NWNService'
   }
 })
 export default class Layout extends Vue {
+  service: NWNService
   server: object = null
+  checkServerStatusInterval = null
+  hideUserMenuTimeout = null
+  isUserMenuVisible = false
 
   mounted () {
-    const service = new NWNService()
-    service.getServerStatus()
-      .then(response => {
-        this.server = Object.assign({}, { online: true }, response.data)
-      })
-      .catch(error => {
-        this.server = { online: false }
-      })
+    this.service = new NWNService()
+
+    this.checkServerStatus()
+    this.checkServerStatusInterval = setInterval(() => this.checkServerStatus(), 60000)
 
     this.$nextTick(() => feather.replace())
+  }
+
+  destroyed () {
+    clearInterval(this.checkServerStatusInterval)
+  }
+
+  checkServerStatus () {
+    this.service.getServerStatus()
+      .then(response => {
+        const server = response.data
+        server.online = true
+        this.server = Object.assign({}, this.server, server)
+      })
+      .catch(error => this.server = { online: false })
+  }
+
+  showUserMenu () {
+    this.isUserMenuVisible = true
+
+    if (this.hideUserMenuTimeout) {
+      clearInterval(this.hideUserMenuTimeout)
+    }
+  }
+
+  hideUserMenu () {
+    this.hideUserMenuTimeout = setTimeout(() => this.isUserMenuVisible = false, 500)
+  }
+
+  logOut () {
+    this.$store.dispatch('logOut')
+    this.isUserMenuVisible = false
   }
 }
 </script>
@@ -122,6 +167,18 @@ export default class Layout extends Vue {
     }
   }
 
+  .admin-links,
+  .user-links {
+    .separator {
+      display: inline-block;
+      height: 1em;
+      width: 1px;
+      margin: 0 .6em;
+      vertical-align: middle;
+      background: rgba(255, 255, 255, .2);
+    }
+  }
+
   .user-links {
     padding: .4em 1em .6em 1em;
     border-bottom-left-radius: 3px;
@@ -140,20 +197,10 @@ export default class Layout extends Vue {
       margin-left: .2em;
       color: rgba(255, 255, 255, .5);
     }
-
-    .separator {
-      display: inline-block;
-      height: 1em;
-      width: 1px;
-      margin: 0 .6em;
-      vertical-align: middle;
-      background: rgba(255, 255, 255, .2);
-    }
   }
 
   .account {
     position: relative;
-    cursor: default;
 
     &:hover {
       background: transparentize(lighten($color-background, 10%), .1);
@@ -161,68 +208,15 @@ export default class Layout extends Vue {
       svg {
         opacity: .5;
       }
-
-      .menu {
-        display: block;
-      }
     }
 
     &:active {
       background: transparentize(darken($color-background, 5%), .1);
     }
+  }
 
-    .menu {
-      display: none;
-      z-index: 1000;
-      position: absolute;
-      top: 43px;
-      right: 0;
-      border-radius: 3px;
-      background: $color-background;
-      box-shadow: 0 0 10px 0 rgba(0, 0, 0, .35);
-
-      ul {
-        padding: 0;
-        margin: 0;
-        list-style: none;
-        text-align: right;
-
-        li {
-          white-space: nowrap;
-
-          &:not(:last-child) {
-            border-bottom: 1px solid lighten($color-background, 2%);
-          }
-
-          a {
-            display: block;
-            padding: .6em 1.2em;
-            color: #fff;
-
-            &:first-child {
-              border-top-left-radius: 3px;
-              border-top-right-radius: 3px;
-            }
-
-            &:last-child {
-              border-bottom-left-radius: 3px;
-              border-bottom-right-radius: 3px;
-            }
-
-            &:hover {
-              background: lighten($color-background, 4%);
-            }
-
-            svg {
-              width: 16px;
-              height: 16px;
-              margin: 0 -2px 0 4px;
-            }
-          }
-        }
-      }
-    }
-
+  .account,
+  .user-menu {
     span {
       color: $color-highlight;
     }
@@ -230,22 +224,80 @@ export default class Layout extends Vue {
     svg {
       width: 22px;
       height: 22px;
-      vertical-align: middle;
       margin: -2px -2px 0 0;
       opacity: .3;
+    }
+  }
+
+  .user-menu {
+    z-index: 1000;
+    position: absolute;
+    top: 50px;
+    right: 0;
+    border-radius: 3px;
+    background: $color-background;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, .35);
+
+    ul {
+      padding: 0;
+      margin: 0;
+      list-style: none;
+      text-align: right;
+
+      li {
+        white-space: nowrap;
+
+        &:not(:last-child) {
+          border-bottom: 1px solid lighten($color-background, 10%);
+        }
+
+        a {
+          display: block;
+          padding: .6em 1.2em .7em 1.2em;
+          color: #fff;
+
+          &:first-child {
+            border-top-left-radius: 3px;
+            border-top-right-radius: 3px;
+          }
+
+          &:last-child {
+            border-bottom-left-radius: 3px;
+            border-bottom-right-radius: 3px;
+          }
+
+          &:hover {
+            background: lighten($color-background, 4%);
+          }
+
+          svg {
+            width: 16px;
+            height: 16px;
+            margin: -3px -2px 0 4px;
+          }
+        }
+      }
     }
   }
 }
 
 .main-bar {
   position: relative;
-  top: 3em;
+  top: 3.4em;
   width: 100%;
   height: 60px;
 
+  a.logo {
+    transition: filter .2s;
+
+    &:hover {
+      filter: brightness(1.05);
+    }
+  }
+
   nav {
     height: 60px;
-    margin: 12px 0;
+    margin: 4px 0;
     padding: 0 .5em;
     border-radius: 3px;
     background: transparentize($color-background, .1);

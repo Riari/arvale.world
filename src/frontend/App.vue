@@ -72,7 +72,7 @@ button {
   text-transform: uppercase;
   text-shadow: 0 1px 0 rgba(0, 0, 0, .2);
   outline: none;
-  box-shadow: 0 3px 0 rgba(0, 0, 0, .25), inset 0 0 3px lighten($color-button-bg, 15%);
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 2px 4px, inset 0 0 3px lighten($color-button-bg, 15%);
   box-sizing: border-box;
 
   svg {
@@ -89,17 +89,16 @@ button {
       lighten($color-button-bg, 5%) 50%,
       darken($color-button-bg, 5%) 100%
     );
-    box-shadow: 0 3px 0 rgba(0, 0, 0, .25), inset 0 0 3px lighten($color-button-bg, 25%);
   }
 
   &:active {
     margin-top: 1.1em;
     background: linear-gradient(
       to bottom,
-      darken($color-button-bg, 10%) 0%,
-      darken($color-button-bg, 5%) 100%,
+      darken($color-button-bg, 15%) 0%,
+      darken($color-button-bg, 5%) 100%
     );
-    box-shadow: 0 2px 0 rgba(0, 0, 0, .25);
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 2px 4px, inset 0 0 3px lighten($color-button-bg, 15%);
   }
 
   &.fullWidth {
@@ -107,8 +106,19 @@ button {
   }
 }
 
+a {
+  text-decoration: none;
+
+  svg {
+    width: 18px;
+    height: 18px;
+    margin-top: -2px;
+    vertical-align: middle;
+  }
+}
+
 .fade-enter-active, .fade-leave-active {
-  transition: opacity .5s;
+  transition: opacity .3s;
 }
 .fade-enter, .fade-leave-to {
   opacity: 0;
