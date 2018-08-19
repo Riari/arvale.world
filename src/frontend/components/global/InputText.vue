@@ -72,7 +72,7 @@ export default class InputText extends Vue {
 </script>
 
 <style lang="scss">
-@import "../scss/variables";
+@import "../../scss/variables";
 
 .inputWrapper {
   position: relative;

@@ -7,6 +7,20 @@ export default class AuthService extends HTTPResource {
     return this.client.post('auth/user', { username, email, password })
   }
 
+  verify (email: string, code: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.client.post('auth/user/verify', { email, code })
+        .then(response => {
+          if (response.data.token) {
+            Cookie.set('token', response.data.token)
+          }
+
+          resolve(response.data)
+        })
+        .catch(error => reject(error))
+    })
+  }
+
   logIn (email: string, password: string): Promise<any> {
     return new Promise((resolve, reject) => {
       this.client.post('auth/login', { email, password })

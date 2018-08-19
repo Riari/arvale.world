@@ -26,7 +26,7 @@
         placeholder="Password"
       ></input-text>
       <notice v-show="error" type="warning">{{ error }}</notice>
-      <button @click="signUp" class="fullWidth">Sign up</button>
+      <v-button @click.native="signUp" :fullWidth="true" :loading="loading">Sign up</v-button>
     </div>
   </div>
 </template>
@@ -34,18 +34,13 @@
 <script lang="ts">
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import InputText from '../components/InputText.vue'
-import Notice from '../components/Notice.vue'
 import AuthService from '../services/AuthService'
 
-@Component({
-  components: {
-    InputText,
-    Notice
-  }
-})
+@Component
 export default class SignUp extends Vue {
   service: AuthService
+
+  loading = false
 
   details = {
     username: null,
@@ -66,11 +61,17 @@ export default class SignUp extends Vue {
   }
 
   signUp () {
+    this.loading = true
+
     this.service.createUser(this.details.username, this.details.email, this.details.password)
       .then(response => {
-
+        this.loading = false
+        this.$router.push('/')
+        this.$toasted.show("Account created. Check your inbox for a verification email!", { type: 'success' })
       })
       .catch(error => {
+        this.loading = false
+
         switch (error.response.status) {
           case 422:
             this.validationErrors = error.response.data.errors

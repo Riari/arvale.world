@@ -54,58 +54,6 @@ h3 {
   font-size: 1.4em;
 }
 
-button {
-  padding: .8em 2em;
-  margin: 1em 0 0 0;
-  border-radius: 3px;
-  border: 1px solid rgba(0, 0, 0, .2);
-  background: linear-gradient(
-    to right,
-    darken($color-button-bg, 8%) 0%,
-    $color-button-bg 50%,
-    darken($color-button-bg, 8%) 100%
-  );
-  color: #fff;
-  font-family: 'Noto Sans', sans-serif;
-  font-size: .8em;
-  font-weight: bold;
-  text-transform: uppercase;
-  text-shadow: 0 1px 0 rgba(0, 0, 0, .2);
-  outline: none;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 2px 4px, inset 0 0 3px lighten($color-button-bg, 15%);
-  box-sizing: border-box;
-
-  svg {
-    width: 18px;
-    height: 18px;
-    margin-top: -2px;
-    vertical-align: middle;
-  }
-
-  &:hover {
-    background: linear-gradient(
-      to right,
-      darken($color-button-bg, 5%) 0%,
-      lighten($color-button-bg, 5%) 50%,
-      darken($color-button-bg, 5%) 100%
-    );
-  }
-
-  &:active {
-    margin-top: 1.1em;
-    background: linear-gradient(
-      to bottom,
-      darken($color-button-bg, 15%) 0%,
-      darken($color-button-bg, 5%) 100%
-    );
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 2px 4px, inset 0 0 3px lighten($color-button-bg, 15%);
-  }
-
-  &.fullWidth {
-    width: 100%;
-  }
-}
-
 a {
   text-decoration: none;
 
@@ -146,6 +94,15 @@ a {
     &:hover {
       color: #fff;
     }
+  }
+}
+
+.toasted-container {
+  .toasted.primary {
+    padding: .5em 2em;
+    border: 1px solid rgba(0, 0, 0, .2);
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 2px 4px;
+    font-size: 1.3em;
   }
 }
 </style>

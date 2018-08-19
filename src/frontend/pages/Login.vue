@@ -18,7 +18,7 @@
         placeholder="Password"
       ></input-text>
       <notice v-show="error" type="warning">{{ error }}</notice>
-      <button class="fullWidth" @click="logIn">Log in</button>
+      <v-button @click.native="logIn" :fullWidth="true" :loading="$store.state.auth.isPending">Log in</v-button>
     </div>
   </div>
 </template>
@@ -26,16 +26,9 @@
 <script lang="ts">
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import InputText from '../components/InputText.vue'
-import Notice from '../components/Notice.vue'
 import AuthService from '../services/AuthService'
 
-@Component({
-  components: {
-    InputText,
-    Notice
-  }
-})
+@Component
 export default class LogIn extends Vue {
   credentials = {
     email: null,
@@ -53,6 +46,7 @@ export default class LogIn extends Vue {
     this.$store.dispatch('logIn', this.credentials)
       .then(user => {
         this.$router.push('/')
+        this.$toasted.show(`Welcome back, ${user.name}!`, { type: 'success' })
       })
       .catch(error => {
         switch (error.response.status) {

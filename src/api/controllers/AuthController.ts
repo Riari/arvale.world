@@ -1,3 +1,4 @@
+import crypto from 'crypto'
 import { Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
@@ -5,6 +6,7 @@ import { Op } from 'sequelize'
 import Controller from './Controller'
 import User from '../models/User'
 import Role from '../models/Role'
+import Verification from '../models/Verification'
 
 class AuthController extends Controller {
   config: any
@@ -51,9 +53,59 @@ class AuthController extends Controller {
         email: req.body.email,
         password: hashedPassword
       }).then(user => {
-        user = user.get({ plain: true })
-        delete user.password
-        return res.send(user)
+        Verification.create({
+          model: 'User',
+          modelId: user.id,
+          code: crypto.randomBytes(20).toString('hex')
+        }).then(verification => {
+          const userDetails = user.transform()
+
+          const action_url = this.config.base_url + '/user/verify/' + verification.code
+
+          res.mailer.send('email/default', {
+            to: user.email,
+            subject: 'Welcome to Arvale.World!',
+            user: userDetails,
+            message: `Thanks for signing up on Arvale.World. Please verify your account by visiting <a href="${action_url}">${action_url}</a> or clicking the button below.`,
+            action_url,
+            action_label: 'Verify account'
+          }, () => {
+            return res.send(userDetails)
+          })
+        })
+      })
+    })
+  }
+
+  verifyUser = (req: Request, res: Response) => {
+    const validation = this.validate(req.body, {
+      email: 'required|email',
+      code: 'required'
+    })
+
+    if (validation.fails()) {
+      return res.status(422).send(validation.errors)
+    }
+
+    Verification.findOne({ where: { code: req.body.code }}).then(verification => {
+      if (!verification) {
+        return res.status(404).send({ message: 'No verification found.' })
+      }
+
+      User.findOne({ where: { email: req.body.email, id: verification.modelId }}).then(user => {
+        if (!user) {
+          return res.status(404).send({ message: 'No matching user found.' })
+        }
+
+        verification.destroy()
+        user.verified = true
+        user.save()
+
+        const token = jwt.sign({ id: user.id }, this.config.auth.secret, {
+          expiresIn: this.config.auth.lifetime
+        })
+
+        return res.send({ user: user.transform(), token })
       })
     })
   }
@@ -73,6 +125,10 @@ class AuthController extends Controller {
         return res.status(404).send({ message: 'User not found.' })
       }
 
+      if (!user.verified) {
+        return res.status(401).send({ message: 'Account not verified. Check your inbox for a verification email.' })
+      }
+
       const passwordIsValid = bcrypt.compareSync(req.body.password, user.password)
 
       if (!passwordIsValid) {
@@ -80,13 +136,10 @@ class AuthController extends Controller {
       }
 
       const token = jwt.sign({ id: user.id }, this.config.auth.secret, {
-        expiresIn: 86400
+        expiresIn: this.config.auth.lifetime
       })
 
-      user = user.get({ plain: true })
-      delete user.password
-
-      res.send({ user, token })
+      res.send({ user: user.transform(), token })
     })
   }
 
@@ -107,10 +160,7 @@ class AuthController extends Controller {
           return res.status(404).send({ message: 'User not found.' })
         }
 
-        user = user.get({ plain: true })
-        delete user.password
-
-        return res.send(user)
+        return res.send(user.transform())
       })
     })
   }

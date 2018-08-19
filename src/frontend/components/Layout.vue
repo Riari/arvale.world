@@ -129,6 +129,7 @@ export default class Layout extends Vue {
 
   logOut () {
     this.$store.dispatch('logOut')
+    this.$toasted.show("Logged out. See you around!", { type: 'success' })
     this.isUserMenuVisible = false
   }
 }

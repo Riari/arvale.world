@@ -18,7 +18,18 @@ export default class User extends Model<User> {
   @Column
   password: string
 
+  @Column
+  verified: boolean
+
   @BelongsToMany(() => Role, () => UserRole)
   roles: Role[]
+
+  public transform(): object {
+    return {
+      name: this.name,
+      email: this.email,
+      verified: this.verified
+    }
+  }
 
 }
