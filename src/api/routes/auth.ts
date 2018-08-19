@@ -1,11 +1,19 @@
 import AuthController from '../controllers/AuthController'
 import { Router } from 'express'
+import { checkPermissions } from '../middleware/auth'
+import { user } from '../middleware/params'
 
 const router = Router()
 
-router.post('/user', AuthController.createUser)
-router.post('/user/verify', AuthController.verifyUser)
-router.post('/login', AuthController.login)
-router.get('/me', AuthController.me)
+router.param('user', user)
+
+router.post('/user', checkPermissions, AuthController.createUser)
+router.post('/user/verify', checkPermissions, AuthController.verifyUser)
+router.post('/login', checkPermissions, AuthController.login)
+router.get('/me', checkPermissions, AuthController.me)
+
+router.get('/test/:user', checkPermissions, (req, res) => {
+  res.send('blep')
+})
 
 export default router

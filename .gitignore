@@ -3,3 +3,4 @@
 /src/api/config/app.json
 /src/api/config/db.json
 /src/frontend/dist
+/ormconfig.json

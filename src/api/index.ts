@@ -1,11 +1,17 @@
+import 'reflect-metadata'
 import express from 'express'
 import expressHandlebars from 'express-handlebars'
 import bodyParser from 'body-parser'
 import mailer from 'express-mailer'
-const config = require('./config/app.json')
+
+import { checkAuthState } from './middleware/auth'
+
 import AuthRoutes from './routes/auth'
 import NWNRoutes from './routes/nwn'
+
 import './db'
+
+const config = require('./config/app.json')
 
 const app = express()
 
@@ -19,13 +25,15 @@ mailer.extend(app, config.mail)
 
 app.disable('x-powered-by')
 
-app.get('/*', (req, res, next) => {
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
+
+app.use((req, res, next) => {
   res.header('Content-Type', 'application/json')
   next()
 })
 
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
+app.use(checkAuthState)
 
 app.use('/auth', AuthRoutes)
 app.use('/nwn', NWNRoutes)
