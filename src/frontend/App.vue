@@ -1,23 +1,14 @@
 <template>
-  <layout :heading="$route.meta.title">
-    <template slot="content">
-      <router-view></router-view>
-    </template>
-  </layout>
+  <router-view></router-view>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import Layout from './components/Layout.vue'
 
-@Component({
-  components: {
-    Layout
-  }
-})
+@Component
 export default class App extends Vue {
-  mounted () {
+  beforeCreate () {
     this.$store.dispatch('initialise')
   }
 }

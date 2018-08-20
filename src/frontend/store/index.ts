@@ -4,6 +4,7 @@ import AuthService from '../services/AuthService'
 
 Vue.use(Vuex)
 
+const INITIALISED = 'INITIALISED'
 const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
 const LOGOUT = 'LOGOUT'
 
@@ -20,11 +21,15 @@ const defaultUserState = {
 const store = new Vuex.Store({
   state: {
     auth: {
+      initialised: false,
       isAuthenticated: false,
       user: defaultUserState
     }
   },
   mutations: {
+    [INITIALISED] (state, user) {
+      state.auth.initialised = true
+    },
     [LOGIN_SUCCESS] (state, user) {
       state.auth.isAuthenticated = true
       state.auth.user = user
@@ -39,6 +44,7 @@ const store = new Vuex.Store({
       service.getMe()
         .then(response => {
           let user = response.data
+          commit(INITIALISED)
           commit(LOGIN_SUCCESS, user)
         })
     },

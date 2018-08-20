@@ -1,20 +1,42 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
+import guards from './guards'
+
+import Viewport from '../components/_Viewport.vue'
 import LogIn from '../pages/LogIn.vue'
 import News from '../pages/News.vue'
 import SignUp from '../pages/SignUp.vue'
 import Verify from '../pages/Verify.vue'
+
+import Admin from '../components/Admin/_Viewport.vue'
+import AdminDashboard from '../pages/Admin/Dashboard.vue'
+import AdminUsers from '../pages/Admin/Users.vue'
 
 Vue.config.productionTip = false
 
 Vue.use(VueRouter)
 
 const routes = [
-  { path: '/', component: News, meta: { title: 'News' } },
-  { path: '/user/login', component: LogIn, meta: { title: 'Log In' } },
-  { path: '/user/signup', component: SignUp, meta: { title: 'Sign Up' } },
-  { path: '/user/verify/:code', component: Verify, meta: { title: 'Verify Account' } }
+  {
+    path: '/',
+    component: Viewport,
+    children: [
+      { path: '/', component: News, meta: { title: 'News' } },
+      { path: '/user/login', component: LogIn, meta: { title: 'Log In' } },
+      { path: '/user/signup', component: SignUp, meta: { title: 'Sign Up' } },
+      { path: '/user/verify/:code', component: Verify, meta: { title: 'Verify Account' } }
+    ]
+  },
+  {
+    path: '/admin',
+    beforeEnter: guards.isAuthenticated,
+    component: Admin,
+    children: [
+      { path: '/', component: AdminDashboard, meta: { title: 'Dashboard' } },
+      { path: 'users', component: AdminUsers, meta: { title: 'Users' } }
+    ]
+  }
 ]
 
 const router = new VueRouter({

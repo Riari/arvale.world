@@ -1,6 +1,6 @@
 <template>
   <div :class="classesCompiled">
-    <i :data-feather="icon" />
+    <icon :name="icon"></icon>
     <slot></slot>
   </div>
 </template>
