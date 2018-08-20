@@ -9,6 +9,14 @@ export class initial1534720853821 implements MigrationInterface {
         await queryRunner.query(`CREATE TABLE "role_users_user" ("roleId" integer NOT NULL, "userId" integer NOT NULL, CONSTRAINT "PK_46403d6ce64cde119287c876ca3" PRIMARY KEY ("roleId", "userId"))`);
         await queryRunner.query(`ALTER TABLE "role_users_user" ADD CONSTRAINT "FK_ed6edac7184b013d4bd58d60e54" FOREIGN KEY ("roleId") REFERENCES "role"("id") ON DELETE CASCADE`);
         await queryRunner.query(`ALTER TABLE "role_users_user" ADD CONSTRAINT "FK_a88fcb405b56bf2e2646e9d4797" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE CASCADE`);
+        await queryRunner.query(`
+          INSERT INTO "role" (id, "name", colour)
+          VALUES
+              (1, 'Administrator', '#ebbf0f'),
+              (2, 'Developer', '#da1f60'),
+              (3, 'Community Emissary', '#2ecc71'),
+              (4, 'Dungeon Master', '#3393d3');
+        `)
     }
 
     public async down(queryRunner: QueryRunner): Promise<any> {

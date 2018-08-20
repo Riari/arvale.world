@@ -1,10 +1,8 @@
 import crypto from 'crypto'
 import { Request, Response } from 'express'
-import { Op } from 'sequelize'
 import Controller from './Controller'
 import { User } from '../entities/User'
-import { Role } from '../entities/Role'
-import Verification from '../entities/Verification'
+import { Verification } from '../entities/Verification'
 import {
   hashPassword,
   verifyPassword,
@@ -55,29 +53,29 @@ class AuthController extends Controller {
       password: hashedPassword
     })
 
-    Verification.create({
+    user.save()
+
+    const verification = await Verification.create({
       model: 'User',
       modelId: user.id,
       code: crypto.randomBytes(20).toString('hex')
-    }).then(verification => {
-      const userDetails = user
+    })
 
-      const action_url = this.config.base_url + '/user/verify/' + verification.code
+    const action_url = this.config.base_url + '/user/verify/' + verification.code
 
-      res.mailer.send('email/default', {
-        to: user.email,
-        subject: 'Welcome to Arvale.World!',
-        user: userDetails,
-        message: `Thanks for signing up on Arvale.World. Please verify your account by visiting <a href="${action_url}">${action_url}</a> or clicking the button below.`,
-        action_url,
-        action_label: 'Verify account'
-      }, () => {
-        return res.send(userDetails)
-      })
+    res.mailer.send('email/default', {
+      to: user.email,
+      subject: 'Welcome to Arvale.World!',
+      user,
+      message: `Thanks for signing up on Arvale.World. Please verify your account by visiting <a href="${action_url}">${action_url}</a> or clicking the button below.`,
+      action_url,
+      action_label: 'Verify account'
+    }, () => {
+      return res.send(user.transform())
     })
   }
 
-  verifyUser = (req: Request, res: Response) => {
+  verifyUser = async (req: Request, res: Response) => {
     const validation = this.validate(req.body, {
       email: 'required|email',
       code: 'required'
@@ -87,25 +85,25 @@ class AuthController extends Controller {
       return res.status(422).send(validation.errors)
     }
 
-    Verification.findOne({ where: { code: req.body.code }}).then(verification => {
-      if (!verification) {
-        return res.status(404).send({ message: 'No verification found.' })
-      }
+    const verification = await Verification.findOne({ where: { code: req.body.code }})
 
-      User.findOne({ where: { email: req.body.email, id: verification.modelId }}).then(user => {
-        if (!user) {
-          return res.status(404).send({ message: 'No matching user found.' })
-        }
+    if (!verification) {
+      return res.status(404).send({ message: 'No verification found.' })
+    }
 
-        verification.destroy()
-        user.verified = true
-        user.save()
+    const user = await User.findOne({ where: { email: req.body.email, id: verification.modelId }})
 
-        const token = signJWT({ id: user.id })
+    if (!user) {
+      return res.status(404).send({ message: 'No matching user found.' })
+    }
 
-        return res.send({ user, token })
-      })
-    })
+    verification.remove()
+    user.verified = true
+    user.save()
+
+    const token = signJWT({ id: user.id })
+
+    return res.send({ user: user.transform(), token })
   }
 
   login = async (req: Request, res: Response) => {
@@ -121,7 +119,7 @@ class AuthController extends Controller {
     const user = await User.findOne({ relations: ['roles'], where: { email: req.body.email } })
 
     if (!user) {
-      return res.status(404).send({ message: 'User not found.' })
+      return res.status(404).send({ message: 'No user found matching the given details.' })
     }
 
     if (!user.verified) {
@@ -136,7 +134,7 @@ class AuthController extends Controller {
 
     const token = signJWT({ id: user.id })
 
-    res.send({ user, token })
+    res.send({ user: user.transform(), token })
   }
 
   me = (req: Request, res: Response) => {

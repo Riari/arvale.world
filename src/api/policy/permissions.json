@@ -1,0 +1,6 @@
+{
+  "administrate": ["Administrator"],
+  "moderate": ["Administrator"],
+
+  "post.article": ["Administrator"]
+}

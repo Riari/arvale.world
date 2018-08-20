@@ -1,5 +1,5 @@
 import { verifyJWT } from '../utils/auth'
-import permissions from '../data/permissions'
+import { Policy } from '../policy'
 import { User } from '../entities/User'
 
 export async function checkAuthState (req, res, next) {
@@ -31,13 +31,14 @@ export async function checkPermissions (req, res, next) {
 
   req.baseUrl.toLowerCase().split('/').forEach(join)
   req.route.path.split('/').forEach(join)
-  console.log(parts)
 
   const permission = parts.join('.')
 
-  console.log(permission)
-  const resource = await req.resourceQuery
-  console.log(resource)
+  const hasPermission = await Policy.check(permission, req.user, req.params)
 
-  next()
+  if (hasPermission) {
+    next()
+  } else {
+    res.status(401).send({ message: "Unauthorized" })
+  }
 }

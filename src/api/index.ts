@@ -15,7 +15,7 @@ const config = require('./config/app.json')
 
 const app = express()
 
-app.listen(config.port, config.host, () => console.log("Server running on 9090 with auto restart!"))
+app.listen(config.port, config.host, () => console.log("Server running on 9090 with automatic restart"))
 
 app.engine('handlebars', expressHandlebars())
 app.set('views', __dirname + '/views')

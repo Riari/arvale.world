@@ -12,23 +12,23 @@
           </div>
         </transition>
 
-        <div class="admin-links panel">
+        <div v-if="canUser('administrate')" class="admin-links panel">
           <router-link to="/admin">Admin dashboard &nbsp; <i data-feather="sliders"></i></router-link>
         </div>
 
-        <div v-show="!$store.state.auth.isAuthenticated" class="user-links panel">
+        <div v-show="!isUserAuthenticated" class="user-links panel">
           <router-link to="/user/login">Log in</router-link>
           <span class="separator"></span>
           <router-link to="/user/signup">Sign up</router-link>
         </div>
         <router-link
-          v-show="$store.state.auth.isAuthenticated"
+          v-show="isUserAuthenticated"
           to="/user/account"
           class="account panel"
           @mouseenter.native="showUserMenu"
           @mouseleave.native="hideUserMenu"
         >
-          Hello, <span>{{ $store.state.auth.user.name }}</span> <i data-feather="chevron-down"></i>
+          Hello, <span>{{ user.name }}</span> <i data-feather="chevron-down"></i>
         </router-link>
         <transition name="fade">
           <div
@@ -72,9 +72,9 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import Component from 'vue-class-component'
+import Component, { mixins } from 'vue-class-component'
 import feather from 'feather-icons'
+import { UserStateMixin } from '../mixins/UserState'
 import NWNService from '../services/NWNService'
 
 @Component({
@@ -85,7 +85,7 @@ import NWNService from '../services/NWNService'
     }
   }
 })
-export default class Layout extends Vue {
+export default class Layout extends mixins(UserStateMixin) {
   service: NWNService
   server: object = null
   checkServerStatusInterval = null

@@ -50,14 +50,11 @@ export default class LogIn extends Vue {
       })
       .catch(error => {
         switch (error.response.status) {
-          case 404:
-            this.error = 'No user found with the given details'
-            break
           case 422:
             this.validationErrors = error.response.data.errors
             break
           default:
-            this.error = 'An unknown error occurred; please try again or contact an admin if the issue persists'
+            this.error = error.response.data.message
         }
       })
   }

@@ -9,14 +9,19 @@ const LOGOUT = 'LOGOUT'
 
 const service = new AuthService
 
+const defaultUserState = {
+  name: null,
+  email: null,
+  roles: {},
+  roleList: [],
+  permissionList: []
+}
+
 const store = new Vuex.Store({
   state: {
     auth: {
       isAuthenticated: false,
-      user: {
-        name: null,
-        email: null
-      }
+      user: defaultUserState
     }
   },
   mutations: {
@@ -26,18 +31,14 @@ const store = new Vuex.Store({
     },
     [LOGOUT] (state) {
       state.auth.isAuthenticated = false
-      state.auth.user = { name: null, email: null }
+      state.auth.user = defaultUserState
     }
   },
   actions: {
     initialise ({ commit }) {
       service.getMe()
         .then(response => {
-          let user = {
-            name: response.data.name,
-            email: response.data.email
-          }
-
+          let user = response.data
           commit(LOGIN_SUCCESS, user)
         })
     },

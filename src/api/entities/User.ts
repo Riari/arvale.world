@@ -1,4 +1,9 @@
 import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToMany } from 'typeorm'
+import NodeCache from 'node-cache'
+
+const permissions = require('../policy/permissions')
+const cache = new NodeCache({ stdTTL: 60 })
+
 import { Role } from './Role'
 
 @Entity()
@@ -16,13 +21,15 @@ export class User extends BaseEntity {
   @Column()
   password: string
 
-  @Column()
+  @Column({
+    default: false
+  })
   verified: boolean
 
-  @CreateDateColumn({ type: "timestamp" })
+  @CreateDateColumn({ type: 'timestamp' })
   createdAt: string
 
-  @UpdateDateColumn({ type: "timestamp" })
+  @UpdateDateColumn({ type: 'timestamp' })
   updatedAt: number
 
   @ManyToMany(type => Role, role => role.users)
@@ -37,5 +44,41 @@ export class User extends BaseEntity {
       .where('user.name = :name', { name })
       .orWhere('user.email = :email', { email })
       .getOne()
+  }
+
+  get roleList () {
+    const roleList = []
+    this.roles.forEach(role => roleList.push(role.name))
+    return roleList
+  }
+
+  transform () {
+    const cacheKey = `user.${this.id}.permissions`
+
+    let userPermissions = cache.get(cacheKey)
+
+    if (userPermissions == undefined) {
+      const userPerms = []
+
+      Object.keys(permissions).forEach(permission => {
+        const roles = permissions[permission]
+        const hasRole = roles.some(role => this.roleList.includes(role))
+
+        if (hasRole) {
+          userPerms.push(permission)
+        }
+      })
+
+      cache.set(cacheKey, userPerms)
+      userPermissions = userPerms
+    }
+
+    return {
+      name: this.name,
+      email: this.email,
+      roles: this.roles,
+      roleList: this.roleList,
+      permissionList: userPermissions
+    }
   }
 }
