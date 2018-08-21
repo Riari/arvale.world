@@ -6,13 +6,14 @@ import { ArticleCategory } from '../entities/ArticleCategory'
 
 class ArticleController extends Controller {
   list = async (req: Request, res: Response) => {
-    const page = req.query.page ? req.query.page : 1
+    const currentPage = req.query.page ? req.query.page : 1
     const perPage = Article.perPage
 
-    let [articles, count] = await Article.findAndCount({
+    let [articles, itemCount] = await Article.findAndCount({
       relations: ['author', 'category'],
-      skip: (page - 1) * perPage,
+      skip: (currentPage - 1) * perPage,
       take: perPage,
+      order: { createdAt: 'DESC' },
       where: req.params.articleCategory ? { category: req.params.articleCategory.id } : {}
     })
 
@@ -21,9 +22,10 @@ class ArticleController extends Controller {
     })
 
     const response = {
-      page,
+      currentPage,
       perPage,
-      count,
+      itemCount,
+      totalPages: Math.ceil(itemCount / perPage),
       data: articles
     }
 

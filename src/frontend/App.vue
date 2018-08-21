@@ -56,6 +56,23 @@ a {
   }
 }
 
+table {
+  width: 100%;
+  text-align: left;
+
+  th, td {
+    padding: .5em 1em;
+    border-bottom: 1px solid rgba(255, 255, 255, .1);
+  }
+
+  td.actions {
+    a {
+      display: inline-block;
+      margin-right: .5em;
+    }
+  }
+}
+
 .fade-enter-active, .fade-leave-active {
   transition: opacity .3s;
 }
@@ -81,6 +98,10 @@ a {
   a {
     color: rgba(255, 255, 255, .75);
     text-decoration: none;
+
+    &.dangerous {
+      color: #e66d77;
+    }
 
     &:hover {
       color: #fff;

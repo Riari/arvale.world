@@ -10,7 +10,7 @@ router.param('articleCategory', articleCategory)
 
 router.get('/', ArticleController.list)
 router.get('/category/:articleCategory', ArticleController.list)
-router.get('/:article', ArticleController.get)
+router.get('/:article', checkPermissions, ArticleController.get)
 router.post('/', checkPermissions, ArticleController.create)
 router.patch('/:article', checkPermissions, ArticleController.update)
 router.delete('/:article', checkPermissions, ArticleController.remove)

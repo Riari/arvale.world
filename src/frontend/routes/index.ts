@@ -12,6 +12,7 @@ import Verify from '../pages/Verify.vue'
 import Admin from '../components/Admin/_Viewport.vue'
 import AdminDashboard from '../pages/Admin/Dashboard.vue'
 import AdminUsers from '../pages/Admin/Users.vue'
+import AdminNews from '../pages/Admin/News.vue'
 
 Vue.config.productionTip = false
 
@@ -34,7 +35,8 @@ const routes = [
     component: Admin,
     children: [
       { path: '/', component: AdminDashboard, meta: { title: 'Dashboard' } },
-      { path: 'users', component: AdminUsers, meta: { title: 'Users' } }
+      { path: 'users', component: AdminUsers, meta: { title: 'Users' } },
+      { path: 'news', component: AdminNews, meta: { title: 'News' } }
     ]
   }
 ]

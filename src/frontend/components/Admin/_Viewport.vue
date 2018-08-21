@@ -73,7 +73,7 @@ export default class AdminViewport extends Vue {
     }
   }
 
-  .actions {
+  .page-actions {
     height: 44px;
     padding: 1em;
     text-align: right;

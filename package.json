@@ -32,6 +32,8 @@
     "typeorm": "^0.2.7",
     "validatorjs": "^3.14.2",
     "vue": "^2.5.17",
+    "vue-moment": "^4.0.0",
+    "vue-property-decorator": "^7.0.0",
     "vue-router": "^3.0.1",
     "vue-toasted": "^1.1.24",
     "vuex": "^3.0.1"

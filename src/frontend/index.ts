@@ -6,6 +6,7 @@ import App from './App.vue'
 
 import './plugins/Components'
 import './plugins/FontAwesome'
+import './plugins/Moment'
 import './plugins/Toasted'
 
 Vue.config.productionTip = false
