@@ -6,6 +6,7 @@ import mailer from 'express-mailer'
 
 import { checkAuthState } from './middleware/auth'
 
+import ArticleRoutes from './routes/articles'
 import AuthRoutes from './routes/auth'
 import NWNRoutes from './routes/nwn'
 
@@ -35,5 +36,6 @@ app.use((req, res, next) => {
 
 app.use(checkAuthState)
 
+app.use('/article', ArticleRoutes)
 app.use('/auth', AuthRoutes)
 app.use('/nwn', NWNRoutes)

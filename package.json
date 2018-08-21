@@ -28,6 +28,7 @@
     "jsonwebtoken": "^8.3.0",
     "node-cache": "^4.2.0",
     "reflect-metadata": "^0.1.12",
+    "truncate-html": "^1.0.1-rc.1",
     "typeorm": "^0.2.7",
     "validatorjs": "^3.14.2",
     "vue": "^2.5.17",

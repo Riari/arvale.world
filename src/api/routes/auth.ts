@@ -1,5 +1,5 @@
-import AuthController from '../controllers/AuthController'
 import { Router } from 'express'
+import AuthController from '../controllers/AuthController'
 import { checkPermissions } from '../middleware/auth'
 import { user } from '../middleware/params'
 

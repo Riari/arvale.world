@@ -35,7 +35,7 @@
       <div class="leaf">
         <img src="../static/images/leaf.png">
       </div>
-      <slot></slot>
+      <router-view></router-view>
     </div>
   </div>
 </template>

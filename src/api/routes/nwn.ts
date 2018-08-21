@@ -1,5 +1,5 @@
-import NWNController from '../controllers/NWNController'
 import { Router } from 'express'
+import NWNController from '../controllers/NWNController'
 
 const router = Router()
 

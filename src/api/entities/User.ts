@@ -1,9 +1,10 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToMany } from 'typeorm'
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToMany, OneToMany } from 'typeorm'
 import NodeCache from 'node-cache'
 
 const permissions = require('../policy/permissions')
 const cache = new NodeCache({ stdTTL: 60 })
 
+import { Article } from './Article'
 import { Role } from './Role'
 
 @Entity()
@@ -18,12 +19,10 @@ export class User extends BaseEntity {
   @Column()
   email: string
 
-  @Column()
+  @Column({ select: false })
   password: string
 
-  @Column({
-    default: false
-  })
+  @Column({ default: false })
   verified: boolean
 
   @CreateDateColumn({ type: 'timestamp' })
@@ -34,6 +33,9 @@ export class User extends BaseEntity {
 
   @ManyToMany(type => Role, role => role.users)
   roles: Role[]
+
+  @OneToMany(type => Article, article => article.author)
+  articles: Article[]
 
   static queryBuilder () {
     return this.createQueryBuilder('user')

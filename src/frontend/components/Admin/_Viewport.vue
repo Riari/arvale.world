@@ -14,6 +14,7 @@
 
     <nav class="panel">
       <router-link to="/admin">Dashboard</router-link>
+      <router-link to="/admin/news">News</router-link>
       <router-link to="/admin/users">Users</router-link>
     </nav>
 

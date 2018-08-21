@@ -6,18 +6,10 @@ import { Verification } from '../entities/Verification'
 import {
   hashPassword,
   verifyPassword,
-  signJWT,
-  verifyJWT
+  signJWT
 } from '../utils/auth'
 
 class AuthController extends Controller {
-  config: any
-
-  constructor() {
-    super()
-    this.config = require('../config/app.json')
-  }
-
   createUser = async (req: Request, res: Response) => {
     const validation = this.validate(req.body, {
       username: 'required|min:3|max:20',

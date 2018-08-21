@@ -2,5 +2,7 @@
   "administrate": ["Administrator"],
   "moderate": ["Administrator"],
 
-  "post.article": ["Administrator"]
+  "post.article": ["Administrator"],
+  "patch.article": ["Administrator"],
+  "delete.article": ["Administrator"]
 }

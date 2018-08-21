@@ -47,6 +47,7 @@ const store = new Vuex.Store({
           commit(INITIALISED)
           commit(LOGIN_SUCCESS, user)
         })
+        .catch(error => commit(INITIALISED))
     },
     verify ({ commit }, details) {
       return new Promise((resolve, reject) => {

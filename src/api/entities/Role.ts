@@ -4,17 +4,17 @@ import { User } from './User'
 @Entity()
 export class Role extends BaseEntity {
 
-    @PrimaryGeneratedColumn()
-    id: number
+  @PrimaryGeneratedColumn()
+  id: number
 
-    @Column()
-    name: string
+  @Column()
+  name: string
 
-    @Column()
-    colour: string
+  @Column()
+  colour: string
 
-    @ManyToMany(type => User, user => user.roles)
-    @JoinTable()
-    users: User[]
+  @ManyToMany(type => User, user => user.roles)
+  @JoinTable()
+  users: User[]
 
 }

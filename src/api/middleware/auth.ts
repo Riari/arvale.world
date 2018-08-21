@@ -8,14 +8,17 @@ export async function checkAuthState (req, res, next) {
   if (!token) {
     next()
   } else {
-    const decoded = await verifyJWT(token)
-    const user = await User.findOne({ relations: ['roles'], where: { id: decoded.id } })
+    verifyJWT(token)
+      .then(async decoded => {
+        const user = await User.findOne({ relations: ['roles'], where: { id: decoded.id } })
 
-    if (user) {
-      req.user = user
-    }
+        if (user) {
+          req.user = user
+        }
 
-    next()
+        next()
+      })
+      .catch(error => next())
   }
 }
 
