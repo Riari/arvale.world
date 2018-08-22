@@ -108,7 +108,11 @@ class AuthController extends Controller {
       return res.status(422).send(validation.errors)
     }
 
-    const user = await User.findOne({ relations: ['roles'], where: { email: req.body.email } })
+    const user = await User.findOne({
+      select: ['id', 'name', 'email', 'verified', 'password'],
+      relations: ['roles'],
+      where: { email: req.body.email }
+    })
 
     if (!user) {
       return res.status(404).send({ message: 'No user found matching the given details.' })
@@ -117,6 +121,8 @@ class AuthController extends Controller {
     if (!user.verified) {
       return res.status(401).send({ message: 'Account not verified. Check your inbox for a verification email.' })
     }
+
+    console.log(req.body.password, user.password)
 
     const passwordIsValid = verifyPassword(req.body.password, user.password)
 
