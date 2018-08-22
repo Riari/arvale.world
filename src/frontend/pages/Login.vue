@@ -18,7 +18,7 @@
         placeholder="Password"
       ></input-text>
       <notice v-show="error" type="warning">{{ error }}</notice>
-      <v-button @click.native="logIn" :fullWidth="true" :loading="$store.state.auth.isPending">Log in</v-button>
+      <v-button @click.native="logIn" :fullWidth="true" :loading="loading">Log in</v-button>
     </div>
   </div>
 </template>
@@ -30,6 +30,8 @@ import AuthService from '../services/AuthService'
 
 @Component
 export default class LogIn extends Vue {
+  loading = false
+
   credentials = {
     email: null,
     password: null
@@ -43,12 +45,16 @@ export default class LogIn extends Vue {
   error: string = null
 
   logIn () {
+    this.loading = true
+
     this.$store.dispatch('logIn', this.credentials)
       .then(user => {
         this.$router.push('/')
         this.$toasted.show(`Welcome back, ${user.name}!`, { type: 'success' })
+        this.loading = false
       })
       .catch(error => {
+        this.loading = false
         switch (error.response.status) {
           case 422:
             this.validationErrors = error.response.data.errors
