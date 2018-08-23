@@ -94,6 +94,12 @@ table {
   background: transparentize($color-background, .1);
   box-shadow: 0 0 10px rgba(0, 0, 0, .35);
   color: #fff;
+  text-align: left;
+
+  h2 {
+    margin-top: 0;
+    font-family: 'Cinzel Decorative';
+  }
 
   a {
     color: rgba(255, 255, 255, .75);

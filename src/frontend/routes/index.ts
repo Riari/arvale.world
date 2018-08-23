@@ -11,8 +11,9 @@ import Verify from '../pages/Verify.vue'
 
 import Admin from '../components/Admin/_Viewport.vue'
 import AdminDashboard from '../pages/Admin/Dashboard.vue'
-import AdminUsers from '../pages/Admin/Users.vue'
-import AdminNews from '../pages/Admin/News.vue'
+import AdminUsersIndex from '../pages/Admin/Users/Index.vue'
+import AdminNewsIndex from '../pages/Admin/News/Index.vue'
+import AdminNewsCreate from '../pages/Admin/News/Create.vue'
 
 Vue.config.productionTip = false
 
@@ -35,8 +36,9 @@ const routes = [
     component: Admin,
     children: [
       { path: '/', component: AdminDashboard, meta: { title: 'Dashboard' } },
-      { path: 'users', component: AdminUsers, meta: { title: 'Users' } },
-      { path: 'news', component: AdminNews, meta: { title: 'News' } }
+      { path: 'users', component: AdminUsersIndex, meta: { title: 'Users' } },
+      { path: 'news', component: AdminNewsIndex, meta: { title: 'News' } },
+      { path: 'news/create', component: AdminNewsCreate, meta: { title: 'Create Article' } }
     ]
   }
 ]

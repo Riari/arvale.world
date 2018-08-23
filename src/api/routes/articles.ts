@@ -9,6 +9,7 @@ router.param('article', article)
 router.param('articleCategory', articleCategory)
 
 router.get('/', ArticleController.list)
+router.get('/category', ArticleController.listCategories)
 router.get('/category/:articleCategory', ArticleController.list)
 router.get('/:article', checkPermissions, ArticleController.get)
 router.post('/', checkPermissions, ArticleController.create)

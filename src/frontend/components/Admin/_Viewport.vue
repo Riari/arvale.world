@@ -9,7 +9,7 @@
         <router-link to="/">Return to front page &nbsp; <icon name="home"></icon></router-link>
       </div>
 
-      <user-menu :user="$store.state.auth.user"></user-menu>
+      <user-menu :user="user"></user-menu>
     </div>
 
     <nav class="panel">
@@ -25,15 +25,16 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import Component from 'vue-class-component'
+import Component, { mixins } from 'vue-class-component'
+import { UserStateMixin } from '../../mixins/UserState'
 import ServerStatus from '../top-bar/ServerStatus.vue'
 import UserMenu from '../top-bar/UserMenu.vue'
 
 @Component({
   components: { ServerStatus, UserMenu }
 })
-export default class AdminViewport extends Vue {
+export default class AdminViewport extends mixins(UserStateMixin) {
+
 }
 </script>
 
@@ -75,7 +76,7 @@ export default class AdminViewport extends Vue {
 
   .page-actions {
     height: 44px;
-    padding: 1em;
+    padding: .8em 1em 1em;
     text-align: right;
 
     .button {

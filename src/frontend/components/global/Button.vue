@@ -1,5 +1,8 @@
 <template>
-  <button :class="classesCompiled" :disabled="loading">
+  <router-link v-if="route" :to="route" :class="classesCompiled">
+    <slot></slot>
+  </router-link>
+  <button v-else :class="classesCompiled" :disabled="loading">
     <template v-if="!loading">
       <slot></slot>
     </template>
@@ -12,6 +15,7 @@ import Component from 'vue-class-component'
 
 @Component({
   props: {
+    route: [Object, String],
     classes: {
       type: Array,
       default: () => { return [] }

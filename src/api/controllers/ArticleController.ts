@@ -32,6 +32,11 @@ class ArticleController extends Controller {
     return res.status(200).send(response)
   }
 
+  listCategories = async (req: Request, res: Response) => {
+    const categories = await ArticleCategory.find()
+    return res.status(200).send(categories)
+  }
+
   get = async (req: Request, res: Response) => {
     if (req.params.article) {
       return res.send(req.params.article)
