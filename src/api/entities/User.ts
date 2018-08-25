@@ -50,7 +50,11 @@ export class User extends BaseEntity {
 
   get roleList () {
     const roleList = []
-    this.roles.forEach(role => roleList.push(role.name))
+
+    if (this.roles) {
+      this.roles.forEach(role => roleList.push(role.name))
+    }
+
     return roleList
   }
 

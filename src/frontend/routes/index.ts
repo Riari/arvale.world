@@ -18,6 +18,8 @@ import AdminUsersIndex from '../pages/Admin/Users/Index.vue'
 import AdminNewsIndex from '../pages/Admin/News/Index.vue'
 import AdminNewsEdit from '../pages/Admin/News/Edit.vue'
 
+import Contact from '../pages/Contact.vue'
+
 Vue.config.productionTip = false
 
 Vue.use(VueRouter)
@@ -33,7 +35,8 @@ const routes = [
       { path: '/news/category/:id-:slug', name: 'news-category', component: NewsList },
       { path: '/user/login', component: LogIn },
       { path: '/user/signup', component: SignUp },
-      { path: '/user/verify/:code', component: Verify }
+      { path: '/user/verify/:code', component: Verify },
+      { path: '/contact', component: Contact }
     ]
   },
   {

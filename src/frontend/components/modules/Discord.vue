@@ -45,6 +45,8 @@ export default class DiscordModule extends Vue {
       this.loading = false
 
       const server = response.data
+      server.members = server.members.filter(member => !member.bot)
+
       this.totalMembers = server.members.length
       server.members = server.members.slice(0, this.maxMembers)
       this.server = server
