@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container viewport">
     <div class="top">
       <server-status></server-status>
 
@@ -59,6 +59,12 @@ export default class Viewport extends mixins(UserStateMixin) {
 
 <style lang="scss">
 @import "../scss/variables";
+
+.container.viewport {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
 
 .top {
   position: absolute;
@@ -149,7 +155,7 @@ export default class Viewport extends mixins(UserStateMixin) {
   margin: 6em 1em 2em 1em;
 
   h1 {
-    margin: .8em 0 0 0;
+    margin: 0;
     font-family: 'Cinzel Decorative', cursive;
     text-align: center;
     text-shadow: 0 0 3px rgba(34, 46, 77, 0.4), 0 0 50px rgba(34, 46, 77, 0.5);
@@ -162,6 +168,7 @@ export default class Viewport extends mixins(UserStateMixin) {
 }
 
 .footer {
+  margin: auto auto 0 auto;
   padding: 2em;
   color: #fff;
   text-align: center;
