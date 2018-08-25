@@ -1,29 +1,48 @@
 import { Request, Response } from 'express'
-import truncate from 'truncate-html'
 import showdown from 'showdown'
+import slugify from 'slugify'
+import truncate from 'truncate-html'
+import striptags from 'striptags'
 import Controller from './Controller'
 import { Article } from '../entities/Article'
 import { ArticleCategory } from '../entities/ArticleCategory'
 
 class ArticleController extends Controller {
+  private getMarkdownConverter () {
+    return new showdown.Converter({
+      tasklists: true
+    })
+  }
+
   list = async (req: Request, res: Response) => {
     const currentPage = req.query.page ? req.query.page : 1
     const perPage = Article.perPage
 
+    const where: any = {}
+
+    if (!req.user || !req.user.roleList.includes('Administrator') && !req.query.withUnpublished) {
+      where.published = true
+    }
+
+    if (req.params.articleCategory) {
+      where.category = req.params.articleCategory.id
+    } else if (req.query.category) {
+      where.category = req.query.category
+    }
+
     let [articles, itemCount] = await Article.findAndCount({
-      relations: ['author', 'category'],
+      relations: ['author', 'author.roles', 'category'],
       skip: (currentPage - 1) * perPage,
       take: perPage,
       order: { createdAt: 'DESC' },
-      where: req.params.articleCategory ? { category: req.params.articleCategory.id } : {}
+      where
     })
 
-    const converter = new showdown.Converter({
-      tasklists: true
-    })
+    const converter = this.getMarkdownConverter()
 
     articles.forEach((article, index) => {
-      articles[index].body = truncate(converter.makeHtml(article.body), 200, { byWords: true })
+      articles[index].slug = slugify(article.title, { lower: true })
+      articles[index].body = truncate(converter.makeHtml(article.body), 80, { byWords: true })
     })
 
     const response = {
@@ -39,11 +58,21 @@ class ArticleController extends Controller {
 
   listCategories = async (req: Request, res: Response) => {
     const categories = await ArticleCategory.find()
+
+    categories.forEach((category, index) => {
+      categories[index].slug = slugify(category.name, { lower: true })
+    })
+
     return res.status(200).send(categories)
   }
 
   get = async (req: Request, res: Response) => {
     if (req.params.article) {
+      const article = req.params.article
+      const converter = this.getMarkdownConverter()
+      article.category.slug = slugify(article.category.name, { lower: true })
+      article.body_html = converter.makeHtml(article.body)
+
       return res.send(req.params.article)
     }
 
@@ -54,7 +83,8 @@ class ArticleController extends Controller {
     const validation = this.validate(req.body, {
       title: 'required',
       body: 'required',
-      category: 'required'
+      category: 'required',
+      published: 'boolean'
     })
 
     if (validation.fails()) {
@@ -69,8 +99,9 @@ class ArticleController extends Controller {
 
     let article = await Article.create({
       title: req.body.title,
-      body: req.body.body,
+      body: striptags(req.body.body),
       category: req.body.category,
+      published: req.body.published ? req.body.published : false,
       author: req.user.id
     })
 
@@ -87,7 +118,7 @@ class ArticleController extends Controller {
     const validation = this.validate(req.body, {
       title: 'required',
       body: 'required',
-      category: 'required'
+      published: 'boolean'
     })
 
     if (validation.fails()) {
@@ -106,13 +137,9 @@ class ArticleController extends Controller {
       article.category = category.id
     }
 
-    if (req.body.title) {
-      article.title = req.body.title
-    }
-
-    if (req.body.body) {
-      article.body = req.body.body
-    }
+    article.title = req.body.title
+    article.body = req.body.body
+    article.published = req.body.published ? req.body.published : false
 
     article = await article.save()
 

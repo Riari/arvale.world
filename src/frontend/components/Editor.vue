@@ -29,6 +29,10 @@ export default class Editor extends Vue {
   getMarkdown () {
     return this.editor.getMarkdown()
   }
+
+  setValue (value: string) {
+    return this.editor.setValue(value)
+  }
 }
 </script>
 

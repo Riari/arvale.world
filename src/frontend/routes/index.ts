@@ -9,11 +9,14 @@ import Front from '../pages/Front.vue'
 import SignUp from '../pages/SignUp.vue'
 import Verify from '../pages/Verify.vue'
 
+import NewsList from '../pages/News/List.vue'
+import NewsArticle from '../pages/News/Article.vue'
+
 import Admin from '../components/Admin/_Viewport.vue'
 import AdminDashboard from '../pages/Admin/Dashboard.vue'
 import AdminUsersIndex from '../pages/Admin/Users/Index.vue'
 import AdminNewsIndex from '../pages/Admin/News/Index.vue'
-import AdminNewsCreate from '../pages/Admin/News/Create.vue'
+import AdminNewsEdit from '../pages/Admin/News/Edit.vue'
 
 Vue.config.productionTip = false
 
@@ -24,10 +27,13 @@ const routes = [
     path: '/',
     component: Viewport,
     children: [
-      { path: '/', component: Front, meta: { title: 'Welcome' } },
-      { path: '/user/login', component: LogIn, meta: { title: 'Log In' } },
-      { path: '/user/signup', component: SignUp, meta: { title: 'Sign Up' } },
-      { path: '/user/verify/:code', component: Verify, meta: { title: 'Verify Account' } }
+      { path: '/', component: Front },
+      { path: '/news', component: NewsList },
+      { path: '/news/:id-:slug', name: 'news-article', component: NewsArticle },
+      { path: '/news/category/:id-:slug', name: 'news-category', component: NewsList },
+      { path: '/user/login', component: LogIn },
+      { path: '/user/signup', component: SignUp },
+      { path: '/user/verify/:code', component: Verify }
     ]
   },
   {
@@ -35,10 +41,11 @@ const routes = [
     beforeEnter: guards.isAuthenticated,
     component: Admin,
     children: [
-      { path: '/', component: AdminDashboard, meta: { title: 'Dashboard' } },
-      { path: 'users', component: AdminUsersIndex, meta: { title: 'Users' } },
-      { path: 'news', component: AdminNewsIndex, meta: { title: 'News' } },
-      { path: 'news/create', component: AdminNewsCreate, meta: { title: 'Create Article' } }
+      { path: '/', component: AdminDashboard },
+      { path: 'users', component: AdminUsersIndex },
+      { path: 'news', component: AdminNewsIndex },
+      { path: 'news/create', component: AdminNewsEdit },
+      { path: 'news/:id', component: AdminNewsEdit }
     ]
   }
 ]
@@ -46,11 +53,6 @@ const routes = [
 const router = new VueRouter({
   mode: 'history',
   routes
-})
-
-router.beforeEach((to, from, next) => {
-  document.title = `${to.meta.title} - Arvale`
-  next()
 })
 
 export default router

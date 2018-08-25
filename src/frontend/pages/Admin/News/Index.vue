@@ -22,8 +22,10 @@
             <td>{{ article.updatedAt | moment('from') }}</td>
             <td>{{ article.published ? 'Yes' : 'No' }}</td>
             <td class="actions">
-              <a href="#">Edit</a>
-              <a href="#" class="dangerous">Delete</a>
+              <a v-if="!article.published" @click="publish($event, article)" href="#">Publish</a>
+              <a v-else @click="unpublish($event, article)" href="#">Unpublish</a>
+              <router-link :to="`/admin/news/${article.id}`">Edit</router-link>
+              <a @click="remove($event, article)" href="#" class="dangerous">Delete</a>
             </td>
           </tr>
         </tbody>
@@ -62,10 +64,43 @@ export default class AdminUsers extends Vue {
   }
 
   getList () {
-    this.service.list(this.currentPage).then(response => {
+    this.service.list(this.currentPage, { withUnpublished: true }).then(response => {
       this.articles = response.data.data
       this.totalPages = response.data.totalPages
     })
+  }
+
+  publish (event, article) {
+    event.preventDefault()
+
+    if (confirm(`Are you sure you want to publish "${article.title}"?`)) {
+      article.published = true
+      this.service.update(article).then(response => {
+        this.$toasted.show("Article updated", { type: 'success' })
+      })
+    }
+  }
+
+  unpublish (event, article) {
+    event.preventDefault()
+
+    if (confirm(`Are you sure you want to unpublish "${article.title}"?`)) {
+      article.published = false
+      this.service.update(article).then(response => {
+        this.$toasted.show("Article updated", { type: 'success' })
+      })
+    }
+  }
+
+  remove (event, article) {
+    event.preventDefault()
+
+    if (confirm(`Are you sure you want to remove "${article.title}"?`)) {
+      this.service.destroy(article).then(response => {
+        this.articles.splice(this.articles.indexOf(article), 1)
+        this.$toasted.show("Article removed", { type: 'success' })
+      })
+    }
   }
 }
 </script>

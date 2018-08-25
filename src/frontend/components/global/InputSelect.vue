@@ -1,27 +1,16 @@
 <template>
   <div class="inputWrapper">
-    <textarea
-      v-if="multiline"
-      :class="classesCompiled"
-      :autofocus="autofocus"
-      :placeholder="placeholder"
-      :value="value"
-      ref="input"
-      v-on:input="$emit('input', $event.target.value)"
-      v-on:keyup="$emit('keyup', $event)"
-    >
-    </textarea>
-    <input
-      v-else
-      :class="classesCompiled"
-      :type="type"
-      :autofocus="autofocus"
-      :placeholder="placeholder"
-      :value="value"
-      ref="input"
-      v-on:input="$emit('input', $event.target.value)"
-      v-on:keyup="$emit('keyup', $event)"
-    />
+    <select class="input" :class="classesCompiled" v-on:input="$emit('input', $event.target.value)">
+      <option value="" :selected="!selectedOption">{{ placeholder }}</option>
+      <option
+        v-for="option in options"
+        :key="option.value"
+        :value="option.value"
+        :selected="selectedOption && selectedOption == option.value"
+      >
+        {{ option.label }}
+      </option>
+    </select>
     <transition-group name="fade">
       <div v-for="(error, index) in errors" :key="index" class="inputError">{{ error }}</div>
     </transition-group>
@@ -34,7 +23,8 @@ import Component from 'vue-class-component'
 
 @Component({
   props: {
-    value: String,
+    options: Array,
+    selectedOption: [String, Number],
     errors: Array,
     multiline: Boolean,
     type: {
@@ -50,7 +40,7 @@ import Component from 'vue-class-component'
     placeholder: String
   }
 })
-export default class InputText extends Vue {
+export default class InputSelect extends Vue {
   get classesCompiled () {
     let base = ['input']
 

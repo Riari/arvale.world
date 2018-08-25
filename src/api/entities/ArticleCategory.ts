@@ -5,6 +5,8 @@ import { Article } from './Article'
 @Entity()
 export class ArticleCategory extends BaseEntity {
 
+  slug: string
+
   @PrimaryGeneratedColumn()
   id: number
 

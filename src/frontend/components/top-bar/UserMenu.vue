@@ -6,7 +6,7 @@
       @mouseenter.native="showUserMenu"
       @mouseleave.native="hideUserMenu"
     >
-      Hello, <span>{{ user.name }}</span> <icon name="chevron-down"></icon>
+      Hello, <span :style="{ color: usernameColor }">{{ user.name }}</span> <icon name="chevron-down"></icon>
     </router-link>
     <transition name="fade">
       <div
@@ -39,6 +39,10 @@ import Component from 'vue-class-component'
 export default class UserMenu extends Vue {
   hideTimeout = null
   isVisible = false
+
+  get usernameColor () {
+    return this.user.roles.length ? this.user.roles[0].colour : '#fff'
+  }
 
   showUserMenu () {
     this.isVisible = true
@@ -82,8 +86,6 @@ export default class UserMenu extends Vue {
 .account,
 .user-menu {
   span {
-    color: $color-highlight;
-
     svg {
       width: 22px;
       height: 22px;

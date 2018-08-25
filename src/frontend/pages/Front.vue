@@ -20,6 +20,7 @@ import NewsModule from '../components/modules/News.vue'
 import UserModule from '../components/modules/User.vue'
 
 @Component({
+  title: 'Welcome',
   components: { DiscordModule, NewsModule, UserModule }
 })
 export default class Front extends Vue {

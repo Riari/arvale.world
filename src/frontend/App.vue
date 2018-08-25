@@ -1,5 +1,8 @@
 <template>
-  <router-view></router-view>
+  <div>
+    <router-view></router-view>
+    <vue-progress-bar></vue-progress-bar>
+  </div>
 </template>
 
 <script lang="ts">
@@ -10,6 +13,30 @@ import Component from 'vue-class-component'
 export default class App extends Vue {
   beforeCreate () {
     this.$store.dispatch('initialise')
+  }
+
+  mounted () {
+    this.$Progress.finish()
+  }
+
+  created () {
+    this.$Progress.start()
+
+    this.$router.beforeEach((to, from, next) => {
+      if (to.meta.progress !== undefined) {
+        let meta = to.meta.progress
+        this.$Progress.parseMeta(meta)
+      }
+
+      this.$Progress.start()
+
+      next()
+    })
+
+    this.$router.afterEach((to, from) => {
+
+      this.$Progress.finish()
+    })
   }
 }
 </script>
@@ -22,8 +49,8 @@ export default class App extends Vue {
 html, body {
   padding: 0;
   margin: 0;
-  background: $color-background url('./static/images/bg.jpg') no-repeat top center;
-  background-size: cover;
+  background: #12151d url('./static/images/bg.jpg') no-repeat top center;
+  background-size: 100%;
   font-family: Neuton, sans-serif;
   font-size: 18px;
 }
@@ -80,8 +107,16 @@ table {
   opacity: 0;
 }
 
+.text-muted {
+  color: rgba(255, 255, 255, .5);
+}
+
 .text-center {
   text-align: center;
+}
+
+.text-right {
+  text-align: right;
 }
 
 .container {
@@ -94,6 +129,57 @@ table {
     border: 1px solid rgba(0, 0, 0, .2);
     box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 2px 4px;
     font-size: 1.3em;
+  }
+}
+
+.inputWrapper {
+  position: relative;
+
+  .input {
+    padding: .8em 1.2em;
+    margin: .5em 0;
+    border: none;
+    border-radius: 2px;
+    background: #fff;
+    font-size: .9em;
+    font-family: 'Neuton', sans-serif;
+    color: $color-background;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 2px 4px;
+    box-sizing: border-box;
+    transition: box-shadow .2s;
+
+    &::placeholder {
+      color: $color-background;
+      opacity: .65;
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: #21469480 0px 0px 0px 3px;
+    }
+
+    &--fullWidth {
+      width: 100%;
+    }
+
+    &--error {
+      box-shadow: #c9002180 0px 0px 0px 3px;
+    }
+  }
+
+  .inputError {
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    padding: .4em .6em;
+    margin-left: 15px;
+    border-radius: 3px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 2px 4px;
+    background: #c90021ee;
+    font-size: .9em;
+    color: #fff;
+    white-space: nowrap;
+    transform: translateY(-50%);
   }
 }
 

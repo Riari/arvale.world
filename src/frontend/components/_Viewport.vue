@@ -24,18 +24,22 @@
       </div>
       <div class="col-xs-9">
         <nav class="panel">
-          <router-link to="/">News</router-link>
-          <router-link to="/forum">Forum</router-link>
+          <router-link to="/">Welcome</router-link>
+          <router-link to="/news">News</router-link>
         </nav>
       </div>
     </div>
 
     <div class="content">
-      <h1>{{ $route.meta.title }}</h1>
+      <h1>{{ $title }}</h1>
       <div class="leaf">
         <img src="../static/images/leaf.png">
       </div>
       <router-view></router-view>
+    </div>
+
+    <div class="footer">
+      Website created by <a href="https://www.linkedin.com/in/riari/" target="_blank">Rick Mann</a>
     </div>
   </div>
 </template>
@@ -142,9 +146,7 @@ export default class Viewport extends mixins(UserStateMixin) {
 }
 
 .content {
-  position: relative;
-  top: 60px;
-  margin: 0 1em;
+  margin: 6em 1em 2em 1em;
 
   h1 {
     margin: .8em 0 0 0;
@@ -156,6 +158,21 @@ export default class Viewport extends mixins(UserStateMixin) {
   .leaf {
     margin: .2em 0 1.2em 0;
     text-align: center;
+  }
+}
+
+.footer {
+  padding: 2em;
+  color: #fff;
+  text-align: center;
+  text-shadow: 0 0 5px rgba(0, 0, 0, .5);
+
+  a {
+    color: $color-primary;
+
+    &:hover {
+      color: #fff;
+    }
   }
 }
 </style>

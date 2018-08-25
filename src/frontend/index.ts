@@ -5,8 +5,11 @@ import router from './routes'
 import App from './App.vue'
 
 import './plugins/Components'
+import './plugins/ClassComponent'
 import './plugins/FontAwesome'
 import './plugins/Moment'
+import './plugins/PageTitle'
+import './plugins/ProgressBar'
 import './plugins/Toasted'
 
 Vue.config.productionTip = false

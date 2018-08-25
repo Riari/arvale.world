@@ -1,5 +1,5 @@
 <template>
-  <div class="panel" :class="{ loading }">
+  <div class="panel" :class="classesCompiled">
     <h3 v-if="title">
       <icon v-if="icon" :name="icon"></icon> {{ title }}
     </h3>
@@ -28,17 +28,42 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import Component from 'vue-class-component'
+import { Vue, Watch, Component } from 'vue-property-decorator'
 
 @Component({
   props: {
     title: String,
     icon: String,
-    loading: Boolean
+    loading: Boolean,
+    classes: {
+      type: Array,
+      default: () => []
+    }
   }
 })
 export default class Panel extends Vue {
+  classesCompiled = []
+
+  @Watch('loading')
+  onLoadingChanged () {
+    this.compileClasses()
+  }
+
+  created () {
+    this.compileClasses()
+  }
+
+  compileClasses () {
+    const classes = []
+
+    classes.push(...this.classes)
+
+    if (this.loading) {
+      classes.push('loading')
+    }
+
+    this.classesCompiled = classes
+  }
 }
 </script>
 
@@ -118,6 +143,37 @@ export default class Panel extends Vue {
     height: 2px;
     border: none;
     background-color: rgba(255, 255, 255, .1);
+  }
+
+  .menu {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+
+    li {
+      margin: .25em -1.5em;
+
+      a {
+        display: block;
+        padding: .6em 1.5em .8em 1.5em;
+        background: rgba(0, 0, 0, .2);
+
+        &:hover {
+          background: rgba(0, 0, 0, .3);
+        }
+
+        &.router-link-exact-active {
+          background: $color-secondary;
+          color: $color-background;
+        }
+
+        svg {
+          margin: .2em 0 0 0;
+          float: right;
+          color: #899cc7;
+        }
+      }
+    }
   }
 }
 </style>

@@ -76,6 +76,7 @@ export class User extends BaseEntity {
     }
 
     return {
+      id: this.id,
       name: this.name,
       email: this.email,
       roles: this.roles,

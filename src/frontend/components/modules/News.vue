@@ -2,20 +2,7 @@
   <panel title="News & Announcements" icon="file-text" :loading="loading">
     <transition name="fade">
       <div v-if="!loading">
-        <div
-          v-for="article in articles"
-          :key="article.id"
-          class="article-summary"
-        >
-          <router-link :to="`/news/${article.id}`" class="link">
-            <h4>{{ article.title }}</h4>
-
-            <div class="meta">
-              <span class="category">{{ article.category.name }}</span>
-              <span class="createdAt">{{ article.createdAt | moment('from') }}</span>
-            </div>
-          </router-link>
-        </div>
+        <article-summary v-for="article in articles" :key="article.id" :article="article"></article-summary>
 
         <hr>
 
@@ -31,8 +18,11 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import ArticleService from '../../services/ArticleService'
+import ArticleSummary from '../ArticleSummary.vue'
 
-@Component
+@Component({
+  components: { ArticleSummary }
+})
 export default class NewsModule extends Vue {
   loading = true
   articles = []
@@ -46,38 +36,3 @@ export default class NewsModule extends Vue {
   }
 }
 </script>
-
-
-<style lang="scss">
-@import "../../scss/variables";
-
-.article-summary {
-  position: relative;
-
-  .link {
-    display: block;
-    padding: 1em 1.5em;
-    margin: .5em -1.5em;
-    background: rgba(0, 0, 0, .2);
-
-    &:hover {
-      background: rgba(0, 0, 0, .3);
-    }
-
-    h4 {
-      margin: 0;
-      font-size: 1.2em;
-      font-weight: 400;
-    }
-
-    .meta {
-      color: rgba(255, 255, 255, 0.5);
-
-      .category {
-        float: right;
-        color: rgba(255, 255, 255, 0.2);
-      }
-    }
-  }
-}
-</style>

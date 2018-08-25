@@ -8,6 +8,8 @@ export class Article extends BaseEntity {
 
   static perPage = 10
 
+  slug: string
+
   @PrimaryGeneratedColumn()
   id: number
 

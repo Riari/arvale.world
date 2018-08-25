@@ -36,24 +36,22 @@ ul.pagination {
     display: inline-block;
 
     &.selected {
-      a {
-        border-color: #fff;
-
-        &:hover {
-          border-color: inherit;
-        }
+      a, a:hover {
+        background: $color-secondary;
+        color: $color-background;
+        cursor: default;
       }
     }
 
     a {
       display: inline-block;
-      padding: .1em .5em .2em .5em;
+      padding: .1em .6em .3em .6em;
       margin: .5em;
       border-radius: 3px;
-      border: 1px solid rgba(255, 255, 255, .1);
+      background: rgba(255, 255, 255, .05);
 
       &:hover {
-        border-color: rgba(255, 255, 255, .5);
+        background: rgba(255, 255, 255, .1);
       }
     }
   }

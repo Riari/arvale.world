@@ -20,7 +20,7 @@
         <hr>
 
         <div class="text-center">
-          <a :href="server.instant_invite">Connect</a>
+          <a :href="server.instant_invite" target="_blank">Connect</a>
         </div>
       </div>
     </transition>

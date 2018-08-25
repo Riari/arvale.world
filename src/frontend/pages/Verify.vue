@@ -24,7 +24,9 @@ const validationErrors = {
   email: null
 }
 
-@Component
+@Component({
+  title: 'Verify Account'
+})
 export default class Verify extends Vue {
   service: AuthService
 

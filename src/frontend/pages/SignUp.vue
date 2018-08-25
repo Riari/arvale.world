@@ -36,8 +36,12 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import AuthService from '../services/AuthService'
 
-@Component
+@Component({
+  title: 'Sign Up'
+})
 export default class SignUp extends Vue {
+
+
   service: AuthService
 
   loading = false
