@@ -1,7 +1,7 @@
 <template>
   <div class="row center-xs">
     <div class="col-xs-8">
-      <div class="panel">
+      <panel>
         <h2>Create Article</h2>
 
         <input-text v-model="title" :fullWidth="true" placeholder="Title"></input-text>
@@ -14,7 +14,7 @@
         </select>
 
         <v-button @click.native="submit">Save</v-button>
-      </div>
+      </panel>
     </div>
   </div>
 </template>

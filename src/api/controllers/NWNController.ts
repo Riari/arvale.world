@@ -24,9 +24,7 @@ class NWNController extends Controller {
         const status = JSON.parse(data)
         res.send(status)
       })
-    }).on('error', error => {
-      res.status(503).send({ message: 'request_failed' })
-    })
+    }).on('error', error => res.status(503).send({ message: 'request_failed' }))
   }
 }
 

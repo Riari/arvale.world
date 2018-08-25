@@ -6,7 +6,7 @@
         Create article
       </v-button>
     </div>
-    <div class="panel">
+    <panel>
       <table>
         <thead>
           <tr>
@@ -30,7 +30,7 @@
       </table>
 
       <pagination path="/admin/news" :currentPage="currentPage" :pages="totalPages"></pagination>
-    </div>
+    </panel>
   </div>
 </template>
 

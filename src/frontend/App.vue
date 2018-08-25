@@ -29,7 +29,7 @@ html, body {
 }
 
 h1, h2, h3 {
-  font-family: 'Noto Sans', sans-serif;
+  font-family: 'Neuton', sans-serif;
   color: #fff;
 }
 
@@ -88,33 +88,6 @@ table {
   position: relative;
 }
 
-.panel {
-  padding: 2em;
-  border-radius: 3px;
-  background: transparentize($color-background, .1);
-  box-shadow: 0 0 10px rgba(0, 0, 0, .35);
-  color: #fff;
-  text-align: left;
-
-  h2 {
-    margin-top: 0;
-    font-family: 'Cinzel Decorative';
-  }
-
-  a {
-    color: rgba(255, 255, 255, .75);
-    text-decoration: none;
-
-    &.dangerous {
-      color: #e66d77;
-    }
-
-    &:hover {
-      color: #fff;
-    }
-  }
-}
-
 .toasted-container {
   .toasted.primary {
     padding: .5em 2em;
@@ -122,5 +95,10 @@ table {
     box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 2px 4px;
     font-size: 1.3em;
   }
+}
+
+@keyframes slide {
+	0% { transform: translateX(-100%); }
+	100% { transform: translateX(100%); }
 }
 </style>

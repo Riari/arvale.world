@@ -5,9 +5,9 @@
     <div class="top">
       <server-status></server-status>
 
-      <div class="panel">
+      <panel>
         <router-link to="/">Return to front page &nbsp; <icon name="home"></icon></router-link>
-      </div>
+      </panel>
 
       <user-menu :user="user"></user-menu>
     </div>
@@ -64,6 +64,8 @@ export default class AdminViewport extends mixins(UserStateMixin) {
     line-height: 60px;
 
     a {
+      color: rgba(255, 255, 255, .75);
+
       &:not(:first-child) {
         margin-left: 1em;
       }

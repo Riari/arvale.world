@@ -84,7 +84,7 @@ export default class InputText extends Vue {
     border-radius: 2px;
     background: #fff;
     font-size: .9em;
-    font-family: 'Noto Sans', sans-serif;
+    font-family: 'Neuton', sans-serif;
     color: $color-background;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 2px 4px;
     box-sizing: border-box;

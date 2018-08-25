@@ -28,6 +28,7 @@
     "jsonwebtoken": "^8.3.0",
     "node-cache": "^4.2.0",
     "reflect-metadata": "^0.1.12",
+    "showdown": "^1.8.6",
     "truncate-html": "^1.0.1-rc.1",
     "tui-editor": "^1.2.6",
     "typeorm": "^0.2.7",

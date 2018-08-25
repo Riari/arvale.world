@@ -5,7 +5,7 @@ import guards from './guards'
 
 import Viewport from '../components/_Viewport.vue'
 import LogIn from '../pages/LogIn.vue'
-import News from '../pages/News.vue'
+import Front from '../pages/Front.vue'
 import SignUp from '../pages/SignUp.vue'
 import Verify from '../pages/Verify.vue'
 
@@ -24,7 +24,7 @@ const routes = [
     path: '/',
     component: Viewport,
     children: [
-      { path: '/', component: News, meta: { title: 'News' } },
+      { path: '/', component: Front, meta: { title: 'Welcome' } },
       { path: '/user/login', component: LogIn, meta: { title: 'Log In' } },
       { path: '/user/signup', component: SignUp, meta: { title: 'Sign Up' } },
       { path: '/user/verify/:code', component: Verify, meta: { title: 'Verify Account' } }

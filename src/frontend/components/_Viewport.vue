@@ -70,6 +70,10 @@ export default class Viewport extends mixins(UserStateMixin) {
     border-radius: 0;
     border-bottom-left-radius: 3px;
     border-bottom-right-radius: 3px;
+
+    a {
+      color: rgba(255, 255, 255, .75);
+    }
   }
 
   .admin-links,
@@ -132,6 +136,7 @@ export default class Viewport extends mixins(UserStateMixin) {
       padding: 0 1em;
       line-height: 58px;
       font-size: 20px;
+      color: rgba(255, 255, 255, .75);
     }
   }
 }
@@ -149,7 +154,7 @@ export default class Viewport extends mixins(UserStateMixin) {
   }
 
   .leaf {
-    margin: .6em 0 1.2em 0;
+    margin: .2em 0 1.2em 0;
     text-align: center;
   }
 }

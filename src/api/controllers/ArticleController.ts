@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import truncate from 'truncate-html'
+import showdown from 'showdown'
 import Controller from './Controller'
 import { Article } from '../entities/Article'
 import { ArticleCategory } from '../entities/ArticleCategory'
@@ -17,8 +18,12 @@ class ArticleController extends Controller {
       where: req.params.articleCategory ? { category: req.params.articleCategory.id } : {}
     })
 
+    const converter = new showdown.Converter({
+      tasklists: true
+    })
+
     articles.forEach((article, index) => {
-      articles[index].body = truncate(article.body, 200, { byWords: true })
+      articles[index].body = truncate(converter.makeHtml(article.body), 200, { byWords: true })
     })
 
     const response = {

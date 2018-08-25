@@ -4,7 +4,7 @@ import * as Cookie from 'js-cookie'
 export abstract class HTTPResource {
   client: AxiosInstance
 
-  constructor (baseURL: string = '/api/') {
+  constructor (baseURL: string = '/api/', sendToken: boolean = true) {
     this.client = axios.create({
       baseURL: baseURL,
       withCredentials: false,
@@ -14,10 +14,12 @@ export abstract class HTTPResource {
       }
     })
 
-    const token = Cookie.get('token')
+    if (sendToken) {
+      const token = Cookie.get('token')
 
-    if (token) {
-      this.client.defaults.headers['x-access-token'] = token
+      if (token) {
+        this.client.defaults.headers['x-access-token'] = token
+      }
     }
   }
 }

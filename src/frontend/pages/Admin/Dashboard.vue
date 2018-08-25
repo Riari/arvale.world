@@ -1,7 +1,7 @@
 <template>
-  <div class="panel">
+  <panel>
     Admin stuff
-  </div>
+  </panel>
 </template>
 
 <script lang="ts">
