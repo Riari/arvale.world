@@ -74,6 +74,7 @@ export default class AdminUsers extends Vue {
     event.preventDefault()
 
     if (confirm(`Are you sure you want to publish "${article.title}"?`)) {
+      article.published = true
       this.service.update({ id: article.id, published: true }).then(response => {
         this.$toasted.show("Article updated", { type: 'success' })
       })
@@ -95,7 +96,6 @@ export default class AdminUsers extends Vue {
     event.preventDefault()
 
     if (confirm(`Are you sure you want to remove "${article.title}"?`)) {
-      article.published = true
       this.service.destroy(article).then(response => {
         this.articles.splice(this.articles.indexOf(article), 1)
         this.$toasted.show("Article removed", { type: 'success' })
