@@ -1,6 +1,8 @@
 <template>
   <div class="article-summary">
     <router-link :to="{ name: 'news-article', params: { id: article.id, slug: article.slug } }" class="link">
+      <tag v-if="!article.published">Unpublished</tag>
+
       <h4>{{ article.title }}</h4>
 
       <div v-if="withExcerpt" v-html="article.body" class="body"></div>

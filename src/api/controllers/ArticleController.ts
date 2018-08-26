@@ -68,12 +68,7 @@ class ArticleController extends Controller {
 
   get = async (req: Request, res: Response) => {
     if (req.params.article) {
-      const article = req.params.article
-      const converter = this.getMarkdownConverter()
-      article.category.slug = slugify(article.category.name, { lower: true })
-      article.body_html = converter.makeHtml(article.body)
-
-      return res.send(req.params.article)
+      return res.send(req.params.article.transform())
     }
 
     return res.status(404).send({ message: 'Article not found.' })
@@ -107,7 +102,7 @@ class ArticleController extends Controller {
 
     article = await article.save()
 
-    return res.status(201).send(article)
+    return res.status(201).send(article.transform())
   }
 
   update = async (req: Request, res: Response) => {
@@ -127,6 +122,14 @@ class ArticleController extends Controller {
 
     let article = req.params.article
 
+    if (req.body.title) {
+      article.title = req.body.title
+    }
+
+    if (req.body.body) {
+      article.body = striptags(req.body.body)
+    }
+
     if (req.body.category) {
       const category = await ArticleCategory.findOne(req.body.category)
 
@@ -137,13 +140,11 @@ class ArticleController extends Controller {
       article.category = category.id
     }
 
-    article.title = req.body.title
-    article.body = striptags(req.body.body)
     article.published = req.body.published ? req.body.published : false
 
     article = await article.save()
 
-    return res.status(200).send(article)
+    return res.status(200).send(article.transform())
   }
 
   remove = async (req: Request, res: Response) => {

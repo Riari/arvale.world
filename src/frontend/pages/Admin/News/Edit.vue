@@ -85,18 +85,17 @@ export default class EditArticle extends Vue {
 
   submit () {
     const markdown = this.$refs.editor.getMarkdown()
-
     if (this.article.id) {
       this.article.body = markdown
 
       this.service.update(this.article).then(response => {
-        this.$router.push('/admin/news')
+        this.$router.push({ name: 'news-article', params: { id: response.data.id, slug: response.data.slug } })
         this.$toasted.show("Article updated", { type: 'success' })
       })
     } else {
       this.service.create(this.article.title, markdown, this.article.category)
         .then(response => {
-          this.$router.push('/admin/news')
+          this.$router.push({ name: 'news-article', params: { id: response.data.id, slug: response.data.slug } })
           this.$toasted.show("Article created", { type: 'success' })
         })
         .catch(error => this.validationErrors = error.response.data.errors)
