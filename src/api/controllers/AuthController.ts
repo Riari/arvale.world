@@ -58,6 +58,7 @@ class AuthController extends Controller {
     res.mailer.send('email/default', {
       to: user.email,
       subject: 'Welcome to Arvale.World!',
+      preheader: 'Thanks for signing up',
       user,
       message: `Thanks for signing up on Arvale.World. Please verify your account by visiting <a href="${action_url}">${action_url}</a> or clicking the button below.`,
       action_url,
