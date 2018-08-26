@@ -57,7 +57,7 @@ export default class NewsArticle extends mixins(UserStateMixin) {
         this.$title = article.title
       })
       .catch(error => {
-        if (error.response.status === 404) {
+        if ([404, 401].includes(error.response.status)) {
           this.$_error(404)
         }
       })

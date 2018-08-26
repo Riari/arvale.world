@@ -22,6 +22,7 @@
             <td>{{ article.updatedAt | moment('from') }}</td>
             <td>{{ article.published ? 'Yes' : 'No' }}</td>
             <td class="actions">
+              <router-link :to="{ name: 'news-article', params: { id: article.id, slug: article.slug } }">View</router-link>
               <a v-if="!article.published" @click="publish($event, article)" href="#">Publish</a>
               <a v-else @click="unpublish($event, article)" href="#">Unpublish</a>
               <router-link :to="`/admin/news/${article.id}`">Edit</router-link>
