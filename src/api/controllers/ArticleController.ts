@@ -138,7 +138,7 @@ class ArticleController extends Controller {
     }
 
     article.title = req.body.title
-    article.body = req.body.body
+    article.body = striptags(req.body.body)
     article.published = req.body.published ? req.body.published : false
 
     article = await article.save()
