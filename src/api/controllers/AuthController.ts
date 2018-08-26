@@ -45,7 +45,7 @@ class AuthController extends Controller {
       password: hashedPassword
     })
 
-    user.save()
+    user = await user.save()
 
     const verification = await Verification.create({
       model: 'User',
