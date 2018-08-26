@@ -116,8 +116,8 @@ class ArticleController extends Controller {
     }
 
     const validation = this.validate(req.body, {
-      title: 'required',
-      body: 'required',
+      title: 'string',
+      body: 'string',
       published: 'boolean'
     })
 
