@@ -1,6 +1,6 @@
 <template>
   <div>
-    <router-view></router-view>
+    <app-view></app-view>
     <vue-progress-bar></vue-progress-bar>
   </div>
 </template>

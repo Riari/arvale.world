@@ -20,7 +20,7 @@ export class Policy {
   }
 
   static 'get.article' = async (user: User, params?: any) => {
-    if (params.article.published) {
+    if (params.article && params.article.published) {
       return true
     }
 

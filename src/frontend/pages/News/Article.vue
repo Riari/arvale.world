@@ -50,11 +50,17 @@ export default class NewsArticle extends mixins(UserStateMixin) {
 
   created () {
     this.service = new ArticleService
-    this.service.get(parseInt(this.$route.params.id)).then(response => {
-      const article = response.data
-      this.article = article
-      this.$title = article.title
-    })
+    this.service.get(parseInt(this.$route.params.id))
+      .then(response => {
+        const article = response.data
+        this.article = article
+        this.$title = article.title
+      })
+      .catch(error => {
+        if (error.response.status === 404) {
+          this.$_error(404)
+        }
+      })
   }
 
   publish (event) {
@@ -95,7 +101,6 @@ export default class NewsArticle extends mixins(UserStateMixin) {
 <style lang="scss">
 .panel.article {
   font-size: 1.2em;
-  text-align: justify;
 
   .actions {
     text-align: center;
@@ -110,5 +115,14 @@ export default class NewsArticle extends mixins(UserStateMixin) {
     color: rgba(255, 255, 255, .5);
     text-align: center;
   }
+
+  .body {
+    text-align: justify;
+
+    ul {
+      text-align: left;
+    }
+  }
+
 }
 </style>

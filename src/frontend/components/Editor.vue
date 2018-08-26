@@ -1,13 +1,14 @@
 <template>
-  <div class="editor"></div>
+  <div class="editor">
+    <textarea></textarea>
+  </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import TuiEditor from 'tui-editor'
-import 'tui-editor/dist/tui-editor.css'
-import 'tui-editor/dist/tui-editor-contents.css'
+import SimpleMDE from 'simplemde'
+import 'simplemde/dist/simplemde.min.css'
 
 @Component({
   props: {
@@ -15,23 +16,17 @@ import 'tui-editor/dist/tui-editor-contents.css'
   }
 })
 export default class Editor extends Vue {
-  editor: TuiEditor
+  editor: SimpleMDE
 
   mounted () {
-    this.editor = new TuiEditor(Object.assign({
-      el: this.$el,
-      initialEditType: 'wysiwyg',
-      previewStyle: 'vertical',
-      height: '500px'
+    this.editor = new SimpleMDE(Object.assign({
+      element: this.$el.firstElementChild,
+      renderingConfig: {}
     }, this.options))
   }
 
-  getMarkdown () {
-    return this.editor.getMarkdown()
-  }
-
-  setValue (value: string) {
-    return this.editor.setValue(value)
+  value (value?: string) {
+    return this.editor.value(value)
   }
 }
 </script>
@@ -39,10 +34,6 @@ export default class Editor extends Vue {
 <style lang="scss">
 .editor {
   text-align: left;
-
-  .te-mode-switch-section {
-    display: none !important;
-  }
 }
 </style>
 

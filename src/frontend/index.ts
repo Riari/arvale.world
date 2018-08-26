@@ -6,6 +6,7 @@ import App from './App.vue'
 
 import './plugins/Components'
 import './plugins/ClassComponent'
+import './plugins/ErrorPage'
 import './plugins/FontAwesome'
 import './plugins/Moment'
 import './plugins/PageTitle'

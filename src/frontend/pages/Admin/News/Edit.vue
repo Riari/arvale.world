@@ -67,7 +67,7 @@ export default class EditArticle extends Vue {
 
     if (this.$route.params.id) {
       this.service.get(parseInt(this.$route.params.id)).then(response => {
-        this.$refs.editor.setValue(response.data.body)
+        this.$refs.editor.value(response.data.body)
         this.article = response.data
       })
     }
@@ -84,7 +84,7 @@ export default class EditArticle extends Vue {
   }
 
   submit () {
-    const markdown = this.$refs.editor.getMarkdown()
+    const markdown = this.$refs.editor.value()
     if (this.article.id) {
       this.article.body = markdown
 
@@ -105,5 +105,19 @@ export default class EditArticle extends Vue {
 </script>
 
 <style lang="scss">
+.editor-toolbar {
+  border: none;
+  background: #fff;
+  opacity: .9;
+  transition: opacity .2s ease;
 
+  a {
+    opacity: .75;
+    transition: opacity .2s ease;
+  }
+
+  &:hover, &:hover a {
+    opacity: 1;
+  }
+}
 </style>
