@@ -100,6 +100,23 @@ table {
   }
 }
 
+code {
+  padding: .2em;
+  background: rgba(255, 69, 69, 0.3);
+  font-size: 1rem;
+  color: #ffbdbd;
+}
+
+pre {
+  code {
+    display: block;
+    padding: .5em;
+    border-radius: 3px;
+    background: rgb(36, 37, 37);
+    color: rgb(233, 233, 233);
+  }
+}
+
 .fade-enter-active, .fade-leave-active {
   transition: opacity .3s;
 }

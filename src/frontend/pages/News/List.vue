@@ -52,7 +52,7 @@ export default class NewsList extends Vue {
 
   async created () {
     this.service = new ArticleService
-    this.getList()
+    this.getList(this.$route.params.id ? parseInt(this.$route.params.id) : null)
     this.service.listCategories().then(response => {
       this.categories = response.data
     })
