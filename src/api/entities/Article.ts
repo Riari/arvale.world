@@ -40,7 +40,10 @@ export class Article extends BaseEntity {
   updatedAt: number
 
   transform () {
-    const converter = new showdown.Converter()
+    const converter = new showdown.Converter({
+      tasklists: true,
+      ghCodeBlocks: true
+    })
 
     const article: any = {
       id: this.id,

@@ -10,7 +10,8 @@ import { ArticleCategory } from '../entities/ArticleCategory'
 class ArticleController extends Controller {
   private getMarkdownConverter () {
     return new showdown.Converter({
-      tasklists: true
+      tasklists: true,
+      ghCodeBlocks: true
     })
   }
 

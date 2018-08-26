@@ -22,7 +22,7 @@ export default class Editor extends Vue {
       el: this.$el,
       initialEditType: 'wysiwyg',
       previewStyle: 'vertical',
-      height: '300px'
+      height: '500px'
     }, this.options))
   }
 
