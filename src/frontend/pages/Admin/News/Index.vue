@@ -74,8 +74,7 @@ export default class AdminUsers extends Vue {
     event.preventDefault()
 
     if (confirm(`Are you sure you want to publish "${article.title}"?`)) {
-      article.published = true
-      this.service.update(article).then(response => {
+      this.service.update({ id: article.id, published: true }).then(response => {
         this.$toasted.show("Article updated", { type: 'success' })
       })
     }
@@ -85,8 +84,7 @@ export default class AdminUsers extends Vue {
     event.preventDefault()
 
     if (confirm(`Are you sure you want to unpublish "${article.title}"?`)) {
-      article.published = false
-      this.service.update(article).then(response => {
+      this.service.update({ id: article.id, published: false }).then(response => {
         this.$toasted.show("Article updated", { type: 'success' })
       })
     }
