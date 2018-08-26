@@ -53,6 +53,8 @@ class AuthController extends Controller {
       code: crypto.randomBytes(20).toString('hex')
     })
 
+    verification.save()
+
     const action_url = this.config.base_url + '/user/verify/' + verification.code
 
     res.mailer.send('email/default', {
