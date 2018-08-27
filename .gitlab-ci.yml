@@ -1,0 +1,32 @@
+image: node:latest
+
+stages:
+  - build
+  - deploy
+
+cache:
+  paths:
+  - node_modules/
+
+install:
+  stage: build
+  script:
+    - npm i
+  artifacts:
+    paths:
+      - node_modules/
+
+build-frontend:
+  stage: build
+  script:
+    - npm run build:frontend
+  artifacts:
+    paths:
+      - dist/
+
+deploy-production:
+  stage: deploy
+  script:
+    - ssh-add <(echo "$PRODUCTION_PRIVATE_KEY")
+    - ssh -p22 gitlab@web.arvale.world "cd /srv/web && npm i"
+    - scp -P22 -r dist/* gitlab@web.arvale.world:/srv/web/dist
