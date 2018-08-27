@@ -1,20 +1,17 @@
-image: node:latest
-
-before_script:
-  - npm i
-
 stages:
   - build
   - deploy
 
-cache:
-  paths:
-  - node_modules/
-
 build-frontend:
+  image: node:latest
   stage: build
+  before_script:
+    - npm i
   script:
     - npm run build:frontend
+  cache:
+    paths:
+    - node_modules/
   artifacts:
     paths:
       - dist/
