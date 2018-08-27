@@ -22,6 +22,7 @@ deploy-production:
   image: ebiwd/alpine-ssh:latest
   stage: deploy
   script:
+    - eval "$(ssh-agent)"
     - ssh-add <(echo "$PRODUCTION_PRIVATE_KEY")
     - ssh -p22 gitlab@web.arvale.world "cd /srv/web && git pull && npm i"
     - scp -P22 -r dist/* gitlab@web.arvale.world:/srv/web/dist
