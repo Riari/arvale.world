@@ -1,10 +1,11 @@
 stages:
+  - install
   - build
   - deploy
 
-install:
+install-dependencies:
   image: node:latest
-  stage: build
+  stage: install
   script:
     - npm i
   artifacts:
