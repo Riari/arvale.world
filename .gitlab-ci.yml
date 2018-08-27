@@ -9,15 +9,12 @@ build-frontend:
     - npm i
   script:
     - npm run build:frontend
-  cache:
-    paths:
-    - node_modules/
   artifacts:
     paths:
       - dist/
 
 deploy-production:
-  image: sickp/docker-alpine-sshd:latest
+  image: ebiwd/alpine-ssh:latest
   stage: deploy
   script:
     - ssh-add <(echo "$PRODUCTION_PRIVATE_KEY")
