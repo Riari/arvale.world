@@ -3,7 +3,7 @@ stages:
   - deploy
 
 build-frontend:
-  image: node:alpine
+  image: node:latest
   stage: build
   before_script:
     - npm i
