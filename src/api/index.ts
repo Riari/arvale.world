@@ -10,9 +10,8 @@ import ArticleRoutes from './routes/articles'
 import AuthRoutes from './routes/auth'
 import NWNRoutes from './routes/nwn'
 
+import config from './config'
 import './db'
-
-const config = require('./config/app.json')
 
 const app = express()
 

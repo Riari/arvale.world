@@ -29,7 +29,11 @@ At the top of the file are generic, non-route based permissions for reference in
 
 ### Production
 
-Run `npm run build:api` to create a production build of the API. Database settings can be overridden with the following environment variables:
+Run `npm run build:api` to create a production build of the API. Database settings can be overridden from the defaults via the `DB_*` environment variables (see below).
+
+### Environment
+
+The following environment variables are used by the API:
 
 ```
 DB_HOST
@@ -37,7 +41,21 @@ DB_PORT
 DB_USERNAME
 DB_PASSWORD
 DB_NAME
+APP_HOST *
+APP_PORT
+APP_BASE_URL
+APP_MAIL_HOST
+APP_MAIL_SECURE
+APP_MAIL_PORT
+APP_MAIL_AUTH_USER *
+APP_MAIL_AUTH_PASS *
+APP_AUTH_SECRET *
+APP_AUTH_LIFETIME
+APP_NWN_IP *
+APP_NWN_PORT
 ```
+
+\* denotes variables without defaults
 
 ## Frontend
 

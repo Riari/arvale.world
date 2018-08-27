@@ -1,7 +1,6 @@
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
-
-const config = require('../config/app.json')
+import config from '../config'
 
 export function hashPassword (password: string): string {
   return bcrypt.hashSync(password, 8)

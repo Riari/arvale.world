@@ -1,5 +1,4 @@
 /.vs
 /dist
 /node_modules
-/src/api/config/app.json
 /src/frontend/dist
