@@ -5,7 +5,7 @@ Website for the NWN:EE Persistent World, Arvale. [https://arvale.world/](https:/
 ## Setup
 
 1) Run `npm i` to install dependencies.
-2) Copy `src/api/config/app.example.json` and `src/api/config/db.example.json` to `src/api/config/app.json` and `src/api/config/db.json` respectively.
+2) Copy `src/api/config/app.example.json` to `src/api/config/app.json`.
 3) Run `docker-compose up` to build and bring up the Postgres database container.
 4) Run `npm run orm -- migration:run` to run migrations. This will also seed the roles table.
 
@@ -26,6 +26,18 @@ The dev server is configured to use node's `--inspect` flag by default, exposing
 Permission<>Role assignments are defined in `src/policy/permissions.json`. These are used both in route permission checks (see `src/policy/index.ts`) and to compile a list of permissions on a user object before returning it from an auth endpoint (such as /login or /me).
 
 At the top of the file are generic, non-route based permissions for reference in the frontend; the rest are route-based, where the key is a permission name derived from the HTTP verb and URL parts (minus parameters) of a successfully routed request.
+
+### Production
+
+Run `npm run build:api` to create a production build of the API. Database settings can be overridden with the following environment variables:
+
+```
+DB_HOST
+DB_PORT
+DB_USERNAME
+DB_PASSWORD
+DB_NAME
+```
 
 ## Frontend
 

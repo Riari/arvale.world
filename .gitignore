@@ -2,5 +2,4 @@
 /dist
 /node_modules
 /src/api/config/app.json
-/src/api/config/db.json
 /src/frontend/dist

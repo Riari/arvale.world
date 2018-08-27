@@ -1,5 +1,4 @@
 stages:
-  - install
   - build
   - deploy
 
@@ -11,17 +10,19 @@ install:
   artifacts:
     paths:
       - node_modules/
-    expire_in: 1 day
+    expire_in: 1 hour
 
 build:
   image: node:latest
   stage: build
   script:
+    - npm i
     - npm run build:frontend
     - npm run build:api
   artifacts:
     paths:
       - dist/
+    expire_in: 1 hour
 
 deploy:
   image: ebiwd/alpine-ssh:latest
