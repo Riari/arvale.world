@@ -5,5 +5,8 @@
   "username": "postgres",
   "password": "secret",
   "database": "arvale-web",
-  "logging": false
+  "logging": false,
+  "entities": [
+    "src/api/entities/**/*.ts"
+  ]
 }
