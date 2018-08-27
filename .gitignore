@@ -1,4 +1,5 @@
 /.vs
 /dist
 /node_modules
+/src/api/.env
 /src/frontend/dist

@@ -2,10 +2,10 @@
 
 Website for the NWN:EE Persistent World, Arvale. [https://arvale.world/](https://arvale.world/)
 
-## Setup
+## Dev Setup
 
 1) Run `npm i` to install dependencies.
-2) Copy `src/api/config/app.example.json` to `src/api/config/app.json`.
+2) Copy `src/api/.env.example` to `src/api/.env` and complete it.
 3) Run `docker-compose up` to build and bring up the Postgres database container.
 4) Run `npm run orm -- migration:run` to run migrations. This will also seed the roles table.
 
@@ -41,10 +41,10 @@ DB_PORT
 DB_USERNAME
 DB_PASSWORD
 DB_NAME
-APP_HOST *
+APP_HOST
 APP_PORT
 APP_BASE_URL
-APP_MAIL_HOST
+APP_MAIL_HOST *
 APP_MAIL_SECURE
 APP_MAIL_PORT
 APP_MAIL_AUTH_USER *

@@ -5,11 +5,6 @@ import Controller from './Controller'
 class NWNController extends Controller {
   config: any
 
-  constructor() {
-    super()
-    this.config = require('../config/app.json')
-  }
-
   serverStatus = (req: Request, res: Response) => {
     const url = `https://api.nwn.beamdog.net/v1/servers/${this.config.nwn.ip}/${this.config.nwn.port}`
 

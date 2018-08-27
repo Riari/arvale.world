@@ -5,8 +5,6 @@ import { Role } from './entities/Role'
 import { User } from './entities/User'
 import { Verification } from './entities/Verification'
 
-const logging = process.env.DB_LOGGING && process.env.DB_LOGGING == 'true'
-
 const connection = createConnection({
   type: 'postgres',
   host: process.env.DB_HOST || 'localhost',
@@ -14,7 +12,7 @@ const connection = createConnection({
   username: process.env.DB_USERNAME || 'postgres',
   password: process.env.DB_PASSWORD || 'secret',
   database: process.env.DB_NAME || 'arvale-web',
-  logging,
+  logging: process.env.DB_LOGGING && process.env.DB_LOGGING == 'true',
   entities: [
     Article,
     ArticleCategory,

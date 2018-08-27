@@ -1,4 +1,6 @@
 import 'reflect-metadata'
+import './env'
+
 import express from 'express'
 import expressHandlebars from 'express-handlebars'
 import bodyParser from 'body-parser'
