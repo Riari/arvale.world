@@ -11,7 +11,7 @@ cache:
 install:
   stage: build
   script:
-    - npm i
+    - npm i -g webpack && npm i
   artifacts:
     paths:
       - node_modules/
@@ -22,7 +22,6 @@ build-frontend:
     - npm run build:frontend
   artifacts:
     paths:
-      - node_modules/
       - dist/
 
 deploy-production:
