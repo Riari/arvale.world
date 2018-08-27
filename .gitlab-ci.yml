@@ -21,5 +21,5 @@ deploy-production:
   stage: deploy
   script:
     - ssh-add <(echo "$PRODUCTION_PRIVATE_KEY")
-    - ssh -p22 gitlab@web.arvale.world "cd /srv/web && npm i"
+    - ssh -p22 gitlab@web.arvale.world "cd /srv/web && git pull && npm i"
     - scp -P22 -r dist/* gitlab@web.arvale.world:/srv/web/dist
