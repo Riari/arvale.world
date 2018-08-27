@@ -20,6 +20,6 @@ deploy:
   script:
     - eval "$(ssh-agent)"
     - ssh-add <(echo "$PRODUCTION_PRIVATE_KEY")
-    - scp -P22 -r dist/* gitlab@web.arvale.world:/srv/web
     - scp -P22 {package,package-lock}.json gitlab@web.arvale.world:/srv/web
     - ssh -p22 gitlab@web.arvale.world "cd /srv/web && npm i"
+    - scp -P22 -r dist/* gitlab@web.arvale.world:/srv/web
