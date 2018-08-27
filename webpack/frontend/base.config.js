@@ -81,11 +81,6 @@ module.exports = {
       template: 'src/frontend/index.html',
       inject: true
     }),
-    new VueLoaderPlugin(),
-    new CopyWebpackPlugin([{
-      from: 'src/frontend/static/images',
-      to: 'dist/static/images',
-      toType: 'dir'
-    }])
+    new VueLoaderPlugin()
   ]
 }

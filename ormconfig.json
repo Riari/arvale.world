@@ -1,0 +1,23 @@
+{
+  "type": "postgres",
+  "host": "localhost",
+  "port": 5432,
+  "username": "postgres",
+  "password": "secret",
+  "database": "arvale-web",
+  "logging": false,
+  "entities": [
+    "src/api/entities/**/*.ts"
+  ],
+  "migrations": [
+    "src/api/migrations/**/*.ts"
+  ],
+  "subscribers": [
+    "src/api/subscribers/**/*.ts"
+  ],
+  "cli": {
+    "entitiesDir": "src/api/entities",
+    "migrationsDir": "src/api/migrations",
+    "subscribersDir": "src/api/subscribers"
+  }
+}

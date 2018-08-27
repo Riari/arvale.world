@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "dev:api": "node node_modules/nodemon/bin/nodemon.js",
-    "dev:frontend": "webpack-dev-server --progress --config webpack/dev.config.js",
     "orm": "ts-node node_modules\\typeorm\\cli.js",
-    "build:frontend": "webpack --config webpack/build.config.js",
+    "dev:api": "node node_modules/nodemon/bin/nodemon.js",
+    "dev:frontend": "webpack-dev-server --progress --config webpack/frontend/dev.config.js",
+    "build:frontend": "webpack --config webpack/frontend/build.config.js",
     "lint": "eslint --ext .js,.ts,.vue src",
     "lint:fix": "eslint --ext .js,.ts,.vue src --fix"
   },
@@ -67,6 +67,7 @@
     "webpack": "^4.16.5",
     "webpack-cli": "^3.1.0",
     "webpack-dev-server": "^3.1.5",
-    "webpack-merge": "^4.1.4"
+    "webpack-merge": "^4.1.4",
+    "webpack-node-externals": "^1.7.2"
   }
 }
