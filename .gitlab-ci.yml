@@ -2,16 +2,6 @@ stages:
   - build
   - deploy
 
-install:
-  image: node:latest
-  stage: install
-  script:
-    - npm i
-  artifacts:
-    paths:
-      - node_modules/
-    expire_in: 1 hour
-
 build:
   image: node:latest
   stage: build
