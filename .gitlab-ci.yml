@@ -3,7 +3,7 @@ stages:
   - deploy
 
 build-frontend:
-  image: node:latest
+  image: node:alpine
   stage: build
   before_script:
     - npm i
@@ -17,6 +17,7 @@ build-frontend:
       - dist/
 
 deploy-production:
+  image: sickp/docker-alpine-sshd:latest
   stage: deploy
   script:
     - ssh-add <(echo "$PRODUCTION_PRIVATE_KEY")
