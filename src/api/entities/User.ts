@@ -7,7 +7,7 @@ const cache = new NodeCache({ stdTTL: 60 })
 import { Article } from './Article'
 import { Role } from './Role'
 
-@Entity()
+@Entity({ name: 'user' })
 export class User extends BaseEntity {
 
   @PrimaryGeneratedColumn()

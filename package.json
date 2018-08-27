@@ -7,6 +7,7 @@
     "orm": "ts-node node_modules\\typeorm\\cli.js",
     "dev:api": "node node_modules/nodemon/bin/nodemon.js",
     "dev:frontend": "webpack-dev-server --progress --config webpack/frontend/dev.config.js",
+    "build:api": "webpack --config webpack/api/build.config.js",
     "build:frontend": "webpack --config webpack/frontend/build.config.js",
     "lint": "eslint --ext .js,.ts,.vue src",
     "lint:fix": "eslint --ext .js,.ts,.vue src --fix"

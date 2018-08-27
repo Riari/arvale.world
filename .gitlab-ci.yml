@@ -3,7 +3,7 @@ stages:
   - build
   - deploy
 
-install-dependencies:
+install:
   image: node:latest
   stage: install
   script:
@@ -13,21 +13,20 @@ install-dependencies:
       - node_modules/
     expire_in: 1 day
 
-build-frontend:
+build:
   image: node:latest
   stage: build
   script:
     - npm run build:frontend
+    - npm run build:api
   artifacts:
     paths:
       - dist/
 
-deploy-production:
+deploy:
   image: ebiwd/alpine-ssh:latest
   stage: deploy
   script:
     - eval "$(ssh-agent)"
     - ssh-add <(echo "$PRODUCTION_PRIVATE_KEY")
     - scp -P22 -r dist/* gitlab@web.arvale.world:/srv/web/dist
-    - scp -P22 -r node_modules/* gitlab@web.arvale.world:/srv/web/node_modules
-    - ssh -p22 gitlab@web.arvale.world "cd /srv/web && git pull"

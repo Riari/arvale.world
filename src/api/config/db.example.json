@@ -6,7 +6,7 @@
   "password": "secret",
   "database": "arvale-web",
   "logging": false,
-  "entities": [
-    "src/api/entities/**/*.ts"
-  ]
+  "entities": [],
+  "migrations": [],
+  "subscribers": []
 }

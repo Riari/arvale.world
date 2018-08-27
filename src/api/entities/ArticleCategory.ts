@@ -2,7 +2,7 @@ import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToMany } from 't
 
 import { Article } from './Article'
 
-@Entity()
+@Entity({ name: 'article_category' })
 export class ArticleCategory extends BaseEntity {
 
   slug: string

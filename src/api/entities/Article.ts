@@ -5,7 +5,7 @@ import showdown from 'showdown'
 import { ArticleCategory } from './ArticleCategory'
 import { User } from './User'
 
-@Entity()
+@Entity({ name: 'article' })
 export class Article extends BaseEntity {
 
   static perPage = 10
