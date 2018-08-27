@@ -11,7 +11,7 @@ cache:
 install:
   stage: build
   script:
-    - npm i -g webpack && npm i
+    - npm i
   artifacts:
     paths:
       - node_modules/
@@ -19,7 +19,7 @@ install:
 build-frontend:
   stage: build
   script:
-    - npm run build:frontend
+    - ./node_modules/webpack/bin/webpack.js --config webpack/frontend/build.config.js
   artifacts:
     paths:
       - dist/
