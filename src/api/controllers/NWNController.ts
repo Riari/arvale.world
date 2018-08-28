@@ -11,14 +11,18 @@ class NWNController extends Controller {
     https.get(url, response => {
       let data = ''
 
-      response.on('data', chunk => {
-        data += chunk
-      })
+      if (response.statusCode == 200) {
+        response.on('data', chunk => {
+          data += chunk
+        })
 
-      response.on('end', () => {
-        const status = JSON.parse(data)
-        res.send(status)
-      })
+        response.on('end', () => {
+          const status = JSON.parse(data)
+          res.send(status)
+        })
+      } else {
+        res.status(response.statusCode).send({ message: response.statusMessage })
+      }
     }).on('error', error => res.status(503).send({ message: 'request_failed' }))
   }
 }
