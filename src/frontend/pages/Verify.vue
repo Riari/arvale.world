@@ -1,16 +1,14 @@
 <template>
   <div class="row center-xs">
     <div class="col-xs-4">
-      <input-text
-        @keyup.enter="verify"
-        :fullWidth="true"
-        v-model="email"
-        :errors="validationErrors.email"
-        type="email"
-        placeholder="Email"
-      ></input-text>
-      <notice v-show="error" type="warning">{{ error }}</notice>
-      <v-button @click.native="verify" :fullWidth="true" :loading="loading">Verify</v-button>
+      <div class="panel">
+        <template v-if="loading">
+          Verifying...
+        </template>
+        <template v-else="!loading && error">
+          <notice type="warning">{{ error }}</notice>
+        </template>
+      </div>
     </div>
   </div>
 </template>
@@ -19,28 +17,17 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 
-const validationErrors = {
-  email: null
-}
-
 @Component({
   title: 'Verify Account'
 })
 export default class Verify extends Vue {
-  loading: boolean = false
-
-  email: string = null
-
-  validationErrors = validationErrors
-
+  loading = true
   error: string = null
 
-  verify () {
-    this.loading = true
-    this.validationErrors = validationErrors
+  created () {
     this.error = null
 
-    this.$store.dispatch('verify', { email: this.email, code: this.$route.params.code })
+    this.$store.dispatch('verify', { code: this.$route.params.code })
       .then(user => {
         this.$router.push('/')
         this.$toasted.show(`Account verified. Welcome, ${user.name}!`, { type: 'success' })
@@ -48,12 +35,10 @@ export default class Verify extends Vue {
       .catch(error => {
         this.loading = false
 
-        switch (error.response.status) {
-          case 422:
-            this.validationErrors = error.response.data.errors
-            break
-          default:
-            this.error = error.response.data.message
+        if (error.response.data.message) {
+          this.error = error.response.data.message
+        } else {
+          this.error = 'Something went wrong. Please try refreshing the page or contact an admin if the issue persists.'
         }
       })
   }

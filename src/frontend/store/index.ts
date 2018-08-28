@@ -53,7 +53,7 @@ const store = new Vuex.Store({
     },
     verify ({ commit }, details) {
       return new Promise((resolve, reject) => {
-        userService.verify(details.email, details.code)
+        userService.verify(details.code)
           .then(data => {
             commit(LOGIN_SUCCESS, data.user)
             resolve(data.user)

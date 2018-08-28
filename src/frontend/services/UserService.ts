@@ -7,9 +7,9 @@ export default class UserService extends HTTPResource {
     return this.client.post('user', { username, email, password })
   }
 
-  verify (email: string, code: string): Promise<any> {
+  verify (code: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.client.post('user/verify', { email, code })
+      this.client.post('user/verify', { code })
         .then(response => {
           if (response.data.token) {
             Cookie.set('token', response.data.token)

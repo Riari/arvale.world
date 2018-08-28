@@ -68,7 +68,6 @@ class UserController extends Controller {
 
   verify = async (req: Request, res: Response) => {
     const validation = this.validate(req.body, {
-      email: 'required|email',
       code: 'required'
     })
 
@@ -82,7 +81,7 @@ class UserController extends Controller {
       return res.status(404).send({ message: 'No verification found.' })
     }
 
-    const user = await User.findOne({ where: { email: req.body.email, id: verification.modelId }})
+    const user = await User.findOne({ where: { id: verification.modelId }})
 
     if (!user) {
       return res.status(404).send({ message: 'No matching user found.' })
