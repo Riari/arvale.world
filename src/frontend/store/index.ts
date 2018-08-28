@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import AuthService from '../services/AuthService'
+import UserService from '../services/UserService'
 
 Vue.use(Vuex)
 
@@ -8,7 +9,8 @@ const INITIALISED = 'INITIALISED'
 const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
 const LOGOUT = 'LOGOUT'
 
-const service = new AuthService
+const authService = new AuthService
+const userService = new UserService
 
 const defaultUserState = {
   name: null,
@@ -41,7 +43,7 @@ const store = new Vuex.Store({
   },
   actions: {
     initialise ({ commit }) {
-      service.getMe()
+      authService.getMe()
         .then(response => {
           let user = response.data
           commit(INITIALISED)
@@ -51,7 +53,7 @@ const store = new Vuex.Store({
     },
     verify ({ commit }, details) {
       return new Promise((resolve, reject) => {
-        service.verify(details.email, details.code)
+        userService.verify(details.email, details.code)
           .then(data => {
             commit(LOGIN_SUCCESS, data.user)
             resolve(data.user)
@@ -61,7 +63,7 @@ const store = new Vuex.Store({
     },
     logIn ({ commit }, credentials) {
       return new Promise((resolve, reject) => {
-        service.logIn(credentials.email, credentials.password)
+        authService.logIn(credentials.email, credentials.password)
           .then(data => {
             commit(LOGIN_SUCCESS, data.user)
             resolve(data.user)
@@ -70,7 +72,7 @@ const store = new Vuex.Store({
       })
     },
     logOut ({ commit }) {
-      service.logOut()
+      authService.logOut()
       commit(LOGOUT)
     }
   }

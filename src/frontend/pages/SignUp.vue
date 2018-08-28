@@ -34,15 +34,13 @@
 <script lang="ts">
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import AuthService from '../services/AuthService'
+import UserService from '../services/UserService'
 
 @Component({
   title: 'Sign Up'
 })
 export default class SignUp extends Vue {
-
-
-  service: AuthService
+  service: UserService
 
   loading = false
 
@@ -61,13 +59,13 @@ export default class SignUp extends Vue {
   error: string = null
 
   mounted () {
-    this.service = new AuthService
+    this.service = new UserService
   }
 
   signUp () {
     this.loading = true
 
-    this.service.createUser(this.details.username, this.details.email, this.details.password)
+    this.service.create(this.details.username, this.details.email, this.details.password)
       .then(response => {
         this.loading = false
         this.$router.push('/')

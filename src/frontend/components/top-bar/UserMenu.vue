@@ -17,7 +17,7 @@
       >
         <ul>
           <li><router-link to="/user/account">Account settings <icon name="settings"></icon></router-link></li>
-          <li><a @click="logOut()" href="#">Log out <icon name="log-out"></icon></a></li>
+          <li><a @click="logOut($event)" href="#">Log out <icon name="log-out"></icon></a></li>
         </ul>
       </div>
     </transition>
@@ -56,7 +56,8 @@ export default class UserMenu extends Vue {
     this.hideTimeout = setTimeout(() => this.isVisible = false, 500)
   }
 
-  logOut () {
+  logOut (event) {
+    event.preventDefault()
     this.$store.dispatch('logOut')
     this.$toasted.show("Logged out. See you around!", { type: 'success' })
     this.isVisible = false

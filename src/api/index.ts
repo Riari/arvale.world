@@ -11,6 +11,7 @@ import { checkAuthState } from './middleware/auth'
 import ArticleRoutes from './routes/articles'
 import AuthRoutes from './routes/auth'
 import NWNRoutes from './routes/nwn'
+import UserRoutes from './routes/user'
 
 import config from './config'
 import './db'
@@ -40,3 +41,4 @@ app.use(checkAuthState)
 app.use('/article', ArticleRoutes)
 app.use('/auth', AuthRoutes)
 app.use('/nwn', NWNRoutes)
+app.use('/user', UserRoutes)

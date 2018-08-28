@@ -18,7 +18,6 @@
 <script lang="ts">
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import AuthService from '../services/AuthService'
 
 const validationErrors = {
   email: null
@@ -28,8 +27,6 @@ const validationErrors = {
   title: 'Verify Account'
 })
 export default class Verify extends Vue {
-  service: AuthService
-
   loading: boolean = false
 
   email: string = null
@@ -37,10 +34,6 @@ export default class Verify extends Vue {
   validationErrors = validationErrors
 
   error: string = null
-
-  mounted () {
-    this.service = new AuthService
-  }
 
   verify () {
     this.loading = true

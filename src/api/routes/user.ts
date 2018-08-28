@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import AuthController from '../controllers/AuthController'
+import UserController from '../controllers/UserController'
 import { checkPermissions } from '../middleware/auth'
 import { user } from '../middleware/params'
 
@@ -7,7 +7,7 @@ const router = Router()
 
 router.param('user', user)
 
-router.post('/login', checkPermissions, AuthController.login)
-router.get('/me', checkPermissions, AuthController.me)
+router.post('/', checkPermissions, UserController.create)
+router.post('/verify', checkPermissions, UserController.verify)
 
 export default router
