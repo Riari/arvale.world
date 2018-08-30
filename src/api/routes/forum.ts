@@ -14,6 +14,7 @@ router.param('post', forumPost)
 router.get('/category', checkPermissions, CategoryController.list)
 router.get('/category/:category', checkPermissions, CategoryController.get)
 router.post('/category', checkPermissions, CategoryController.create)
+router.patch('/category/:category', checkPermissions, CategoryController.update)
 
 router.get('/category/:category/thread', checkPermissions, ThreadController.listByCategory)
 router.post('/thread', checkPermissions, ThreadController.create)
