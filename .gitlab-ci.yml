@@ -5,6 +5,8 @@ stages:
 build:
   image: node:latest
   stage: build
+  only:
+    - master
   script:
     - npm i
     - npm run build:frontend
@@ -17,6 +19,8 @@ build:
 deploy:
   image: ebiwd/alpine-ssh:latest
   stage: deploy
+  only:
+    - master
   script:
     - eval "$(ssh-agent)"
     - ssh-add <(echo "$PRODUCTION_PRIVATE_KEY")
