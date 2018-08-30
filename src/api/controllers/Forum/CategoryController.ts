@@ -42,6 +42,40 @@ class CategoryController extends Controller {
 
     return res.status(201).send(category)
   }
+
+  update = async (req: Request, res: Response) => {
+    const validation = this.validate(req.body, {
+      acceptsThreads: 'boolean'
+    })
+
+    if (validation.fails()) {
+      return res.status(422).send(validation.errors)
+    }
+
+    let category = req.params.forumCategory
+
+    if (req.body.name) {
+      category.name = req.body.name
+    }
+
+    if (req.body.acceptsThreads !== null) {
+      category.acceptsThreads = req.body.acceptsThreads
+    }
+
+    if (req.body.parent) {
+      const parent = await ForumCategory.findOne({ id: req.body.parent })
+
+      if (!parent) {
+        return res.status(422).send({ errors: { parent: ['Invalid parent category specified.'] } })
+      }
+
+      category.parent = parent
+    }
+
+    category = await category.save()
+
+    return res.status(200).send(category)
+  }
 }
 
 export default new CategoryController
