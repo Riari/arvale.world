@@ -1,5 +1,8 @@
 import { Article } from '../entities/Article'
 import { ArticleCategory } from '../entities/ArticleCategory'
+import { ForumCategory } from '../entities/ForumCategory'
+import { ForumThread } from '../entities/ForumThread'
+import { ForumPost } from '../entities/ForumPost'
 import { User } from '../entities/User'
 
 export const article = async (req, res, next, id) => {
@@ -9,6 +12,21 @@ export const article = async (req, res, next, id) => {
 
 export const articleCategory = async (req, res, next, id) => {
   req.params.articleCategory = await ArticleCategory.findOne({ where: { id } })
+  next()
+}
+
+export const forumCategory = async (req, res, next, id) => {
+  req.params.forumCategory = await ForumCategory.findOne({ where: { id } })
+  next()
+}
+
+export const forumThread = async (req, res, next, id) => {
+  req.params.forumThread = await ForumThread.findOne({ relations: ['category'], where: { id } })
+  next()
+}
+
+export const forumPost = async (req, res, next, id) => {
+  req.params.forumPost = await ForumPost.findOne({ relations: ['thread'], where: { id } })
   next()
 }
 

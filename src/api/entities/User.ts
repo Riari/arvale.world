@@ -5,6 +5,8 @@ const permissions = require('../policy/permissions')
 const cache = new NodeCache({ stdTTL: 60 })
 
 import { Article } from './Article'
+import { ForumThread } from './ForumThread'
+import { ForumPost } from './ForumPost'
 import { Role } from './Role'
 
 @Entity({ name: 'user' })
@@ -33,6 +35,12 @@ export class User extends BaseEntity {
 
   @ManyToMany(type => Role, role => role.users)
   roles: Role[]
+
+  @OneToMany(type => ForumThread, thread => thread.author)
+  threads: ForumThread[]
+
+  @OneToMany(type => ForumPost, post => post.thread)
+  posts: ForumPost[]
 
   @OneToMany(type => Article, article => article.author)
   articles: Article[]

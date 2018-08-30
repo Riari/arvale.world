@@ -1,7 +1,5 @@
 import { Request, Response } from 'express'
 import showdown from 'showdown'
-import slugify from 'slugify'
-import truncate from 'truncate-html'
 import striptags from 'striptags'
 import Controller from './Controller'
 import { Article } from '../entities/Article'
@@ -39,13 +37,6 @@ class ArticleController extends Controller {
       where
     })
 
-    const converter = this.getMarkdownConverter()
-
-    articles.forEach((article, index) => {
-      articles[index].slug = slugify(article.title, { lower: true })
-      articles[index].body = truncate(converter.makeHtml(article.body), 80, { byWords: true })
-    })
-
     const response = {
       currentPage,
       perPage,
@@ -59,11 +50,6 @@ class ArticleController extends Controller {
 
   listCategories = async (req: Request, res: Response) => {
     const categories = await ArticleCategory.find()
-
-    categories.forEach((category, index) => {
-      categories[index].slug = slugify(category.name, { lower: true })
-    })
-
     return res.status(200).send(categories)
   }
 
@@ -103,7 +89,7 @@ class ArticleController extends Controller {
 
     article = await article.save()
 
-    return res.status(201).send(article.transform())
+    return res.status(201).send(article)
   }
 
   update = async (req: Request, res: Response) => {

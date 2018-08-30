@@ -1,6 +1,7 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, JoinColumn, ManyToOne } from 'typeorm'
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, JoinColumn, ManyToOne, AfterLoad } from 'typeorm'
 import slugify from 'slugify'
 import showdown from 'showdown'
+import truncate from 'truncate-html'
 
 import { ArticleCategory } from './ArticleCategory'
 import { User } from './User'
@@ -9,9 +10,6 @@ import { User } from './User'
 export class Article extends BaseEntity {
 
   static perPage = 10
-
-  slug: string
-  body_html: string
 
   @PrimaryGeneratedColumn()
   id: number
@@ -39,30 +37,20 @@ export class Article extends BaseEntity {
   @UpdateDateColumn({ type: 'timestamp' })
   updatedAt: number
 
-  transform () {
+  slug: string
+  body_html: string
+  body_excerpt: string
+
+  @AfterLoad()
+  onLoad () {
     const converter = new showdown.Converter({
       tasklists: true,
       ghCodeBlocks: true
     })
 
-    const article: any = {
-      id: this.id,
-      title: this.title,
-      slug: this.title ? slugify(this.title, { lower: true }) : null,
-      body: this.body,
-      body_html: converter.makeHtml(this.body),
-      category: this.category,
-      author: this.author,
-      published: this.published,
-      createdAt: this.createdAt,
-      updatedAt: this.updatedAt
-    }
-
-    if (article.category.name) {
-      article.category.slug = slugify(this.category.name, { lower: true })
-    }
-
-    return article
+    this.slug = slugify(this.title, { lower: true })
+    this.body_html = converter.makeHtml(this.body)
+    this.body_excerpt = truncate(this.body_html, 80, { byWords: true })
   }
 
 }

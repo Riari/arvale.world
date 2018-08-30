@@ -37,7 +37,9 @@ export async function checkPermissions (req, res, next) {
 
   const permission = parts.join('.')
 
-  const hasPermission = await Policy.check(permission, req.user, req.params)
+  const policy = new Policy
+
+  const hasPermission = await policy.check(permission, req.user, req.params, req.body)
 
   if (hasPermission) {
     next()

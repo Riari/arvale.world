@@ -1,11 +1,10 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm'
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToMany, AfterLoad } from 'typeorm'
+import slugify from 'slugify'
 
 import { Article } from './Article'
 
 @Entity({ name: 'article_category' })
 export class ArticleCategory extends BaseEntity {
-
-  slug: string
 
   @PrimaryGeneratedColumn()
   id: number
@@ -15,5 +14,12 @@ export class ArticleCategory extends BaseEntity {
 
   @OneToMany(type => Article, article => article.category)
   articles: Article[]
+
+  slug: string
+
+  @AfterLoad()
+  onLoad () {
+    this.slug = slugify(this.name, { lower: true })
+  }
 
 }

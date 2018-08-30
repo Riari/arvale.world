@@ -4,5 +4,10 @@
 
   "post.article": ["Administrator"],
   "patch.article": ["Administrator"],
-  "delete.article": ["Administrator"]
+  "delete.article": ["Administrator"],
+
+  "post.forum.category": ["Administrator"],
+  "patch.forum.thread": ["Administrator", "Dungeon Master", "Community Emissary"],
+  "delete.forum.thread": ["Administrator"],
+  "delete.forum.post": ["Administrator"]
 }

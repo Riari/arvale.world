@@ -1,11 +1,16 @@
+import { getManager } from 'typeorm'
+
 import { User } from '../entities/User'
+import { ForumCategory } from '../entities/ForumCategory'
+import { ForumThread } from '../entities/ForumThread';
 
 const permissions = require('./permissions')
+const forumCategories = require('./forum/categories')
 
 export class Policy {
-  static check (permission: string, user: any, params?: any) {
+  check (permission: string, user: any, params?: any, body?: any) {
     if (typeof this[permission] === 'function') {
-      return this[permission](user, params)
+      return this[permission](user, params, body)
     }
 
     if (typeof permissions[permission] !== 'undefined') {
@@ -19,7 +24,7 @@ export class Policy {
     return true
   }
 
-  static 'get.article' = async (user: User, params?: any) => {
+  'get.article' = async (user: User, params?: any) => {
     if (params.article && params.article.published) {
       return true
     }
@@ -31,7 +36,60 @@ export class Policy {
     return user.roleList.includes('Administrator')
   }
 
-  static 'delete.forum.discussion' = async (user: User, params?: any) => {
-    // use params.discussion, params.category, etc
+  'get.forum.category.thread' = async (user: User, params?: any, body?: any) => {
+    if (!user) {
+      return false
+    }
+
+    const category = params.forumCategory
+
+    if (category && !category.acceptsThreads) {
+      return false
+    }
+
+    return this.isForumCategoryAccessible(category, user)
+  }
+
+  'post.forum.thread' = async (user: User, params?: any, body?: any) => {
+    const category = await ForumCategory.findOne(body.category)
+    return this.isForumCategoryAccessible(category, user)
+  }
+
+  'post.forum.post' = async (user: User, params?: any, body?: any) => {
+    const thread = await ForumThread.findOne({ relations: ['category'], where: { id: body.thread } })
+
+    if (thread.lockedAt && !user.roleList.includes('Administrator')) {
+      return false
+    }
+
+    return this.isForumCategoryAccessible(thread.category, user)
+  }
+
+  'patch.forum.post' = async (user: User, params?: any, body?: any) => {
+    if (params.forumPost.thread.lockedAt && !user.roleList.includes('Administrator')) {
+      return false
+    }
+
+    const category = await ForumCategory.findOne(params.forumPost.thread.categoryId)
+
+    return this.isForumCategoryAccessible(category, user)
+  }
+
+  private isForumCategoryAccessible = async (category: ForumCategory, user: User) => {
+    const repository = getManager().getTreeRepository(ForumCategory)
+
+    const parents = await repository.findAncestors(category)
+
+    if (forumCategories[category.id] && !forumCategories[category.id].some(role => user.roleList.includes(role))) {
+      return false
+    }
+
+    for (let c of parents) {
+      if (forumCategories[c.id] && !forumCategories[c.id].some(role => user.roleList.includes(role))) {
+        return false
+      }
+    }
+
+    return true
   }
 }

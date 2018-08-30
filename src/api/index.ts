@@ -10,6 +10,7 @@ import { checkAuthState } from './middleware/auth'
 
 import ArticleRoutes from './routes/articles'
 import AuthRoutes from './routes/auth'
+import ForumRoutes from './routes/forum'
 import NWNRoutes from './routes/nwn'
 import UserRoutes from './routes/user'
 
@@ -40,5 +41,6 @@ app.use(checkAuthState)
 
 app.use('/article', ArticleRoutes)
 app.use('/auth', AuthRoutes)
+app.use('/forum', ForumRoutes)
 app.use('/nwn', NWNRoutes)
 app.use('/user', UserRoutes)
