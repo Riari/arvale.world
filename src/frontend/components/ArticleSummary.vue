@@ -5,7 +5,7 @@
 
       <h4>{{ article.title }}</h4>
 
-      <div v-if="withExcerpt" v-html="article.body" class="body"></div>
+      <div v-if="withExcerpt" v-html="article.body_excerpt" class="body"></div>
 
       <div class="meta">
         <span class="category">{{ article.category.name }}</span>
