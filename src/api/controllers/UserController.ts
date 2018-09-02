@@ -61,7 +61,11 @@ class UserController extends Controller {
       message: `Thanks for signing up on Arvale.World. Please verify your account by visiting <a href="${action_url}">${action_url}</a> or clicking the button below.`,
       action_url,
       action_label: 'Verify account'
-    }, () => {
+    }, error => {
+      if (error) {
+        throw error
+      }
+
       return res.send(user.transform())
     })
   }
