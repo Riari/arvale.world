@@ -1,3 +1,4 @@
+const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader')
@@ -81,6 +82,9 @@ module.exports = {
       template: 'src/frontend/index.html',
       inject: true
     }),
+    new CopyWebpackPlugin([
+      { from: path.join(__dirname, '..', '..', 'src', 'frontend', 'static', 'favicon.ico'), to: path.join('static', 'favicon.ico') }
+    ]),
     new VueLoaderPlugin()
   ]
 }
