@@ -92,11 +92,7 @@ class ThreadController extends Controller {
 
     const thread = req.params.forumThread
 
-    const posts = await ForumPost.find({ thread })
-
-    for (let post of posts) {
-      post.remove()
-    }
+    await ForumPost.createQueryBuilder().delete().where('thread = :id', { id: thread.id }).execute()
 
     thread.remove()
 
