@@ -6,13 +6,6 @@ import { Article } from '../entities/Article'
 import { ArticleCategory } from '../entities/ArticleCategory'
 
 class ArticleController extends Controller {
-  private getMarkdownConverter () {
-    return new showdown.Converter({
-      tasklists: true,
-      ghCodeBlocks: true
-    })
-  }
-
   list = async (req: Request, res: Response) => {
     const currentPage = req.query.page ? req.query.page : 1
     const perPage = Article.perPage
@@ -55,7 +48,7 @@ class ArticleController extends Controller {
 
   get = async (req: Request, res: Response) => {
     if (req.params.article) {
-      return res.send(req.params.article.transform())
+      return res.send(req.params.article)
     }
 
     return res.status(404).send({ message: 'Article not found.' })
@@ -131,7 +124,7 @@ class ArticleController extends Controller {
 
     article = await article.save()
 
-    return res.status(200).send(article.transform())
+    return res.status(200).send(article)
   }
 
   remove = async (req: Request, res: Response) => {
