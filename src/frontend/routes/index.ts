@@ -12,6 +12,8 @@ import Verify from '../pages/Verify.vue'
 import NewsList from '../pages/News/List.vue'
 import NewsArticle from '../pages/News/Article.vue'
 
+import ForumIndex from '../pages/Forum/Index.vue'
+
 import Admin from '../components/Admin/_Viewport.vue'
 import AdminDashboard from '../pages/Admin/Dashboard.vue'
 import AdminUsersIndex from '../pages/Admin/Users/Index.vue'
@@ -33,6 +35,7 @@ const routes = [
       { path: '/news', component: NewsList },
       { path: '/news/:id-:slug', name: 'news-article', component: NewsArticle },
       { path: '/news/category/:id-:slug', name: 'news-category', component: NewsList },
+      { path: '/forum', component: ForumIndex },
       { path: '/user/login', component: LogIn },
       { path: '/user/signup', component: SignUp },
       { path: '/user/verify/:code', component: Verify },

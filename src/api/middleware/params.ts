@@ -21,7 +21,7 @@ export const forumCategory = async (req, res, next, id) => {
 }
 
 export const forumThread = async (req, res, next, id) => {
-  req.params.forumThread = await ForumThread.findOne({ relations: ['category'], where: { id } })
+  req.params.forumThread = await ForumThread.findOne({ relations: ['category', 'latestPost'], where: { id } })
   next()
 }
 

@@ -81,6 +81,10 @@ export default class Viewport extends mixins(UserStateMixin) {
     border-bottom-left-radius: 3px;
     border-bottom-right-radius: 3px;
 
+    &:not(:first-child) {
+      margin-top: 0;
+    }
+
     a {
       color: rgba(255, 255, 255, .75);
     }

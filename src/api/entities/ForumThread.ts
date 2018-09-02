@@ -1,4 +1,4 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, JoinColumn, ManyToOne, OneToMany } from 'typeorm'
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, JoinColumn, ManyToOne, OneToOne, OneToMany } from 'typeorm'
 
 import { ForumCategory } from './ForumCategory'
 import { ForumPost } from './ForumPost'
@@ -27,6 +27,13 @@ export class ForumThread extends BaseEntity {
 
   @OneToMany(type => ForumPost, post => post.thread)
   posts: ForumPost[]
+
+  @Column({ default: 1 })
+  postCount: number
+
+  @OneToOne(type => ForumPost)
+  @JoinColumn()
+  latestPost: ForumPost
 
   @CreateDateColumn({ type: 'timestamp', default: null })
   lockedAt: string

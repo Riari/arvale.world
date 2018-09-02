@@ -105,6 +105,10 @@ export default class Panel extends Vue {
     background: linear-gradient(to right, rgba(255,255,255,0) 0%,rgba(255,255,255,0.1) 50%,rgba(128,186,232,0) 99%,rgba(125,185,232,0) 100%); /* W3C */
   }
 
+  &:not(:first-child) {
+    margin-top: 1em;
+  }
+
   .spinner {
     text-align: center;
   }
@@ -121,7 +125,7 @@ export default class Panel extends Vue {
     svg {
       float: right;
       margin-top: .1em;
-      color: rgb(137, 156, 199);
+      color: $color-muted;
     }
   }
 
