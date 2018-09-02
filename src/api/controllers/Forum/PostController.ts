@@ -15,7 +15,7 @@ class PostController extends Controller {
       return res.status(422).send(validation.errors)
     }
 
-    const thread = await ForumThread.findOne(req.body.thread)
+    const thread = await ForumThread.findOne({ relations: ['category'], where: { id: req.body.thread } })
 
     if (!thread) {
       return res.status(404).send({ message: 'Thread not found.' })
@@ -30,7 +30,12 @@ class PostController extends Controller {
 
     post = await post.save()
 
+    thread.postCount++
+    thread.latestPost = post
+    thread.save()
+
     thread.category.postCount++
+    thread.category.latestPost = post
     thread.category.save()
 
     return res.status(201).send(post)
@@ -87,7 +92,7 @@ class PostController extends Controller {
       category.threadCount--
       await category.save()
 
-      thread.remove()
+      await thread.remove()
     } else {
       thread.postCount--
 
@@ -104,9 +109,9 @@ class PostController extends Controller {
         const latestCategoryThread = await ForumThread.findOne({ where: { category: category.id }, order: { createdAt: 'DESC' } })
         category.latestThread = latestCategoryThread
       }
-
-      await category.save()
     }
+
+    await category.save()
 
     return res.status(200).send(post)
   }
