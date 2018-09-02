@@ -33,7 +33,7 @@ export class Policy {
       return false
     }
 
-    return user.roleList.includes('Administrator')
+    return this.isUserAdmin(user)
   }
 
   'get.forum.category.thread' = async (user: User, params?: any, body?: any) => {
@@ -52,13 +52,18 @@ export class Policy {
 
   'post.forum.thread' = async (user: User, params?: any, body?: any) => {
     const category = await ForumCategory.findOne(body.category)
+
+    if (!category.acceptsThreads) {
+      return false
+    }
+
     return this.isForumCategoryAccessible(category, user)
   }
 
   'post.forum.post' = async (user: User, params?: any, body?: any) => {
     const thread = await ForumThread.findOne({ relations: ['category'], where: { id: body.thread } })
 
-    if (thread.lockedAt && !user.roleList.includes('Administrator')) {
+    if (thread.lockedAt && !this.isUserAdmin(user)) {
       return false
     }
 
@@ -66,13 +71,11 @@ export class Policy {
   }
 
   'patch.forum.post' = async (user: User, params?: any, body?: any) => {
-    if (params.forumPost.thread.lockedAt && !user.roleList.includes('Administrator')) {
-      return false
-    }
+    return (this.isUserAdmin(user) || !params.forumPost.thread.lockedAt && params.forumPost.author.id == user.id)
+  }
 
-    const category = await ForumCategory.findOne(params.forumPost.thread.categoryId)
-
-    return this.isForumCategoryAccessible(category, user)
+  private isUserAdmin = (user: User) => {
+    return user.roleList.includes('Administrator')
   }
 
   private isForumCategoryAccessible = async (category: ForumCategory, user: User) => {

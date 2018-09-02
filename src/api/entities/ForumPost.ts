@@ -1,5 +1,6 @@
 import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, JoinColumn, ManyToOne, OneToMany } from 'typeorm'
 
+import { ForumCategory } from './ForumCategory'
 import { ForumThread } from './ForumThread'
 import { User } from './User'
 
@@ -15,6 +16,10 @@ export class ForumPost extends BaseEntity {
 
   @Column()
   body: string
+
+  @ManyToOne(type => ForumCategory, category => category.posts)
+  @JoinColumn()
+  category: ForumCategory
 
   @ManyToOne(type => ForumThread, thread => thread.posts)
   @JoinColumn()
