@@ -3,9 +3,9 @@
     <transition name="fade">
       <div v-if="!loading">
         <ul class="discord-member-list">
-          <li v-for="member in server.members" v-if="!member.bot" :key="member.id">
+          <li v-for="member in server.members" v-if="!member.bot" :key="member.id" :class="member.status">
             <img :src="member.avatar_url" />
-              <span class="member-details">
+            <span class="member-details">
               {{ member.nick ? member.nick : member.username }}
               <span v-if="member.game" class="playing">
                 Playing {{ member.game.name }}
@@ -56,15 +56,38 @@ export default class DiscordModule extends Vue {
 </script>
 
 <style lang="scss">
+@import "../../scss/variables";
+
 .discord-member-list {
   margin: 0;
   padding: 0;
   list-style: none;
 
   li {
+    position: relative;
     height: 32px;
     margin: .5em 0;
     white-space: nowrap;
+
+    &:before {
+      content: " ";
+      display: block;
+      position: absolute;
+      bottom: -2px;
+      left: 22px;
+      width: 8px;
+      height: 8px;
+      border: 2px solid $color-background;
+      border-radius: 8px;
+    }
+
+    &.online:before {
+      background: #43b581;
+    }
+
+    &.idle:before {
+      background: #faa61a;
+    }
 
     &.others {
       margin-left: 40px;
