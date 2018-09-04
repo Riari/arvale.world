@@ -75,8 +75,8 @@ export default class DiscordModule extends Vue {
       position: absolute;
       bottom: -2px;
       left: 22px;
-      width: 8px;
-      height: 8px;
+      width: 10px;
+      height: 10px;
       border: 2px solid $color-background;
       border-radius: 8px;
     }
