@@ -16,6 +16,7 @@ import UserRoutes from './routes/user'
 
 import config from './config'
 import './db'
+import './events'
 
 const app = express()
 

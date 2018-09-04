@@ -50,11 +50,7 @@ class ThreadController extends Controller {
     thread.latestPost = post
     thread.save()
 
-    category.setLatestThread(thread)
-    category.threadCount++
-    category.setLatestPost(post)
-    category.postCount++
-    category.save()
+    this.emit('forum.thread.created', { thread })
 
     return res.status(201).send(thread)
   }
@@ -72,6 +68,7 @@ class ThreadController extends Controller {
       return res.status(422).send(validation.errors)
     }
 
+    const originalCategory = req.params.forumThread.category
     let thread = req.params.forumThread
 
     if (req.body.title) {
@@ -80,45 +77,18 @@ class ThreadController extends Controller {
 
     thread = await thread.save()
 
-    let oldCategory = null
-    let newCategory = null
     if (req.body.category && req.body.category != thread.category.id) {
-      oldCategory = thread.category
-      newCategory = await ForumCategory.findOne({ id: req.body.category })
+      const category = await ForumCategory.findOne({ id: req.body.category })
 
-      if (!newCategory) {
+      if (!category) {
         return res.status(404).send({ message: 'Category not found.' })
       }
 
-      thread.category = newCategory
-      await thread.save()
-
-      const oldCategoryLatestThread = await ForumThread.findOne({ relations: ['latestPost'], where: { category: oldCategory.id }, order: { createdAt: 'DESC' } })
-      const oldCategoryLatestPost = await ForumPost.findOne({ relations: ['author', 'thread'], where: { category: oldCategory.id }, order: { createdAt: 'DESC' } })
-
-      oldCategory.setLatestThread(oldCategoryLatestThread)
-      oldCategory.setLatestPost(oldCategoryLatestPost)
-
-      oldCategory.postCount = oldCategory.postCount - thread.postCount
-      oldCategory.threadCount--
-      await oldCategory.save()
-
-      const newCategoryLatestPost = await ForumPost.findOne({ relations: ['author', 'thread'], where: { category: newCategory.id }, order: { createdAt: 'DESC' } })
-
-      newCategory.setLatestThread(thread)
-      newCategory.threadCount++
-
-      if (newCategoryLatestPost) {
-        newCategory.setLatestPost(newCategoryLatestPost)
-      } else {
-        newCategory.setLatestPost(thread.latestPost)
-      }
-
-      newCategory.postCount = newCategory.postCount + thread.postCount
-      await newCategory.save()
+      thread.category = category
+      thread = await thread.save()
     }
 
-    thread = await ForumThread.findOne(thread.id)
+    this.emit('forum.thread.updated', { thread, originalCategory })
 
     return res.status(200).send(thread)
   }
@@ -129,16 +99,17 @@ class ThreadController extends Controller {
     }
 
     const thread = req.params.forumThread
-    const category = await ForumCategory.findOne(thread.category.id)
+
+    thread.latestPost = null
+    await thread.save()
 
     await ForumPost.createQueryBuilder().delete().where('thread = :id', { id: thread.id }).execute()
 
-    thread.remove()
+    this.emit('forum.thread.deleting', { thread })
 
-    category.threadCount--
-    category.postCount = category.postCount - thread.postCount
+    await thread.remove()
 
-    category.save()
+    this.emit('forum.thread.deleted', { thread })
 
     return res.status(200).send(thread)
   }

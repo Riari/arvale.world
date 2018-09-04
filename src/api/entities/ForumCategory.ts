@@ -29,7 +29,7 @@ export class ForumCategory extends BaseEntity {
   @Column({ default: 0 })
   postCount: number
 
-  @Column({ default: 0 })
+  @Column({ nullable: true })
   latestThreadId: number
 
   @Column({ nullable: true })
@@ -73,17 +73,50 @@ export class ForumCategory extends BaseEntity {
     }
   }
 
-  async setLatestThread (thread: ForumThread) {
-    this.latestThreadId = thread.id
-    this.latestThreadTitle = thread.title
-    this.latestThreadAuthor = thread.author.name
+  async updateLatestThread () {
+    const thread = await ForumThread.findOne({
+      relations: ['author'],
+      where: { category: this.id },
+      order: { createdAt: 'DESC' }
+    })
+
+    this.setLatestThread(thread)
   }
 
-  async setLatestPost (post: ForumPost) {
-    this.latestPostId = post.id
-    this.latestPostAuthor = post.author.name
-    this.latestPostThreadId = post.thread.id
-    this.latestPostThreadTitle = post.thread.title
+  async updateLatestPost () {
+    const post = await ForumPost.findOne({
+      relations: ['author', 'thread'],
+      where: { category: this.id },
+      order: { createdAt: 'DESC' }
+    })
+
+    this.setLatestPost(post)
+  }
+
+  setLatestThread (thread: ForumThread) {
+    if (thread) {
+      this.latestThreadId = thread.id
+      this.latestThreadTitle = thread.title
+      this.latestThreadAuthor = thread.author.name
+    } else {
+      this.latestThreadId = null
+      this.latestThreadTitle = null
+      this.latestThreadAuthor = null
+    }
+  }
+
+  setLatestPost (post: ForumPost) {
+    if (post) {
+      this.latestPostId = post.id
+      this.latestPostAuthor = post.author.name
+      this.latestPostThreadId = post.thread.id
+      this.latestPostThreadTitle = post.thread.title
+    } else {
+      this.latestPostId = null
+      this.latestPostAuthor = null
+      this.latestPostThreadId = null
+      this.latestPostThreadTitle = null
+    }
   }
 
 }
