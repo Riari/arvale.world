@@ -3,7 +3,7 @@ import {MigrationInterface, QueryRunner} from "typeorm";
 export class updateForumCategoryTable1536018486913 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<any> {
-        await queryRunner.query(`ALTER TABLE "forum_category" ADD "latestThreadId" integer NOT NULL DEFAULT 0`);
+        await queryRunner.query(`ALTER TABLE "forum_category" ADD "latestThreadId" integer`);
         await queryRunner.query(`ALTER TABLE "forum_category" ADD "latestThreadTitle" character varying`);
         await queryRunner.query(`ALTER TABLE "forum_category" ADD "latestThreadAuthor" character varying`);
         await queryRunner.query(`ALTER TABLE "forum_category" ADD "latestPostId" integer`);

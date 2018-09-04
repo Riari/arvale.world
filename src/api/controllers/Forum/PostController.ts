@@ -21,22 +21,17 @@ class PostController extends Controller {
       return res.status(404).send({ message: 'Thread not found.' })
     }
 
-    let post = await ForumPost.create({
+    const entity = {
       category: thread.category,
       thread,
       body: req.body.body,
       author: req.user
-    })
+    }
 
-    post = await post.save()
+    let post = await ForumPost.create(entity)
+    await post.save()
 
-    thread.postCount++
-    thread.latestPost = post
-    thread.save()
-
-    thread.category.postCount++
-    thread.category.setLatestPost(post)
-    thread.category.save()
+    this.emit('forum.post.created', { post: Object.assign({}, post, entity) })
 
     return res.status(201).send(post)
   }
@@ -70,30 +65,12 @@ class PostController extends Controller {
 
     const post = req.params.forumPost
     const thread = await ForumThread.findOne({ relations: ['category'], where: { id: post.thread.id } })
-    const category = await ForumCategory.findOne({ relations: ['latestThread', 'latestPost'], where: { id: thread.category.id } })
-
-    category.postCount--
 
     thread.latestPost = null
     await thread.save()
-
     await post.remove()
 
-    if (thread.postCount == 1) {
-      category.threadCount--
-      await thread.remove()
-    } else {
-      thread.postCount--
-      thread.save()
-    }
-
-    const latestCategoryPost = await ForumPost.findOne({ relations: ['author', 'thread', 'thread.author'], where: { category: category.id }, order: { createdAt: 'DESC' } })
-    category.setLatestPost(latestCategoryPost)
-
-    const latestCategoryThread = await ForumThread.findOne({ relations: ['author'], where: { category: category.id }, order: { createdAt: 'DESC' } })
-    category.setLatestThread(latestCategoryThread)
-
-    await category.save()
+    this.emit('forum.post.deleted', { post })
 
     return res.status(200).send(post)
   }

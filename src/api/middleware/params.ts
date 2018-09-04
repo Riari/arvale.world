@@ -21,12 +21,12 @@ export const forumCategory = async (req, res, next, id) => {
 }
 
 export const forumThread = async (req, res, next, id) => {
-  req.params.forumThread = await ForumThread.findOne({ relations: ['category', 'latestPost'], where: { id } })
+  req.params.forumThread = await ForumThread.findOne({ relations: ['author', 'category', 'latestPost'], where: { id } })
   next()
 }
 
 export const forumPost = async (req, res, next, id) => {
-  req.params.forumPost = await ForumPost.findOne({ relations: ['thread'], where: { id } })
+  req.params.forumPost = await ForumPost.findOne({ relations: ['category', 'thread'], where: { id } })
   next()
 }
 
