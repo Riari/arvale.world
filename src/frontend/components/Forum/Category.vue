@@ -4,20 +4,22 @@
       <template v-if="showDetails">
         <div class="row">
           <div class="col-xs-6">
-            <router-link
-              :to="{ name: 'forum-category', params: { id: category.id, slug: category.slug } }"
-            >
+            <router-link :to="{ name: 'forum-category', params: { id: category.id, slug: category.slug } }">
               {{ category.name }}
             </router-link>
           </div>
           <div class="col-xs-2 thread-count">
-            <icon name="file-text"></icon> 0 threads
+            <icon name="file-text"></icon> {{ category.threadCount }} threads
           </div>
           <div class="col-xs-2 post-count">
-            <icon name="message-circle"></icon> 0 posts
+            <icon name="message-circle"></icon> {{ category.postCount }} posts
           </div>
           <div class="col-xs-2 last-post">
-            -
+            <router-link :to="{ name: 'forum-thread', params: { id: category.latestThread.id, slug: category.latestThread.slug } }">
+              {{ category.latestThread.title }}
+            </router-link>
+            by
+            {{ category.latestThread.author.name }}
           </div>
         </div>
       </template>
