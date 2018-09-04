@@ -50,9 +50,9 @@ class ThreadController extends Controller {
     thread.latestPost = post
     thread.save()
 
-    category.latestThread = thread
+    category.setLatestThread(thread)
     category.threadCount++
-    category.latestPost = post
+    category.setLatestPost(post)
     category.postCount++
     category.save()
 
@@ -94,22 +94,26 @@ class ThreadController extends Controller {
       await thread.save()
 
       const oldCategoryLatestThread = await ForumThread.findOne({ relations: ['latestPost'], where: { category: oldCategory.id }, order: { createdAt: 'DESC' } })
+      const oldCategoryLatestPost = await ForumPost.findOne({ relations: ['author', 'thread'], where: { category: oldCategory.id }, order: { createdAt: 'DESC' } })
 
-      if (oldCategoryLatestThread) {
-        oldCategory.latestThread = oldCategoryLatestThread
-        oldCategory.latestPost = oldCategoryLatestThread.latestPost
-      } else {
-        oldCategory.latestThread = null
-        oldCategory.latestPost = null
-      }
+      oldCategory.setLatestThread(oldCategoryLatestThread)
+      oldCategory.setLatestPost(oldCategoryLatestPost)
 
       oldCategory.postCount = oldCategory.postCount - thread.postCount
       oldCategory.threadCount--
       await oldCategory.save()
 
-      newCategory.latestThread = thread
+      const newCategoryLatestPost = await ForumPost.findOne({ relations: ['author', 'thread'], where: { category: newCategory.id }, order: { createdAt: 'DESC' } })
+
+      newCategory.setLatestThread(thread)
       newCategory.threadCount++
-      newCategory.latestPost = thread.latestPost
+
+      if (newCategoryLatestPost) {
+        newCategory.setLatestPost(newCategoryLatestPost)
+      } else {
+        newCategory.setLatestPost(thread.latestPost)
+      }
+
       newCategory.postCount = newCategory.postCount + thread.postCount
       await newCategory.save()
     }

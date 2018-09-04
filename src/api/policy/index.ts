@@ -63,7 +63,7 @@ export class Policy {
   'post.forum.post' = async (user: User, params?: any, body?: any) => {
     const thread = await ForumThread.findOne({ relations: ['category'], where: { id: body.thread } })
 
-    if (thread.lockedAt && !this.isUserAdmin(user)) {
+    if (!thread || thread.lockedAt && !this.isUserAdmin(user)) {
       return false
     }
 
@@ -75,7 +75,7 @@ export class Policy {
   }
 
   private isUserAdmin = (user: User) => {
-    return user.roleList.includes('Administrator')
+    return user && user.roleList.includes('Administrator')
   }
 
   private isForumCategoryAccessible = async (category: ForumCategory, user: User) => {

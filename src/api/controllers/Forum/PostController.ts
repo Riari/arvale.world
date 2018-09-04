@@ -35,7 +35,7 @@ class PostController extends Controller {
     thread.save()
 
     thread.category.postCount++
-    thread.category.latestPost = post
+    thread.category.setLatestPost(post)
     thread.category.save()
 
     return res.status(201).send(post)
@@ -72,11 +72,6 @@ class PostController extends Controller {
     const thread = await ForumThread.findOne({ relations: ['category'], where: { id: post.thread.id } })
     const category = await ForumCategory.findOne({ relations: ['latestThread', 'latestPost'], where: { id: thread.category.id } })
 
-    if (category.latestPost.id == post.id) {
-      category.latestPost = null
-      await category.save()
-    }
-
     category.postCount--
 
     thread.latestPost = null
@@ -85,31 +80,18 @@ class PostController extends Controller {
     await post.remove()
 
     if (thread.postCount == 1) {
-      if (category.latestThread.id == thread.id) {
-        category.latestThread = null
-      }
-
       category.threadCount--
-      await category.save()
-
       await thread.remove()
     } else {
       thread.postCount--
-
-      const latestThreadPost = await ForumPost.findOne({ where: { thread: thread.id }, order: { createdAt: 'DESC' } })
-      thread.latestPost = latestThreadPost
       thread.save()
     }
 
-    if (!category.latestPost) {
-      const latestCategoryPost = await ForumPost.findOne({ where: { category: category.id }, order: { createdAt: 'DESC' } })
-      category.latestPost = latestCategoryPost
+    const latestCategoryPost = await ForumPost.findOne({ relations: ['author', 'thread', 'thread.author'], where: { category: category.id }, order: { createdAt: 'DESC' } })
+    category.setLatestPost(latestCategoryPost)
 
-      if (!category.latestThread) {
-        const latestCategoryThread = await ForumThread.findOne({ where: { category: category.id }, order: { createdAt: 'DESC' } })
-        category.latestThread = latestCategoryThread
-      }
-    }
+    const latestCategoryThread = await ForumThread.findOne({ relations: ['author'], where: { category: category.id }, order: { createdAt: 'DESC' } })
+    category.setLatestThread(latestCategoryThread)
 
     await category.save()
 
