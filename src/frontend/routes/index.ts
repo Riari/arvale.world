@@ -13,6 +13,10 @@ import NewsList from '../pages/News/List.vue'
 import NewsArticle from '../pages/News/Article.vue'
 
 import ForumIndex from '../pages/Forum/Index.vue'
+import ForumCategory from '../pages/Forum/Category.vue'
+import ForumThread from '../pages/Forum/Thread.vue'
+
+import UserProfile from '../pages/UserProfile.vue'
 
 import Admin from '../components/Admin/_Viewport.vue'
 import AdminDashboard from '../pages/Admin/Dashboard.vue'
@@ -36,9 +40,12 @@ const routes = [
       { path: '/news/:id-:slug', name: 'news-article', component: NewsArticle },
       { path: '/news/category/:id-:slug', name: 'news-category', component: NewsList },
       { path: '/forum', component: ForumIndex },
+      { path: '/forum/category/:id-:slug', name: 'forum-category', component: ForumCategory },
+      { path: '/forum/thread/:id-:slug', name: 'forum-thread', component: ForumThread },
       { path: '/user/login', component: LogIn },
       { path: '/user/signup', component: SignUp },
       { path: '/user/verify/:code', component: Verify },
+      { path: '/user/:name', name: 'user-profile', component: UserProfile },
       { path: '/contact', component: Contact }
     ]
   },

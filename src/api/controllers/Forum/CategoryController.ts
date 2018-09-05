@@ -11,7 +11,9 @@ class CategoryController extends Controller {
 
   get = async (req: Request, res: Response) => {
     if (req.params.forumCategory) {
-      return res.send(req.params.forumCategory)
+      let category = req.params.forumCategory
+      category = await this.getTreeRepository(ForumCategory).findDescendantsTree(category)
+      return res.send(category)
     }
 
     return res.status(404).send({ message: 'Category not found.' })
