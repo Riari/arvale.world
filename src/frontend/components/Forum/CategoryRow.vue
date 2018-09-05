@@ -3,23 +3,29 @@
     <template v-if="link">
       <template v-if="showDetails">
         <div class="row">
-          <div class="col-xs-6">
+          <div class="col-xs-5">
             <router-link :to="{ name: 'forum-category', params: { id: category.id, slug: category.slug } }">
               {{ category.name }}
             </router-link>
           </div>
           <div class="col-xs-2 thread-count">
-            <icon name="file-text"></icon> {{ category.threadCount }} threads
+            {{ category.threadCount }}
           </div>
           <div class="col-xs-2 post-count">
-            <icon name="message-circle"></icon> {{ category.postCount }} posts
+            {{ category.postCount }}
           </div>
-          <div class="col-xs-2 last-post">
-            <router-link :to="{ name: 'forum-thread', params: { id: category.latestThread.id, slug: category.latestThread.slug } }">
-              {{ category.latestThread.title }}
+          <div v-if="category.latestPostThreadId" class="col-xs-3 latest-post">
+            in
+            <router-link :to="{ name: 'forum-thread', params: { id: category.latestPostThreadId, slug: category.latestPostThreadSlug } }">
+              {{ category.latestPostThreadTitle }}
             </router-link>
             by
-            {{ category.latestThread.author.name }}
+            <router-link :to="{ name: 'user-profile', params: { name: category.latestPostAuthor } }">
+              {{ category.latestPostAuthor }}
+            </router-link>
+          </div>
+          <div v-else class="col-xs-3 latest-post">
+            -
           </div>
         </div>
       </template>
@@ -31,16 +37,29 @@
         </router-link>
       </template>
     </template>
-    <div v-else class="title">{{ category.name }}</div>
+    <div v-else class="row">
+      <div class="col-xs-5">
+        <div class="title">{{ category.name }}</div>
+      </div>
+      <div class="col-xs-2 thread-count-header">
+        Threads
+      </div>
+      <div class="col-xs-2 post-count-header">
+        Posts
+      </div>
+      <div class="col-xs-3 latest-post-header">
+        Latest post
+      </div>
+    </div>
 
     <div v-if="category.children && category.children.length" class="children">
-      <forum-category
+      <forum-category-row
         v-for="child in category.children"
         :key="child.id"
         :category="child"
         :link="true"
         :showDetails="!showDetails"
-      ></forum-category>
+      ></forum-category-row>
     </div>
   </div>
 </template>
@@ -56,10 +75,10 @@ import Component from 'vue-class-component'
     showDetails: Boolean
   },
   components: {
-    ForumCategory
+    ForumCategoryRow
   }
 })
-export default class ForumCategory extends Vue {
+export default class ForumCategoryRow extends Vue {
 }
 </script>
 
@@ -71,6 +90,18 @@ export default class ForumCategory extends Vue {
     margin: 0 0 1em 0;
     font-weight: bold;
     font-size: 1.2em;
+  }
+
+  .thread-count-header,
+  .post-count-header,
+  .latest-post-header {
+    font-weight: bold;
+    text-align: right;
+  }
+
+  .thread-count-header,
+  .post-count-header {
+    text-align: center;
   }
 
   .children {
@@ -86,7 +117,7 @@ export default class ForumCategory extends Vue {
 
       .thread-count,
       .post-count,
-      .last-post {
+      .latest-post {
         text-align: right;
         color: $color-muted;
 
@@ -97,6 +128,11 @@ export default class ForumCategory extends Vue {
           margin: -.3em .5em 0 0;
           color: $color-muted;
         }
+      }
+
+      .thread-count,
+      .post-count {
+        text-align: center;
       }
 
       .children {

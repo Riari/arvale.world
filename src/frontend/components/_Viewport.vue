@@ -35,7 +35,7 @@
       <div class="leaf">
         <img src="../static/images/leaf.png">
       </div>
-      <router-view></router-view>
+      <router-view :key="$route.fullPath"></router-view>
     </div>
 
     <div class="footer">

@@ -1,8 +1,8 @@
 <template>
   <div class="row">
     <div class="col-xs-9">
-      <panel title="Forum index">
-        <forum-category v-for="category in categories" :key="category.id" :category="category"></forum-category>
+      <panel title="Forum index" :loading="loading">
+        <forum-category-row v-for="category in categories" :key="category.id" :category="category"></forum-category-row>
       </panel>
     </div>
     <div class="col-xs-3">
@@ -18,20 +18,24 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import ForumCategoryService from '../../services/Forum/CategoryService'
-import ForumCategory from '../../components/Forum/Category.vue'
+import ForumCategoryRow from '../../components/Forum/CategoryRow.vue'
 
 @Component({
   title: 'Forum',
   components: {
-    ForumCategory
+    ForumCategoryRow
   }
 })
 export default class ForumIndex extends Vue {
+  loading = true
   categories = []
 
   created () {
     const service = new ForumCategoryService()
-    service.list().then(response => this.categories = response.data)
+    service.list().then(response => {
+      this.categories = response.data
+      this.loading = false
+    })
   }
 }
 </script>
