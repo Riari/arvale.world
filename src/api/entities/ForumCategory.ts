@@ -30,18 +30,6 @@ export class ForumCategory extends BaseEntity {
   postCount: number
 
   @Column({ nullable: true })
-  latestThreadId: number
-
-  @Column({ nullable: true })
-  latestThreadTitle: string
-
-  @Column({ nullable: true })
-  latestThreadAuthor: string
-
-  @Column({ nullable: true })
-  latestPostId: number
-
-  @Column({ nullable: true })
   latestPostAuthor: string
 
   @Column({ nullable: true })
@@ -50,6 +38,9 @@ export class ForumCategory extends BaseEntity {
   @Column({ nullable: true })
   latestPostThreadTitle: string
 
+  @Column({ nullable: true })
+  latestPostThreadSize: number
+
   @OneToMany(type => ForumThread, thread => thread.category)
   threads: ForumThread[]
 
@@ -57,30 +48,15 @@ export class ForumCategory extends BaseEntity {
   posts: ForumPost[]
 
   slug: string
-  latestThreadSlug: string
   latestPostThreadSlug: string
 
   @AfterLoad()
   onLoad () {
     this.slug = slugify(this.name, { lower: true })
 
-    if (this.latestThreadTitle) {
-      this.latestThreadSlug = slugify(this.latestThreadTitle, { lower: true })
-    }
-
     if (this.latestPostThreadTitle) {
       this.latestPostThreadSlug = slugify(this.latestPostThreadTitle, { lower: true })
     }
-  }
-
-  async updateLatestThread () {
-    const thread = await ForumThread.findOne({
-      relations: ['author'],
-      where: { category: this.id },
-      order: { createdAt: 'DESC' }
-    })
-
-    this.setLatestThread(thread)
   }
 
   async updateLatestPost () {
@@ -93,29 +69,17 @@ export class ForumCategory extends BaseEntity {
     this.setLatestPost(post)
   }
 
-  setLatestThread (thread: ForumThread) {
-    if (thread) {
-      this.latestThreadId = thread.id
-      this.latestThreadTitle = thread.title
-      this.latestThreadAuthor = thread.author.name
-    } else {
-      this.latestThreadId = null
-      this.latestThreadTitle = null
-      this.latestThreadAuthor = null
-    }
-  }
-
   setLatestPost (post: ForumPost) {
     if (post) {
-      this.latestPostId = post.id
       this.latestPostAuthor = post.author.name
       this.latestPostThreadId = post.thread.id
       this.latestPostThreadTitle = post.thread.title
+      this.latestPostThreadSize = post.thread.postCount
     } else {
-      this.latestPostId = null
       this.latestPostAuthor = null
       this.latestPostThreadId = null
       this.latestPostThreadTitle = null
+      this.latestPostThreadSize = null
     }
   }
 

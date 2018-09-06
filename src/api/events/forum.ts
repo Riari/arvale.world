@@ -4,10 +4,9 @@ import { ForumThread } from '../entities/ForumThread'
 import { ForumPost } from '../entities/ForumPost'
 
 emitter.on('forum.thread.created', ({ thread }: { thread: ForumThread }) => {
-  thread.category.setLatestThread(thread)
   thread.category.threadCount++
-  thread.category.setLatestPost(thread.latestPost)
   thread.category.postCount++
+  thread.category.setLatestPost(thread.latestPost)
   thread.category.save()
 })
 
@@ -17,13 +16,11 @@ emitter.on('forum.thread.updated', async ({ thread, originalCategory }: { thread
 
     originalCategory.threadCount--
     originalCategory.postCount -= thread.postCount
-    await originalCategory.updateLatestThread()
     await originalCategory.updateLatestPost()
     await originalCategory.save()
 
     thread.category.threadCount++
     thread.category.postCount += thread.postCount
-    await thread.category.updateLatestThread()
     await thread.category.updateLatestPost()
     await thread.category.save()
   }
@@ -36,7 +33,6 @@ emitter.on('forum.thread.deleting', async ({ thread }: { thread: ForumThread }) 
 })
 
 emitter.on('forum.thread.deleted', async ({ thread }: { thread: ForumThread }) => {
-  await thread.category.updateLatestThread()
   await thread.category.updateLatestPost()
   thread.category.save()
 })
@@ -57,7 +53,6 @@ emitter.on('forum.post.deleted', async ({ post }: { post: ForumPost }) => {
 
     post.category.threadCount--
     post.category.postCount -= post.thread.postCount
-    await post.category.updateLatestThread()
     await post.category.save()
   } else {
     post.category.postCount--

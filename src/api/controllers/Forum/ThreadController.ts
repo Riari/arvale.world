@@ -75,7 +75,7 @@ class ThreadController extends Controller {
       thread.title = req.body.title
     }
 
-    thread = await thread.save()
+    await thread.save()
 
     if (req.body.category && req.body.category != thread.category.id) {
       const category = await ForumCategory.findOne({ id: req.body.category })
