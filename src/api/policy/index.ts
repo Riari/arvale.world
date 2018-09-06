@@ -51,6 +51,10 @@ export class Policy {
   }
 
   'post.forum.thread' = async (user: User, params?: any, body?: any) => {
+    if (!user) {
+      return false
+    }
+
     const category = await ForumCategory.findOne(body.category)
 
     if (!category.acceptsThreads) {
