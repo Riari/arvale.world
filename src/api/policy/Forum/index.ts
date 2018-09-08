@@ -1,29 +1,13 @@
 import { getManager } from 'typeorm'
 
-import { User } from '../entities/User'
-import { ForumCategory } from '../entities/ForumCategory'
-import { ForumThread } from '../entities/ForumThread';
+import Policy from '../Policy'
+import { User } from '../../entities/User'
+import { ForumCategory } from '../../entities/ForumCategory'
+import { ForumThread } from '../../entities/ForumThread'
 
-const permissions = require('./permissions')
-const forumCategories = require('./forum/categories')
+const forumCategories = require('./categories')
 
-export class Policy {
-  check (permission: string, user: any, params?: any, body?: any) {
-    if (typeof this[permission] === 'function') {
-      return this[permission](user, params, body)
-    }
-
-    if (typeof permissions[permission] !== 'undefined') {
-      if (typeof user === 'undefined') {
-        return false
-      }
-
-      return permissions[permission].some(role => user.roleList.includes(role))
-    }
-
-    return true
-  }
-
+export default class ForumPolicy extends Policy {
   'get.article' = async (user: User, params?: any) => {
     if (params.article && params.article.published) {
       return true
@@ -76,10 +60,6 @@ export class Policy {
 
   'patch.forum.post' = async (user: User, params?: any, body?: any) => {
     return (this.isUserAdmin(user) || !params.forumPost.thread.lockedAt && params.forumPost.author.id == user.id)
-  }
-
-  private isUserAdmin = (user: User) => {
-    return user && user.roleList.includes('Administrator')
   }
 
   private isForumCategoryAccessible = async (category: ForumCategory, user: User) => {
