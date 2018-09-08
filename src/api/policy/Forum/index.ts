@@ -41,7 +41,7 @@ export default class ForumPolicy extends Policy {
 
     const category = await ForumCategory.findOne(body.category)
 
-    if (!category.acceptsThreads) {
+    if (!category || !category.acceptsThreads) {
       return false
     }
 

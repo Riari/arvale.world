@@ -2,11 +2,14 @@
   <div class="row">
     <div class="col-xs-9">
       <panel :title="category.name" :loading="loading">
-        <div v-if="category.children">
+        <div v-if="category.children && category.children.length">
           <hr>
           <h3>Subcategories</h3>
           <forum-category-row v-for="child in category.children" :key="child.id" :category="child" :link="true" :showDetails="true"></forum-category-row>
         </div>
+        <v-button :route="{ name: 'forum-category-create-thread', params: { id: category.id } }">
+          Create thread
+        </v-button>
       </panel>
     </div>
     <div class="col-xs-3">

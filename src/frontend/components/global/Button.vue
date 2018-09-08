@@ -44,7 +44,8 @@ export default class Button extends Vue {
 <style lang="scss">
 @import "../../scss/variables";
 
-.button {
+.button,
+.panel .button {
   height: 44px;
   padding: .8em 2em;
   margin: 1em 0 0 0;
