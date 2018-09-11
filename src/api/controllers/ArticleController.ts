@@ -105,6 +105,7 @@ class ArticleController extends Controller {
       return res.status(422).send(validation.errors)
     }
 
+    const published = req.params.article.published
     let article = req.params.article
 
     if (req.body.title) {
@@ -129,7 +130,7 @@ class ArticleController extends Controller {
 
     article = await article.save()
 
-    if (article.published) {
+    if (req.body.published && !published) {
       this.sendToArvee(article)
     }
 
