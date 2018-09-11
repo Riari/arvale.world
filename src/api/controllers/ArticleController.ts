@@ -154,6 +154,8 @@ class ArticleController extends Controller {
       `${this.config.arvee.base_uri}news`,
       {
         id: article.id,
+        author: article.author.name,
+        category: article.category.name,
         title: article.title,
         slug: article.slug,
         excerpt: truncate(article.body, 80, { byWords: true })
