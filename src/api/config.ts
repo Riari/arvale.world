@@ -20,5 +20,8 @@ export default {
   nwn: {
     ip: process.env.APP_NWN_IP,
     port: parseInt(process.env.APP_NWN_PORT) || 5121
+  },
+  arvee: {
+    base_uri: process.env.APP_ARVEE_BASE_URI || 'http://localhost:6500/'
   }
 }

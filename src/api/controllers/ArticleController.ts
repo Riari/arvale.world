@@ -1,5 +1,6 @@
+import truncate from 'truncate-html'
+import request from 'request'
 import { Request, Response } from 'express'
-import showdown from 'showdown'
 import striptags from 'striptags'
 import Controller from './Controller'
 import { Article } from '../entities/Article'
@@ -82,6 +83,10 @@ class ArticleController extends Controller {
 
     article = await article.save()
 
+    if (article.published) {
+      this.sendToArvee(article)
+    }
+
     return res.status(201).send(article)
   }
 
@@ -124,6 +129,10 @@ class ArticleController extends Controller {
 
     article = await article.save()
 
+    if (article.published) {
+      this.sendToArvee(article)
+    }
+
     return res.status(200).send(article)
   }
 
@@ -137,6 +146,23 @@ class ArticleController extends Controller {
     article.remove()
 
     return res.status(200).send(article)
+  }
+
+  sendToArvee = (article: Article) => {
+    request.post(
+      `${this.config.arvee.base_uri}news`,
+      {
+        id: article.id,
+        title: article.title,
+        slug: article.slug,
+        excerpt: truncate(article.body, 80, { byWords: true })
+      },
+      (error, response) => {
+        if (error) {
+          console.error(error)
+        }
+      }
+    )
   }
 }
 
