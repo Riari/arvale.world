@@ -77,7 +77,7 @@ class ArticleController extends Controller {
       title: req.body.title,
       body: striptags(req.body.body),
       category: req.body.category,
-      published: req.body.published ? req.body.published : false,
+      published: req.body.published ? !!req.body.published : false,
       author: req.user.id
     })
 
