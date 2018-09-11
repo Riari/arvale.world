@@ -1,4 +1,5 @@
 export default {
+  production: process.env.NODE_ENV == 'production',
   host: process.env.APP_HOST || '127.0.0.1',
   port: process.env.APP_PORT || 9090,
   base_url: process.env.APP_BASE_URL || 'http://localhost:8080',

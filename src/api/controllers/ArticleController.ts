@@ -83,7 +83,7 @@ class ArticleController extends Controller {
 
     article = await article.save()
 
-    if (article.published) {
+    if (this.config.production && article.published) {
       this.sendToArvee(article)
     }
 
@@ -130,7 +130,7 @@ class ArticleController extends Controller {
 
     article = await article.save()
 
-    if (req.body.published && !published) {
+    if (this.config.production && req.body.published && !published) {
       this.sendToArvee(article)
     }
 
@@ -150,15 +150,19 @@ class ArticleController extends Controller {
   }
 
   sendToArvee = (article: Article) => {
-    request.post(
-      `${this.config.arvee.base_uri}news`,
+    request(
       {
-        id: article.id,
-        author: article.author.name,
-        category: article.category.name,
-        title: article.title,
-        slug: article.slug,
-        excerpt: truncate(article.body, 80, { byWords: true })
+        uri: `${this.config.arvee.base_uri}news`,
+        method: 'POST',
+        json: true,
+        body: {
+          id: article.id,
+          author: article.author.name,
+          category: article.category.name,
+          title: article.title,
+          slug: article.slug,
+          excerpt: truncate(article.body, 80, { byWords: true })
+        }
       },
       (error, response) => {
         if (error) {
