@@ -15,7 +15,7 @@
         </div>
         <div v-if="category.latestPostThreadId" class="col-xs-3 latest-post">
           in
-          <router-link :to="{ name: 'forum-thread', params: { id: category.latestPostThreadId, slug: category.latestPostThreadSlug } }">
+          <router-link :to="latestPostRoute">
             {{ category.latestPostThreadTitle }}
           </router-link>
           by
@@ -62,6 +62,10 @@ import Component from 'vue-class-component'
   }
 })
 export default class ForumCategoryRow extends Vue {
+  get latestPostRoute () {
+    const page = Math.ceil(this.category.latestPostThreadSize / 12)
+    return `/forum/thread/${this.category.latestPostThreadId}-${this.category.latestPostThreadSlug}?page=${page}#post${this.category.latestPostThreadSize}`
+  }
 }
 </script>
 

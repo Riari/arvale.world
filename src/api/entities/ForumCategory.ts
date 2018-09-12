@@ -4,7 +4,7 @@ import slugify from 'slugify'
 import { ForumThread } from './ForumThread'
 import { ForumPost } from './ForumPost'
 
-@Entity({ name: 'forum_category' })
+@Entity({ name: 'forum_category', orderBy: { weight: 'ASC' } })
 @Tree('materialized-path')
 export class ForumCategory extends BaseEntity {
 
@@ -13,6 +13,9 @@ export class ForumCategory extends BaseEntity {
 
   @Column()
   name: string
+
+  @Column()
+  weight: number
 
   @Column()
   acceptsThreads: boolean
