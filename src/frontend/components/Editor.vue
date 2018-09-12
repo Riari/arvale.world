@@ -1,6 +1,9 @@
 <template>
-  <div class="editor">
+  <div class="inputWrapper editor">
     <textarea></textarea>
+    <transition-group name="fade">
+      <div v-for="(error, index) in errors" :key="index" class="inputError">{{ error }}</div>
+    </transition-group>
   </div>
 </template>
 
@@ -12,7 +15,8 @@ import 'simplemde/dist/simplemde.min.css'
 
 @Component({
   props: {
-    options: Object
+    options: Object,
+    errors: Array
   }
 })
 export default class Editor extends Vue {

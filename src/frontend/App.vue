@@ -185,6 +185,7 @@ pre {
   }
 
   .inputError {
+    z-index: 1000;
     position: absolute;
     left: 100%;
     top: 50%;

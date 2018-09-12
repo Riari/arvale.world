@@ -1,4 +1,5 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, JoinColumn, ManyToOne, OneToOne, OneToMany } from 'typeorm'
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, JoinColumn, ManyToOne, OneToOne, OneToMany, AfterLoad } from 'typeorm'
+import slugify from 'slugify'
 
 import { ForumCategory } from './ForumCategory'
 import { ForumPost } from './ForumPost'
@@ -8,8 +9,6 @@ import { User } from './User'
 export class ForumThread extends BaseEntity {
 
   static perPage = 20
-
-  slug: string
 
   @PrimaryGeneratedColumn()
   id: number
@@ -46,5 +45,16 @@ export class ForumThread extends BaseEntity {
 
   @UpdateDateColumn({ type: 'timestamp' })
   updatedAt: number
+
+  slug: string
+
+  @AfterLoad()
+  onLoad () {
+    this.slugify()
+  }
+
+  slugify () {
+    this.slug = slugify(this.title, { lower: true })
+  }
 
 }

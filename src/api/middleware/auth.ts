@@ -1,5 +1,6 @@
 import { verifyJWT } from '../utils/auth'
-import { Policy } from '../policy'
+import Policy from '../policy/Forum'
+import ForumPolicy from '../policy/Forum'
 import { User } from '../entities/User'
 
 export async function checkAuthState (req, res, next) {
@@ -35,9 +36,14 @@ export async function checkPermissions (req, res, next) {
   req.baseUrl.toLowerCase().split('/').forEach(join)
   req.route.path.split('/').forEach(join)
 
+  const type = parts[1]
   const permission = parts.join('.')
 
-  const policy = new Policy
+  const policyMap = {
+    forum: ForumPolicy
+  }
+
+  const policy = policyMap[type] ? new policyMap[type]() : new Policy
 
   const hasPermission = await policy.check(permission, req.user, req.params, req.body)
 

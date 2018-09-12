@@ -14,6 +14,7 @@ import NewsArticle from '../pages/News/Article.vue'
 
 import ForumIndex from '../pages/Forum/Index.vue'
 import ForumCategory from '../pages/Forum/Category.vue'
+import ForumCreateThread from '../pages/Forum/CreateThread.vue'
 import ForumThread from '../pages/Forum/Thread.vue'
 
 import UserProfile from '../pages/UserProfile.vue'
@@ -41,6 +42,7 @@ const routes = [
       { path: '/news/category/:id-:slug', name: 'news-category', component: NewsList },
       { path: '/forum', component: ForumIndex },
       { path: '/forum/category/:id-:slug', name: 'forum-category', component: ForumCategory },
+      { path: '/forum/category/:id/create-thread', name: 'forum-category-create-thread', component: ForumCreateThread },
       { path: '/forum/thread/:id-:slug', name: 'forum-thread', component: ForumThread },
       { path: '/user/login', component: LogIn },
       { path: '/user/signup', component: SignUp },

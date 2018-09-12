@@ -15,6 +15,14 @@ class ThreadController extends Controller {
     return res.status(404).send({ message: 'Category not found.' })
   }
 
+  get = async (req: Request, res: Response) => {
+    if (req.params.forumThread) {
+      return res.status(200).send(req.params.forumThread)
+    }
+
+    return res.status(404).send({ message: 'Thread not found.' })
+  }
+
   create = async (req: Request, res: Response) => {
     const validation = this.validate(req.body, {
       category: 'required',
@@ -49,6 +57,7 @@ class ThreadController extends Controller {
 
     thread.latestPost = post
     thread.save()
+    thread.slugify()
 
     this.emit('forum.thread.created', { thread })
 

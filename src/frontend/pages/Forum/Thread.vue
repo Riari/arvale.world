@@ -14,16 +14,36 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import Component from 'vue-class-component'
+import { Vue, Component, Watch } from 'vue-property-decorator'
 
 @Component
 export default class ForumThread extends Vue {
-  threads = []
+  service: ArticleService
+  loading: Boolean
+  totalPages: Number = 0
+  articles = []
 
-  created () {
-    // const service = new ForumThreadService()
-    // service.list().then(response => this.categories = response.data)
+  @Watch('$route.query.page')
+  onPageChanged () {
+    this.getList()
+  }
+
+  async created () {
+    this.service = new ArticleService
+    this.getList()
+  }
+
+  get currentPage () {
+    return this.$route.query.page ? parseInt(this.$route.query.page) : 1
+  }
+
+  getList () {
+    this.loading = true
+    this.service.list(this.currentPage, { withUnpublished: true }).then(response => {
+      this.loading = false
+      this.articles = response.data.data
+      this.totalPages = response.data.totalPages
+    })
   }
 }
 </script>

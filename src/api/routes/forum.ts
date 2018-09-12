@@ -18,6 +18,7 @@ router.patch('/category/:category', checkPermissions, CategoryController.update)
 
 router.get('/category/:category/thread', checkPermissions, ThreadController.listByCategory)
 router.post('/thread', checkPermissions, ThreadController.create)
+router.get('/thread/:thread', checkPermissions, ThreadController.get)
 router.patch('/thread/:thread', checkPermissions, ThreadController.update)
 router.delete('/thread/:thread', checkPermissions, ThreadController.remove)
 
