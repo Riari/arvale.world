@@ -1,8 +1,24 @@
 <template>
-  <div class="row">
+  <div class="forum-index row">
     <div class="col-xs-9">
       <panel title="Forum index" :loading="loading">
-        <forum-category-row v-for="category in categories" :key="category.id" :category="category"></forum-category-row>
+        <div v-for="category in categories" :key="category.id">
+          <div class="row">
+            <div class="col-xs-5">
+              <div class="title">{{ category.name }}</div>
+            </div>
+            <div class="col-xs-2 thread-count-header">
+              Threads
+            </div>
+            <div class="col-xs-2 post-count-header">
+              Posts
+            </div>
+            <div class="col-xs-3 latest-post-header">
+              Latest post
+            </div>
+          </div>
+          <forum-category-row v-if="category.children" v-for="child in category.children" :key="child.id" :category="child"></forum-category-row>
+        </div>
       </panel>
     </div>
     <div class="col-xs-3">
@@ -39,3 +55,25 @@ export default class ForumIndex extends Vue {
   }
 }
 </script>
+
+<style lang="scss">
+.forum-index, .forum-category-index {
+  .title {
+    margin: 0 0 1em 0;
+    font-weight: bold;
+    font-size: 1.2em;
+  }
+
+  .thread-count-header,
+  .post-count-header,
+  .latest-post-header {
+    font-weight: bold;
+    text-align: right;
+  }
+
+  .thread-count-header,
+  .post-count-header {
+    text-align: center;
+  }
+}
+</style>

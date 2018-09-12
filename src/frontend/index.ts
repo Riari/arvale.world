@@ -15,6 +15,17 @@ import './plugins/Toasted'
 
 Vue.config.productionTip = false
 
+Vue.mixin({
+  methods: {
+    scrollTo (id, event) {
+      event.preventDefault()
+      document.querySelector(id).scrollIntoView({
+        behavior: 'smooth'
+      })
+    }
+  }
+})
+
 const app = new Vue({
   router,
   store,

@@ -1,64 +1,45 @@
 <template>
   <div class="forum-category">
-    <template v-if="link">
-      <template v-if="showDetails">
-        <div class="row">
-          <div class="col-xs-5">
-            <router-link :to="{ name: 'forum-category', params: { id: category.id, slug: category.slug } }">
-              {{ category.name }}
-            </router-link>
-          </div>
-          <div class="col-xs-2 thread-count">
-            {{ category.threadCount }}
-          </div>
-          <div class="col-xs-2 post-count">
-            {{ category.postCount }}
-          </div>
-          <div v-if="category.latestPostThreadId" class="col-xs-3 latest-post">
-            in
-            <router-link :to="{ name: 'forum-thread', params: { id: category.latestPostThreadId, slug: category.latestPostThreadSlug } }">
-              {{ category.latestPostThreadTitle }}
-            </router-link>
-            by
-            <router-link :to="{ name: 'user-profile', params: { name: category.latestPostAuthor } }">
-              {{ category.latestPostAuthor }}
-            </router-link>
-          </div>
-          <div v-else class="col-xs-3 latest-post">
-            -
-          </div>
+    <template v-if="showDetails">
+      <div class="row">
+        <div class="col-xs-5">
+          <router-link :to="{ name: 'forum-category', params: { id: category.id, slug: category.slug } }">
+            {{ category.name }}
+          </router-link>
         </div>
-      </template>
-      <template v-else>
-        <router-link
-          :to="{ name: 'forum-category', params: { id: category.id, slug: category.slug } }"
-        >
-          {{ category.name }}
-        </router-link>
-      </template>
+        <div class="col-xs-2 thread-count">
+          {{ category.threadCount }}
+        </div>
+        <div class="col-xs-2 post-count">
+          {{ category.postCount }}
+        </div>
+        <div v-if="category.latestPostThreadId" class="col-xs-3 latest-post">
+          in
+          <router-link :to="{ name: 'forum-thread', params: { id: category.latestPostThreadId, slug: category.latestPostThreadSlug } }">
+            {{ category.latestPostThreadTitle }}
+          </router-link>
+          by
+          <router-link :to="{ name: 'user-profile', params: { name: category.latestPostAuthor } }">
+            {{ category.latestPostAuthor }}
+          </router-link>
+        </div>
+        <div v-else class="col-xs-3 latest-post">
+          -
+        </div>
+      </div>
     </template>
-    <div v-else class="row">
-      <div class="col-xs-5">
-        <div class="title">{{ category.name }}</div>
-      </div>
-      <div class="col-xs-2 thread-count-header">
-        Threads
-      </div>
-      <div class="col-xs-2 post-count-header">
-        Posts
-      </div>
-      <div class="col-xs-3 latest-post-header">
-        Latest post
-      </div>
-    </div>
+    <template v-else>
+      <router-link :to="{ name: 'forum-category', params: { id: category.id, slug: category.slug } }">
+        {{ category.name }}
+      </router-link>
+    </template>
 
     <div v-if="category.children && category.children.length" class="children">
       <forum-category-row
         v-for="child in category.children"
         :key="child.id"
         :category="child"
-        :link="true"
-        :showDetails="!showDetails"
+        :showDetails="false"
       ></forum-category-row>
     </div>
   </div>
@@ -71,8 +52,10 @@ import Component from 'vue-class-component'
 @Component({
   props: {
     category: Object,
-    link: Boolean,
-    showDetails: Boolean
+    showDetails: {
+      type: Boolean,
+      default: true
+    }
   },
   components: {
     ForumCategoryRow
@@ -86,79 +69,60 @@ export default class ForumCategoryRow extends Vue {
 @import "../../scss/variables";
 
 .forum-category {
-  .title {
-    margin: 0 0 1em 0;
-    font-weight: bold;
-    font-size: 1.2em;
+  font-size: 1.1em;
+  padding: 1em 1.5em;
+  margin: .3em -1.5rem;
+  background: rgba(0, 0, 0, .2);
+
+  &:last-child {
+    margin-bottom: 2em;
   }
 
-  .thread-count-header,
-  .post-count-header,
-  .latest-post-header {
-    font-weight: bold;
+  .thread-count,
+  .post-count,
+  .latest-post {
     text-align: right;
+    color: $color-muted;
+
+    svg {
+      width: 22px;
+      height: 22px;
+      vertical-align: middle;
+      margin: -.3em .5em 0 0;
+      color: $color-muted;
+    }
   }
 
-  .thread-count-header,
-  .post-count-header {
+  .thread-count,
+  .post-count {
     text-align: center;
   }
 
   .children {
-    .forum-category {
-      font-size: 1.1em;
-      padding: 1em 1.5em;
-      margin: .3em -1.5rem;
-      background: rgba(0, 0, 0, .2);
+    margin-top: .7em;
+    padding-top: .4em;
+    border-top: 2px solid transparentize(rgb(136, 173, 255), $amount: .8);
 
-      &:last-child {
-        margin-bottom: 2em;
-      }
-
-      .thread-count,
-      .post-count,
-      .latest-post {
-        text-align: right;
-        color: $color-muted;
-
-        svg {
-          width: 22px;
-          height: 22px;
-          vertical-align: middle;
-          margin: -.3em .5em 0 0;
-          color: $color-muted;
-        }
-      }
-
-      .thread-count,
-      .post-count {
-        text-align: center;
-      }
-
-      .children {
-        padding: 1em 0 0 1em;
-
-        &:before {
-          content: "—";
-          display: inline-block;
-          margin-right: 1em;
-        }
-
-        .forum-category {
-          display: inline-block;
-          margin: 0 1em 0 0;
-          padding: 0;
-          background: none;
-          font-size: .8em;
-        }
-      }
-
-      h3 {
-        margin: 0;
-        font-weight: 400;
-        font-size: 1em;
-      }
+    &:before {
+      content: "Subcategories";
+      margin-right: 1em;
+      font-size: .8em;
+      color: $color-muted;
     }
+
+    .forum-category {
+      display: inline-block;
+      margin: 0 1em 0 0;
+      padding: 0;
+      background: none;
+      font-size: .8em;
+    }
+  }
+
+  h3 {
+    margin: 0;
+    font-weight: 400;
+    font-size: 1em;
   }
 }
 </style>

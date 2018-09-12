@@ -46,7 +46,7 @@ export default class Button extends Vue {
 
 .button,
 .panel .button {
-  height: 44px;
+  display: inline-block;
   padding: .8em 2em;
   margin: 1em 0 0 0;
   border-radius: 3px;
@@ -89,7 +89,7 @@ export default class Button extends Vue {
   }
 
   &:not(:disabled):active {
-    margin-top: 1.1em;
+    margin-top: 1em;
     background: linear-gradient(
       to bottom,
       darken($color-secondary, 15%) 0%,

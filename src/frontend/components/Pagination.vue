@@ -14,7 +14,10 @@ import Component from 'vue-class-component'
 
 @Component({
   props: {
-    currentPage: Number,
+    currentPage: {
+      type: Number,
+      default: 1
+    },
     path: String,
     pages: Number
   }

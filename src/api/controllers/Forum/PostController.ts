@@ -5,6 +5,45 @@ import { ForumThread } from '../../entities/ForumThread'
 import { ForumCategory } from '../../entities/ForumCategory';
 
 class PostController extends Controller {
+  listByThread = async (req: Request, res: Response) => {
+    if (!req.params.forumThread) {
+      return res.status(404).send({ message: 'Thread not found.' })
+    }
+
+    const thread = req.params.forumThread
+    const perPage = ForumPost.perPage
+    let currentPage = req.query.page ? req.query.page : 1
+
+    const totalCount = await ForumPost.count({ where: { thread: thread.id } })
+
+    if (currentPage > Math.ceil(totalCount / perPage)) {
+      currentPage = 1
+    }
+
+    let [posts, itemCount] = await ForumPost.findAndCount({
+      relations: ['author', 'author.roles'],
+      skip: (currentPage - 1) * perPage,
+      take: perPage,
+      order: { createdAt: 'ASC' },
+      where: { thread: thread.id }
+    })
+
+    let enumeration = ((currentPage - 1) * perPage) + 1
+    posts.forEach((post, index) => {
+      posts[index].number = enumeration++
+    })
+
+    const response = {
+      currentPage,
+      perPage,
+      itemCount,
+      totalPages: Math.ceil(itemCount / perPage),
+      data: posts
+    }
+
+    return res.status(200).send(response)
+  }
+
   create = async (req: Request, res: Response) => {
     const validation = this.validate(req.body, {
       thread: 'required',
@@ -30,6 +69,11 @@ class PostController extends Controller {
 
     let post = await ForumPost.create(entity)
     await post.save()
+
+    let postCount = await ForumPost.count({ where: { thread: thread.id } })
+    post.number = postCount
+
+    post.thread.slugify()
 
     this.emit('forum.post.created', { post: Object.assign({}, post, entity) })
 

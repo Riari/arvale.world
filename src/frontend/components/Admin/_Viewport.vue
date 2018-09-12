@@ -77,7 +77,8 @@ export default class AdminViewport extends mixins(UserStateMixin) {
   }
 
   .page-actions {
-    height: 44px;
+    height: 78px;
+    box-sizing: border-box;
     padding: .8em 1em 1em;
     text-align: right;
 

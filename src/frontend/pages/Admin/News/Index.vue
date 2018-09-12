@@ -6,7 +6,7 @@
         Create article
       </v-button>
     </div>
-    <panel>
+    <panel :loading="loading">
       <table>
         <thead>
           <tr>
@@ -47,6 +47,7 @@ import ArticleService from '../../../services/ArticleService'
 })
 export default class AdminUsers extends Vue {
   service: ArticleService
+  loading: Boolean
   totalPages: Number = 0
   articles = []
 
@@ -65,7 +66,9 @@ export default class AdminUsers extends Vue {
   }
 
   getList () {
+    this.loading = true
     this.service.list(this.currentPage, { withUnpublished: true }).then(response => {
+      this.loading = false
       this.articles = response.data.data
       this.totalPages = response.data.totalPages
     })
