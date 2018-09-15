@@ -26,6 +26,7 @@ export default class ThreadService {
       author
     })
     post = await post.save()
+    post = await ForumPost.findOne({ id: post.id })
 
     thread.latestPost = post
     thread.save()
