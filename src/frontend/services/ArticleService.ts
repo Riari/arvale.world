@@ -39,8 +39,8 @@ export default class ArticleService extends HTTPResource {
     return this.client.get(`article/${id}`)
   }
 
-  create (title: string, body: string, category: number): AxiosPromise {
-    return this.client.post('article', { title, body, category })
+  create (title: string, body: string, category: number, published: boolean): AxiosPromise {
+    return this.client.post('article', { title, body, category, published })
   }
 
   update (article): AxiosPromise {

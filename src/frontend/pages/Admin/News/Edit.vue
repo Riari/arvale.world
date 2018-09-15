@@ -51,8 +51,6 @@ export default class EditArticle extends Vue {
     published: false
   }
 
-  selectedCategory = null
-
   validationErrors = {
     title: null,
     category: null
@@ -87,8 +85,6 @@ export default class EditArticle extends Vue {
   submit () {
     const markdown = this.$refs.editor.value()
 
-    this.article.category = this.selectedCategory
-
     if (this.article.id) {
       this.article.body = markdown
 
@@ -97,7 +93,7 @@ export default class EditArticle extends Vue {
         this.$toasted.show("Article updated", { type: 'success' })
       })
     } else {
-      this.service.create(this.article.title, markdown, this.article.category.id)
+      this.service.create(this.article.title, markdown, this.article.category.id, this.article.published)
         .then(response => {
           this.$router.push({ name: 'news-article', params: { id: response.data.id, slug: response.data.slug } })
           this.$toasted.show("Article created", { type: 'success' })
