@@ -12,7 +12,7 @@ export default class ArticleService {
   }
 
   sendToArvee = (article: Article) => {
-    console.log('article')
+    console.log(article)
     request(
       {
         uri: `${this.config.arvee.base_uri}news`,
