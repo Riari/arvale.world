@@ -15,7 +15,7 @@ const connection = createConnection({
   username: process.env.DB_USERNAME || 'postgres',
   password: process.env.DB_PASSWORD || 'secret',
   database: process.env.DB_NAME || 'arvale-web',
-  logging: process.env.DB_LOGGING && process.env.DB_LOGGING == 'true',
+  logging: process.env.DB_LOGGING == 'true' || process.env.DB_LOGGING,
   entities: [
     Article,
     ArticleCategory,
