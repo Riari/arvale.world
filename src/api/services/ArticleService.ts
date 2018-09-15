@@ -11,6 +11,10 @@ export default class ArticleService {
     this.config = config
   }
 
+  get = async (id: number) => {
+    return await Article.findOne({ id })
+  }
+
   sendToArvee = (article: Article) => {
     request(
       {
