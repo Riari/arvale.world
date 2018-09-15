@@ -30,6 +30,7 @@ emitter.on('article.created', async ({ article }: { article: Article }) => {
 })
 
 emitter.on('article.updated', async ({ article, previouslyPublished }: { article: Article, previouslyPublished: Boolean }) => {
+  console.log("article.updated:", article, "previously published:", previouslyPublished)
   if (!previouslyPublished && article.published) {
     if (!article.thread) {
       const forumCategory = await Services.get('forum.category').get(config.forum.announcementCategory)
