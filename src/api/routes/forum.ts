@@ -18,11 +18,13 @@ router.patch('/category/:category', checkPermissions, CategoryController.update)
 
 router.get('/category/:category/thread', checkPermissions, ThreadController.listByCategory)
 router.post('/thread', checkPermissions, ThreadController.create)
+router.get('/thread/latest', ThreadController.getLatest)
 router.get('/thread/:thread', checkPermissions, ThreadController.get)
 router.patch('/thread/:thread', checkPermissions, ThreadController.update)
 router.delete('/thread/:thread', checkPermissions, ThreadController.remove)
 
 router.get('/thread/:thread/post', checkPermissions, PostController.listByThread)
+router.get('/post/latest', PostController.getLatest)
 router.post('/post', checkPermissions, PostController.create)
 router.patch('/post/:post', checkPermissions, PostController.update)
 router.delete('/post/:post', checkPermissions, PostController.remove)

@@ -5,7 +5,7 @@
         <div v-for="category in categories" :key="category.id">
           <div class="row">
             <div class="col-xs-5">
-              <div class="title">{{ category.name }}</div>
+              <div class="category-title">{{ category.name }}</div>
             </div>
             <div class="col-xs-2 thread-count-header">
               Threads
@@ -22,10 +22,8 @@
       </panel>
     </div>
     <div class="col-xs-3">
-      <panel title="Latest threads" icon="activity">
-      </panel>
-      <panel title="Latest posts" icon="activity">
-      </panel>
+      <latest-forum-threads></latest-forum-threads>
+      <latest-forum-posts></latest-forum-posts>
     </div>
   </div>
 </template>
@@ -35,11 +33,15 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import ForumCategoryService from '../../services/Forum/CategoryService'
 import ForumCategoryRow from '../../components/Forum/CategoryRow.vue'
+import LatestForumThreads from '../../components/modules/LatestForumThreads.vue'
+import LatestForumPosts from '../../components/modules/LatestForumPosts.vue'
 
 @Component({
   title: 'Forum',
   components: {
-    ForumCategoryRow
+    ForumCategoryRow,
+    LatestForumThreads,
+    LatestForumPosts
   }
 })
 export default class ForumIndex extends Vue {
@@ -58,7 +60,7 @@ export default class ForumIndex extends Vue {
 
 <style lang="scss">
 .forum-index, .forum-category-index {
-  .title {
+  .category-title {
     margin: 0 0 1em 0;
     font-weight: bold;
     font-size: 1.2em;

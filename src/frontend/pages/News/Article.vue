@@ -29,8 +29,16 @@
 
         <hr>
 
-        <div class="text-center">
-          <router-link to="/news">See all News & Announcements</router-link>
+        <div class="row links">
+          <div class="col-xs-6">
+            <router-link to="/news">← See all News & Announcements</router-link>
+          </div>
+          <div v-if="article.thread" class="col-xs-6 thread-link">
+            <icon name="message-square"></icon>
+            <router-link :to="{ name: 'forum-thread', params: { id: article.thread.id, slug: article.thread.slug }}">
+              {{ article.thread.postCount - 1 }} {{ article.thread.postCount - 1 == 1 ? 'comment' : 'comments' }}
+            </router-link>
+          </div>
         </div>
       </div>
     </div>
@@ -99,6 +107,8 @@ export default class NewsArticle extends mixins(UserStateMixin) {
 </script>
 
 <style lang="scss">
+@import "../../scss/variables";
+
 .panel.article {
   font-size: 1.2em;
 
@@ -124,5 +134,13 @@ export default class NewsArticle extends mixins(UserStateMixin) {
     }
   }
 
+  .thread-link {
+    text-align: right;
+
+    svg {
+      margin-right: .5em;
+      vertical-align: middle;
+    }
+  }
 }
 </style>

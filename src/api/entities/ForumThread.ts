@@ -34,10 +34,10 @@ export class ForumThread extends BaseEntity {
   @JoinColumn()
   latestPost: ForumPost
 
-  @CreateDateColumn({ type: 'timestamp', default: null })
+  @CreateDateColumn({ type: 'timestamp', nullable: true })
   lockedAt: string
 
-  @CreateDateColumn({ type: 'timestamp', default: null })
+  @CreateDateColumn({ type: 'timestamp', nullable: true })
   pinnedAt: string
 
   @CreateDateColumn({ type: 'timestamp' })

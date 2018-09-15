@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import Controller from '../Controller'
+import Services from '../../services'
 import { ForumPost } from '../../entities/ForumPost'
 import { ForumThread } from '../../entities/ForumThread'
 
@@ -41,6 +42,11 @@ class PostController extends Controller {
     }
 
     return res.status(200).send(response)
+  }
+
+  getLatest = async (req: Request, res: Response) => {
+    const posts = await Services.get('forum.post').getLatest()
+    return res.status(200).send(posts)
   }
 
   create = async (req: Request, res: Response) => {

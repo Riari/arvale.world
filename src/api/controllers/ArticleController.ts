@@ -1,8 +1,12 @@
-import truncate from 'truncate-html'
-import request from 'request'
 import { Request, Response } from 'express'
 import striptags from 'striptags'
+
 import Controller from './Controller'
+
+import ArticleService from '../services/ArticleService'
+import ForumCategoryService from '../services/Forum/CategoryService'
+import ForumThreadService from '../services/Forum/ThreadService'
+
 import { Article } from '../entities/Article'
 import { ArticleCategory } from '../entities/ArticleCategory'
 
@@ -73,19 +77,19 @@ class ArticleController extends Controller {
       return res.status(404).send({ message: 'Specified category not found.' })
     }
 
+    const body = striptags(req.body.body)
+
     let article = await Article.create({
       title: req.body.title,
-      body: striptags(req.body.body),
+      body,
       category: req.body.category,
-      published: req.body.published ? !!req.body.published : false,
+      published: !!req.body.published,
       author: req.user.id
     })
 
     article = await article.save()
 
-    if (this.config.production && article.published) {
-      this.sendToArvee(article)
-    }
+    this.emit('article.created', { article })
 
     return res.status(201).send(article)
   }
@@ -130,9 +134,7 @@ class ArticleController extends Controller {
 
     article = await article.save()
 
-    if (this.config.production && req.body.published && !published) {
-      this.sendToArvee(article)
-    }
+    this.emit('article.updated', { article, previouslyPublished: published })
 
     return res.status(200).send(article)
   }
@@ -144,32 +146,10 @@ class ArticleController extends Controller {
 
     const article = req.params.article
 
+    await article.thread.remove()
     article.remove()
 
     return res.status(200).send(article)
-  }
-
-  sendToArvee = (article: Article) => {
-    request(
-      {
-        uri: `${this.config.arvee.base_uri}news`,
-        method: 'POST',
-        json: true,
-        body: {
-          id: article.id,
-          author: article.author.name,
-          category: article.category.name,
-          title: article.title,
-          slug: article.slug,
-          excerpt: truncate(article.body, 80, { byWords: true })
-        }
-      },
-      (error, response) => {
-        if (error) {
-          console.error(error)
-        }
-      }
-    )
   }
 }
 

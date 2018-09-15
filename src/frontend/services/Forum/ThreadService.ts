@@ -11,6 +11,10 @@ export default class ForumThreadService extends HTTPResource {
     return this.client.get(`forum/thread/${id}`)
   }
 
+  listLatest (): AxiosPromise {
+    return this.client.get('forum/thread/latest')
+  }
+
   listPosts (threadId: Number, page: Number): AxiosPromise {
     const query: any = { page }
 

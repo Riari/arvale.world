@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
-import striptags from 'striptags'
 
 import Controller from '../Controller'
+import Services from '../../services'
 import { ForumThread } from '../../entities/ForumThread'
 import { ForumPost } from '../../entities/ForumPost'
 import { ForumCategory } from '../../entities/ForumCategory'
@@ -49,6 +49,11 @@ class ThreadController extends Controller {
     return res.status(404).send({ message: 'Thread not found.' })
   }
 
+  getLatest = async (req: Request, res: Response) => {
+    const threads = await Services.get('forum.thread').getLatest()
+    return res.status(200).send(threads)
+  }
+
   create = async (req: Request, res: Response) => {
     const validation = this.validate(req.body, {
       category: 'required',
@@ -60,30 +65,13 @@ class ThreadController extends Controller {
       return res.status(422).send(validation.errors)
     }
 
-    const category = await ForumCategory.findOne({ id: req.body.category })
+    const category = await Services.get('forum.category').get(req.body.category)
 
     if (!category) {
       return res.status(404).send({ message: 'Category not found.' })
     }
 
-    let thread = await ForumThread.create({
-      title: req.body.title,
-      category,
-      author: req.user
-    })
-    thread = await thread.save()
-
-    let post = await ForumPost.create({
-      category,
-      thread,
-      body: striptags(req.body.body),
-      author: req.user
-    })
-    post = await post.save()
-
-    thread.latestPost = post
-    thread.save()
-    thread.slugify()
+    const thread = await Services.get('forum.thread').create(req.body.title, category, req.user, req.body.body)
 
     this.emit('forum.thread.created', { thread })
 

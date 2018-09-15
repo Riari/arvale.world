@@ -1,5 +1,6 @@
 import { getManager } from 'typeorm'
 
+import config from '../../config'
 import Policy from '../Policy'
 import { User } from '../../entities/User'
 import { ForumCategory } from '../../entities/ForumCategory'
@@ -23,15 +24,11 @@ export default class ForumPolicy extends Policy {
   'get.forum.category' = async (user: User, params?: any, body?: any) => {
     const category = params.forumCategory
 
-    if (!params.forumCategory) {
+    if (!category) {
       // Either this is a list request (/forum/category) or it's getByID
       // request (/forum/category/:category) but no matching category was
       // found
       return true
-    }
-
-    if (category && !category.acceptsThreads) {
-      return false
     }
 
     return this.canUserAccessCategory(user ? user : null, category)
@@ -40,8 +37,8 @@ export default class ForumPolicy extends Policy {
   'get.forum.category.thread' = async (user: User, params?: any, body?: any) => {
     const category = params.forumCategory
 
-    if (category && !category.acceptsThreads) {
-      return false
+    if (!category) {
+      return true
     }
 
     return this.canUserAccessCategory(user ? user : null, category)
@@ -54,10 +51,6 @@ export default class ForumPolicy extends Policy {
 
     const category = params.forumThread.category
 
-    if (category && !category.acceptsThreads) {
-      return false
-    }
-
     return this.canUserAccessCategory(user ? user : null, category)
   }
 
@@ -67,10 +60,6 @@ export default class ForumPolicy extends Policy {
     }
 
     const category = params.forumThread.category
-
-    if (category && !category.acceptsThreads) {
-      return false
-    }
 
     return this.canUserAccessCategory(user ? user : null, category)
   }

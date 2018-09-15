@@ -41,10 +41,8 @@
       </panel>
     </div>
     <div class="col-xs-3">
-      <panel>
-      </panel>
-      <panel>
-      </panel>
+      <latest-forum-threads></latest-forum-threads>
+      <latest-forum-posts></latest-forum-posts>
     </div>
   </div>
 </template>
@@ -57,9 +55,17 @@ import ForumThreadService from '../../services/Forum/ThreadService'
 import ForumPost from '../../components/Forum/Post.vue'
 import Editor from '../../components/Editor.vue'
 import Pagination from '../../components/Pagination.vue'
+import LatestForumThreads from '../../components/modules/LatestForumThreads.vue'
+import LatestForumPosts from '../../components/modules/LatestForumPosts.vue'
 
 @Component({
-  components: { ForumPost, Editor, Pagination }
+  components: {
+    ForumPost,
+    Editor,
+    Pagination,
+    LatestForumThreads,
+    LatestForumPosts
+  }
 })
 export default class ForumThread extends mixins(UserStateMixin) {
   service: ForumThreadService
@@ -93,7 +99,7 @@ export default class ForumThread extends mixins(UserStateMixin) {
     this.service = new ForumThreadService
     this.service.getByID(parseInt(this.$route.params.id))
       .then(response => {
-        this.$title = response.data.name
+        this.$title = response.data.title
         this.thread = response.data
 
         this.getPostList()

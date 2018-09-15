@@ -1,9 +1,10 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, JoinColumn, ManyToOne, AfterLoad } from 'typeorm'
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, JoinColumn, OneToOne, ManyToOne, AfterLoad } from 'typeorm'
 import slugify from 'slugify'
 import showdown from 'showdown'
 import truncate from 'truncate-html'
 
 import { ArticleCategory } from './ArticleCategory'
+import { ForumThread } from './ForumThread'
 import { User } from './User'
 
 @Entity({ name: 'article' })
@@ -27,6 +28,10 @@ export class Article extends BaseEntity {
   @JoinColumn()
   category: ArticleCategory
 
+  @OneToOne(type => ForumThread, { nullable: true })
+  @JoinColumn()
+  thread: ForumThread
+
   @ManyToOne(type => User, author => author.articles)
   @JoinColumn()
   author: User
@@ -43,14 +48,27 @@ export class Article extends BaseEntity {
 
   @AfterLoad()
   onLoad () {
-    const converter = new showdown.Converter({
+    const converter = this.getMarkdownConverter()
+
+    this.slugify()
+    this.body_html = converter.makeHtml(this.body)
+    this.body_excerpt = truncate(this.body_html, 80, { byWords: true })
+  }
+
+  slugify () {
+    this.slug = slugify(this.title, { lower: true })
+  }
+
+  getMarkdownExcerpt () {
+    const converter = this.getMarkdownConverter()
+    return truncate(this.body, 80, { byWords: true })
+  }
+
+  getMarkdownConverter () {
+    return new showdown.Converter({
       tasklists: true,
       ghCodeBlocks: true
     })
-
-    this.slug = slugify(this.title, { lower: true })
-    this.body_html = converter.makeHtml(this.body)
-    this.body_excerpt = truncate(this.body_html, 80, { byWords: true })
   }
 
 }

@@ -1,6 +1,6 @@
 <template>
-  <div class="row">
-    <div class="col-xs-9">
+  <div class="row center-xs">
+    <div class="col-xs-8">
       <panel v-if="category" :title="`Create Thread in ${category.name}`">
         <div class="go-back">
           <a href="#" @click="goBack($event)">← Go back</a>
@@ -16,12 +16,6 @@
         <v-button @click.native="submit">
           Create thread
         </v-button>
-      </panel>
-    </div>
-    <div class="col-xs-3">
-      <panel title="Latest threads" icon="activity">
-      </panel>
-      <panel title="Latest posts" icon="activity">
       </panel>
     </div>
   </div>

@@ -6,7 +6,7 @@ import { ForumPost } from '../entities/ForumPost'
 import { User } from '../entities/User'
 
 export const article = async (req, res, next, id) => {
-  req.params.article = await Article.findOne({ relations: ['author', 'author.roles', 'category'], where: { id } })
+  req.params.article = await Article.findOne({ relations: ['author', 'author.roles', 'category', 'thread'], where: { id } })
   next()
 }
 

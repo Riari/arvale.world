@@ -68,10 +68,8 @@
       </panel>
     </div>
     <div class="col-xs-3">
-      <panel title="Latest threads" icon="activity">
-      </panel>
-      <panel title="Latest posts" icon="activity">
-      </panel>
+      <latest-forum-threads></latest-forum-threads>
+      <latest-forum-posts></latest-forum-posts>
     </div>
   </div>
 </template>
@@ -84,8 +82,18 @@ import ForumCategoryService from '../../services/Forum/CategoryService'
 import ForumCategoryRow from '../../components/Forum/CategoryRow.vue'
 import ForumThreadRow from '../../components/Forum/ThreadRow.vue'
 import Pagination from '../../components/Pagination.vue'
+import LatestForumThreads from '../../components/modules/LatestForumThreads.vue'
+import LatestForumPosts from '../../components/modules/LatestForumPosts.vue'
 
-@Component({ components: { ForumCategoryRow, ForumThreadRow, Pagination } })
+@Component({
+  components: {
+    ForumCategoryRow,
+    ForumThreadRow,
+    Pagination,
+    LatestForumThreads,
+    LatestForumPosts
+  }
+})
 export default class ForumCategory extends mixins(UserStateMixin) {
   service: ForumCategoryService
   loading = true
@@ -139,6 +147,10 @@ export default class ForumCategory extends mixins(UserStateMixin) {
 
 <style lang="scss">
 .forum-category-index {
+  .links {
+    margin-bottom: 1em;
+  }
+
   .forum-category {
     padding: .5em 1.5em;
     font-size: 1em;

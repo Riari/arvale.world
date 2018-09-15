@@ -18,6 +18,9 @@ export default {
     secret: process.env.APP_AUTH_SECRET,
     lifetime: parseInt(process.env.APP_AUTH_LIFETIME) || 86400
   },
+  forum: {
+    announcementCategory: 2
+  },
   nwn: {
     ip: process.env.APP_NWN_IP,
     port: parseInt(process.env.APP_NWN_PORT) || 5121
