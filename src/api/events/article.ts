@@ -52,7 +52,6 @@ emitter.on('article.updated', async ({ article, previouslyPublished }: { article
     }
 
     if (config.production) {
-      article = await Services.get('article').get(article.id)
       Services.get('article').sendToArvee(article)
     }
   }
