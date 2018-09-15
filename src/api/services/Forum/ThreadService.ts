@@ -19,6 +19,8 @@ export default class ThreadService {
     })
     thread = await thread.save()
 
+    console.log('created thread', thread)
+
     let post = await ForumPost.create({
       category,
       thread,
@@ -26,11 +28,14 @@ export default class ThreadService {
       author
     })
     post = await post.save()
-    post = await ForumPost.findOne({ id: post.id })
+
+    console.log('created post', post)
 
     thread.latestPost = post
     thread.save()
     thread.slugify()
+
+    console.log('updated latestPost', thread)
 
     return thread
   }
