@@ -7,7 +7,7 @@ export default class ForumThreadService extends HTTPResource {
     return this.client.post('forum/thread', { category, title, body })
   }
 
-  getById (id: number): AxiosPromise {
+  getByID (id: number): AxiosPromise {
     return this.client.get(`forum/thread/${id}`)
   }
 

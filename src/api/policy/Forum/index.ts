@@ -20,18 +20,59 @@ export default class ForumPolicy extends Policy {
     return this.isUserAdmin(user)
   }
 
-  'get.forum.category.thread' = async (user: User, params?: any, body?: any) => {
-    if (!user) {
+  'get.forum.category' = async (user: User, params?: any, body?: any) => {
+    const category = params.forumCategory
+
+    if (!params.forumCategory) {
+      // Either this is a list request (/forum/category) or it's getByID
+      // request (/forum/category/:category) but no matching category was
+      // found
+      return true
+    }
+
+    if (category && !category.acceptsThreads) {
       return false
     }
 
+    return this.canUserAccessCategory(user ? user : null, category)
+  }
+
+  'get.forum.category.thread' = async (user: User, params?: any, body?: any) => {
     const category = params.forumCategory
 
     if (category && !category.acceptsThreads) {
       return false
     }
 
-    return this.isForumCategoryAccessible(category, user)
+    return this.canUserAccessCategory(user ? user : null, category)
+  }
+
+  'get.forum.thread' = async (user: User, params?: any, body?: any) => {
+    if (!params.forumThread) {
+      return true
+    }
+
+    const category = params.forumThread.category
+
+    if (category && !category.acceptsThreads) {
+      return false
+    }
+
+    return this.canUserAccessCategory(user ? user : null, category)
+  }
+
+  'get.forum.thread.post' = async (user: User, params?: any, body?: any) => {
+    if (!params.forumThread) {
+      return true
+    }
+
+    const category = params.forumThread.category
+
+    if (category && !category.acceptsThreads) {
+      return false
+    }
+
+    return this.canUserAccessCategory(user ? user : null, category)
   }
 
   'post.forum.thread' = async (user: User, params?: any, body?: any) => {
@@ -45,7 +86,7 @@ export default class ForumPolicy extends Policy {
       return false
     }
 
-    return this.isForumCategoryAccessible(category, user)
+    return this.canUserAccessCategory(user, category)
   }
 
   'post.forum.post' = async (user: User, params?: any, body?: any) => {
@@ -55,25 +96,29 @@ export default class ForumPolicy extends Policy {
       return false
     }
 
-    return this.isForumCategoryAccessible(thread.category, user)
+    return this.canUserAccessCategory(user, thread.category)
   }
 
   'patch.forum.post' = async (user: User, params?: any, body?: any) => {
     return (this.isUserAdmin(user) || !params.forumPost.thread.lockedAt && params.forumPost.author.id == user.id)
   }
 
-  private isForumCategoryAccessible = async (category: ForumCategory, user: User) => {
-    const repository = getManager().getTreeRepository(ForumCategory)
+  public canUserAccessCategory = async (user: User, category: ForumCategory, checkAncestors = true) => {
+    const check = (user, category) => !user ? false : forumCategories[category.id].some(role => user.roleList.includes(role))
 
-    const parents = await repository.findAncestors(category)
-
-    if (forumCategories[category.id] && !forumCategories[category.id].some(role => user.roleList.includes(role))) {
-      return false
+    if (forumCategories[category.id]) {
+      return check(user, category)
     }
 
-    for (let c of parents) {
-      if (forumCategories[c.id] && !forumCategories[c.id].some(role => user.roleList.includes(role))) {
-        return false
+    if (checkAncestors) {
+      const repository = getManager().getTreeRepository(ForumCategory)
+
+      const parents = await repository.findAncestors(category)
+
+      for (let c of parents) {
+        if (forumCategories[c.id]) {
+          return check(user, c)
+        }
       }
     }
 

@@ -2,7 +2,6 @@ import { Request, Response } from 'express'
 import Controller from '../Controller'
 import { ForumPost } from '../../entities/ForumPost'
 import { ForumThread } from '../../entities/ForumThread'
-import { ForumCategory } from '../../entities/ForumCategory';
 
 class PostController extends Controller {
   listByThread = async (req: Request, res: Response) => {

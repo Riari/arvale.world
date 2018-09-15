@@ -2,7 +2,7 @@
   <div class="row center-xs">
     <div class="col-xs-8">
       <panel>
-        Hello
+        User profiles coming soon!
       </panel>
     </div>
   </div>
@@ -14,5 +14,8 @@ import Component from 'vue-class-component'
 
 @Component
 export default class UserProfile extends Vue {
+  created () {
+    this.$title = 'User Profile'
+  }
 }
 </script>

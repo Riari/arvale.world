@@ -64,7 +64,7 @@ import Component from 'vue-class-component'
 export default class ForumCategoryRow extends Vue {
   get latestPostRoute () {
     const page = Math.ceil(this.category.latestPostThreadSize / 12)
-    return `/forum/thread/${this.category.latestPostThreadId}-${this.category.latestPostThreadSlug}?page=${page}#post${this.category.latestPostThreadSize}`
+    return `/forum/thread/${this.category.latestPostThreadId}-${this.category.latestPostThreadSlug}?page=${page}#post-${this.category.latestPostThreadSize}`
   }
 }
 </script>

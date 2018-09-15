@@ -2,7 +2,10 @@
   <div class="forum-category-index row">
     <div class="col-xs-9">
       <panel :title="category.name" :loading="loading">
-        <router-link to="/forum">← Return to forum index</router-link>
+        <div class="links">
+          <router-link to="/forum">← Return to forum index</router-link>
+        </div>
+
         <div v-if="category.children && category.children.length">
           <hr>
           <div class="row">
@@ -25,9 +28,43 @@
             :category="child"
           ></forum-category-row>
         </div>
-        <v-button :route="{ name: 'forum-category-create-thread', params: { id: category.id } }">
-          Create thread
-        </v-button>
+
+        <div v-if="threads.length">
+          <div class="row">
+            <div class="col-xs-7">
+              <div class="title">Threads</div>
+            </div>
+            <div class="col-xs-2 post-count-header">
+              Replies
+            </div>
+            <div class="col-xs-3 latest-post-header">
+              Latest post
+            </div>
+          </div>
+
+          <forum-thread-row v-for="thread in threads" :key="thread.id" :thread="thread"></forum-thread-row>
+
+          <pagination :path="$router.currentRoute.path" :currentPage="currentPage" :pages="totalPages"></pagination>
+
+          <div class="category-actions">
+            <v-button
+              v-if="isUserAuthenticated && category.acceptsThreads"
+              :route="{ name: 'forum-category-create-thread', params: { id: category.id } }"
+            >
+              Create thread
+            </v-button>
+          </div>
+        </div>
+
+        <div v-if="!loading && !threads.length" class="empty">
+          <icon name="info"></icon>
+
+          <p>No threads in this category yet.</p>
+
+          <router-link v-if="category.id" :to="{ name: 'forum-category-create-thread', params: { id: category.id } }">
+            Start a discussion
+          </router-link>
+        </div>
       </panel>
     </div>
     <div class="col-xs-3">
@@ -40,27 +77,61 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import Component from 'vue-class-component'
+import { Vue, Component, Watch } from 'vue-property-decorator'
+import { mixins } from 'vue-class-component'
+import { UserStateMixin } from '../../mixins/UserState'
 import ForumCategoryService from '../../services/Forum/CategoryService'
 import ForumCategoryRow from '../../components/Forum/CategoryRow.vue'
+import ForumThreadRow from '../../components/Forum/ThreadRow.vue'
+import Pagination from '../../components/Pagination.vue'
 
-@Component({ components: { ForumCategoryRow } })
-export default class ForumCategory extends Vue {
+@Component({ components: { ForumCategoryRow, ForumThreadRow, Pagination } })
+export default class ForumCategory extends mixins(UserStateMixin) {
+  service: ForumCategoryService
   loading = true
+  currentPage: Number
+  totalPages: Number = 0
 
   category = {
+    id: null,
     name: null,
     children: null
   }
 
-  created () {
-    const service = new ForumCategoryService()
-    service.getByID(parseInt(this.$route.params.id)).then(response => {
-      const category = response.data
-      this.$title = category.name
-      this.category = category
+  threads = []
+
+  @Watch('$route.query.page')
+  onPageChanged () {
+    const page = parseInt(this.$route.query.page)
+    if (page != this.currentPage) {
+      this.currentPage = page
+      this.getThreadList()
+    }
+  }
+
+  async created () {
+    this.currentPage = this.$route.query.page ? parseInt(this.$route.query.page) : 1
+    this.service = new ForumCategoryService
+    this.service.getByID(parseInt(this.$route.params.id))
+      .then(response => {
+        this.$title = response.data.name
+        this.category = response.data
+
+        this.getThreadList()
+      })
+      .catch(error => {
+        switch (error.response.status) {
+          case 401:
+            this.$router.push('/')
+        }
+      })
+  }
+
+  getThreadList () {
+    this.service.listThreads(this.category.id, this.currentPage).then(response => {
       this.loading = false
+      this.threads = response.data.data
+      this.totalPages = response.data.totalPages
     })
   }
 }
@@ -71,6 +142,10 @@ export default class ForumCategory extends Vue {
   .forum-category {
     padding: .5em 1.5em;
     font-size: 1em;
+  }
+
+  .category-actions {
+    text-align: right;
   }
 }
 </style>

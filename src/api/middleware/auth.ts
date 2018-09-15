@@ -47,9 +47,5 @@ export async function checkPermissions (req, res, next) {
 
   const hasPermission = await policy.check(permission, req.user, req.params, req.body)
 
-  if (hasPermission) {
-    next()
-  } else {
-    res.status(401).send({ message: "Unauthorized" })
-  }
+  return hasPermission ? next() : res.status(401).send({ message: "Unauthorized" })
 }

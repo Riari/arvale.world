@@ -38,7 +38,7 @@ export class ForumThread extends BaseEntity {
   lockedAt: string
 
   @CreateDateColumn({ type: 'timestamp', default: null })
-  stickiedAt: string
+  pinnedAt: string
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: string

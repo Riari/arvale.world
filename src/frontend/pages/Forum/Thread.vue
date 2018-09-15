@@ -3,15 +3,25 @@
     <div class="col-xs-9">
       <panel :title="`Viewing thread: ${thread.title}`" :loading="loading">
         <div class="tags">
-          <tag v-if="thread.category && thread.author" class="started">
-            Started in
+          <tag v-if="thread.pinnedAt" class="pinned">Pinned</tag>
+          <tag v-if="thread.lockedAt" class="locked">Locked</tag>
+        </div>
+
+        <div class="row details">
+          <div class="col-xs-4">
+            <router-link to="/forum">← Return to forum index</router-link>
+          </div>
+          <div v-if="thread.category" class="col-xs-4 category">
+            Posted in
             <router-link :to="{ name: 'forum-category', params: { id: thread.category.id, slug: thread.category.slug } }">
               {{ thread.category.name }}
             </router-link>
-            by
+          </div>
+          <div v-if="thread.author" class="col-xs-4 author">
+            Started by
             <user-link :user="thread.author"></user-link>
             {{ thread.createdAt | moment('from') }}
-          </tag>
+          </div>
         </div>
 
         <div class="actions">
@@ -57,7 +67,9 @@ export default class ForumThread extends mixins(UserStateMixin) {
   loadingReply = false
   currentPage: Number
   totalPages: Number = 0
-  thread = {}
+  thread = {
+    id: null
+  }
   posts = []
 
   errors = {
@@ -66,22 +78,35 @@ export default class ForumThread extends mixins(UserStateMixin) {
 
   @Watch('$route.query.page')
   onPageChanged () {
-    if (this.$route.query.page != this.currentPage) {
-      this.currentPage = parseInt(this.$route.query.page)
-      this.getList()
+    if (this.pageNumber != this.currentPage) {
+      this.currentPage = this.pageNumber
+      this.getPostList()
     }
   }
 
-  async created () {
-    this.currentPage = this.$route.query.page ? parseInt(this.$route.query.page) : 1
-    this.service = new ForumThreadService
-    const { data } = await this.service.getById(this.$route.params.id)
-    this.$title = data.title
-    this.thread = data
-    this.getList()
+  get pageNumber () {
+    return this.$route.query.page ? parseInt(this.$route.query.page) : 1
   }
 
-  getList () {
+  async created () {
+    this.currentPage = this.pageNumber
+    this.service = new ForumThreadService
+    this.service.getByID(parseInt(this.$route.params.id))
+      .then(response => {
+        this.$title = response.data.name
+        this.thread = response.data
+
+        this.getPostList()
+      })
+      .catch(error => {
+        switch (error.response.status) {
+          case 401:
+            this.$router.push('/')
+        }
+      })
+  }
+
+  getPostList () {
     this.service.listPosts(this.thread.id, this.currentPage).then(response => {
       this.loading = false
       this.posts = response.data.data
@@ -106,11 +131,31 @@ export default class ForumThread extends mixins(UserStateMixin) {
 
 <style lang="scss">
 .forum-thread {
+  position: relative;
+
   .tags {
-    margin-bottom: 1em;
+    position: absolute;
+    top: 1.2em;
+    right: 1.5em;
 
     .tag {
-      color: #fff;
+      &.pinned {
+        color: #1ee0c6;
+      }
+
+      &.locked {
+        color: #9bcbff;
+      }
+    }
+  }
+
+  .details {
+    .category {
+      text-align: center;
+    }
+
+    .author {
+      text-align: right;
     }
   }
 

@@ -2,18 +2,44 @@ import { Request, Response } from 'express'
 
 import Controller from '../Controller'
 import { ForumCategory } from '../../entities/ForumCategory'
+import ForumPolicy from '../../policy/Forum'
 
 class CategoryController extends Controller {
   list = async (req: Request, res: Response) => {
-    const categories = await this.getTreeRepository(ForumCategory).findTrees()
+    let categories = await this.getTreeRepository(ForumCategory).findTrees()
+
+    const policy = new ForumPolicy
+
+    const filter = async categories => {
+      const accessibleCategories = []
+
+      for (let category of categories) {
+        const canAccess = await policy.canUserAccessCategory(req.user, (category as any), false)
+
+        if (!canAccess) {
+          continue
+        }
+
+        if (category.children.length) {
+          category.children = await filter(category.children)
+        }
+
+        accessibleCategories.push(category)
+      }
+
+      return accessibleCategories
+    }
+
+    categories = await filter(categories)
+
     return res.status(200).send(categories)
   }
 
   get = async (req: Request, res: Response) => {
     if (req.params.forumCategory) {
-      let category = req.params.forumCategory
-      category = await this.getTreeRepository(ForumCategory).findDescendantsTree(category)
-      return res.send(category)
+      const category = req.params.forumCategory
+      const categoryWithChildren = await this.getTreeRepository(ForumCategory).findDescendantsTree(category)
+      return res.send(categoryWithChildren)
     }
 
     return res.status(404).send({ message: 'Category not found.' })

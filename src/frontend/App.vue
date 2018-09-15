@@ -140,6 +140,21 @@ pre {
   position: relative;
 }
 
+.empty {
+  padding: 2em;
+  margin: .5em 0;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, .05);
+  font-size: 1.2em;
+  text-align: center;
+
+  svg {
+    width: 48px;
+    height: 48px;
+    color: $color-muted;
+  }
+}
+
 .toasted-container {
   .toasted.primary {
     padding: .5em 2em;

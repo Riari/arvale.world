@@ -2,6 +2,10 @@
   <div class="row">
     <div class="col-xs-9">
       <panel v-if="category" :title="`Create Thread in ${category.name}`">
+        <div class="go-back">
+          <a href="#" @click="goBack($event)">← Go back</a>
+        </div>
+
         <input-text
           v-model="thread.title"
           :fullWidth="true"
@@ -52,6 +56,11 @@ export default class ForumCreateThread extends Vue {
     this.category = data
   }
 
+  goBack (event) {
+    event.preventDefault()
+    this.$router.go(-1)
+  }
+
   submit () {
     const service = new ForumThreadService()
     service.create(this.category.id, this.thread.title, this.$refs.editor.value())
@@ -64,3 +73,9 @@ export default class ForumCreateThread extends Vue {
   }
 }
 </script>
+
+<style lang="scss">
+.go-back {
+  margin-bottom: 1em;
+}
+</style>

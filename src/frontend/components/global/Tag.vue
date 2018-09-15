@@ -1,5 +1,5 @@
 <template>
-  <span class="tag" :class="{ primary: type == 'primary', secondary: type == 'secondary' }">
+  <span :class="classes">
     <template v-if="route">
       <router-link :to="route">
         <slot></slot>
@@ -20,12 +20,19 @@ import Component from 'vue-class-component'
     type: {
       type: String,
       default: 'primary',
-      validator: tag => ['primary', 'secondary'].includes(tag)
+      validator: tag => ['primary', 'secondary', 'warning', 'danger'].includes(tag)
     },
     route: String
   }
 })
 export default class Tag extends Vue {
+  get classes () {
+    const classes = ['tag']
+
+    classes.push(this.type)
+
+    return classes
+  }
 }
 </script>
 
@@ -34,7 +41,7 @@ export default class Tag extends Vue {
 
 .tag {
   display: inline-block;
-  padding: .1em .6em .3em .6em;
+  padding: .1em .6em .2em .6em;
   border-radius: 3px;
   background: rgba(255, 255, 255, .1);
   font-size: .9em;
@@ -46,6 +53,14 @@ export default class Tag extends Vue {
 
   &.secondary {
     color: $color-secondary;
+  }
+
+  &.warning {
+    color: $color-warning;
+  }
+
+  &.danger {
+    color: $color-danger;
   }
 }
 </style>

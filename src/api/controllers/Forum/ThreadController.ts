@@ -8,11 +8,37 @@ import { ForumCategory } from '../../entities/ForumCategory'
 
 class ThreadController extends Controller {
   listByCategory = async (req: Request, res: Response) => {
-    if (req.params.forumCategory) {
-      return res.status(200).send(req.params.forumCategory.threads)
+    if (!req.params.forumCategory) {
+      return res.status(404).send({ message: 'Category not found.' })
     }
 
-    return res.status(404).send({ message: 'Category not found.' })
+    const category = req.params.forumCategory
+    const perPage = ForumThread.perPage
+    let currentPage = req.query.page ? req.query.page : 1
+
+    const totalCount = await ForumThread.count({ where: { category: category.id } })
+
+    if (currentPage > Math.ceil(totalCount / perPage)) {
+      currentPage = 1
+    }
+
+    let [threads, itemCount] = await ForumThread.findAndCount({
+      relations: ['author', 'author.roles', 'latestPost', 'latestPost.author', 'latestPost.author.roles'],
+      skip: (currentPage - 1) * perPage,
+      take: perPage,
+      order: { pinnedAt: 'ASC', updatedAt: 'DESC' },
+      where: { category: category.id }
+    })
+
+    const response = {
+      currentPage,
+      perPage,
+      itemCount,
+      totalPages: Math.ceil(itemCount / perPage),
+      data: threads
+    }
+
+    return res.status(200).send(response)
   }
 
   get = async (req: Request, res: Response) => {
