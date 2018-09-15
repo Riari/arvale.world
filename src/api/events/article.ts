@@ -50,5 +50,9 @@ emitter.on('article.updated', async ({ article, previouslyPublished }: { article
       forumCategory.postCount++
       forumCategory.save()
     }
+
+    if (config.production) {
+      Services.get('article').sendToArvee(article)
+    }
   }
 })

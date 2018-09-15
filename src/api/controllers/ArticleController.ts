@@ -132,7 +132,7 @@ class ArticleController extends Controller {
 
     article.published = req.body.published ? req.body.published : false
 
-    article = await article.save()
+    await article.save()
 
     this.emit('article.updated', { article, previouslyPublished: published })
 
