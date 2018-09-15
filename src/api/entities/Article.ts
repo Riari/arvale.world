@@ -48,7 +48,10 @@ export class Article extends BaseEntity {
 
   @AfterLoad()
   onLoad () {
-    const converter = this.getMarkdownConverter()
+    const converter = new showdown.Converter({
+      tasklists: true,
+      ghCodeBlocks: true
+    })
 
     this.slugify()
     this.body_html = converter.makeHtml(this.body)
@@ -60,15 +63,7 @@ export class Article extends BaseEntity {
   }
 
   getMarkdownExcerpt () {
-    const converter = this.getMarkdownConverter()
     return truncate(this.body, 80, { byWords: true })
-  }
-
-  getMarkdownConverter () {
-    return new showdown.Converter({
-      tasklists: true,
-      ghCodeBlocks: true
-    })
   }
 
 }

@@ -12,10 +12,9 @@
         <editor ref="editor"></editor>
 
         <input-select
-          v-model="article.category"
+          v-model="article.category.id"
           :fullWidth="true"
           :options="getCategoryOptions()"
-          :selectedOption="article.category ? article.category.id : null"
           :errors="validationErrors.category"
           placeholder="Select a category..."
         ></input-select>
@@ -48,9 +47,11 @@ export default class EditArticle extends Vue {
     id: null,
     title: null,
     body: null,
-    category: null,
+    category: { id: null },
     published: false
   }
+
+  selectedCategory = null
 
   validationErrors = {
     title: null,
@@ -85,6 +86,9 @@ export default class EditArticle extends Vue {
 
   submit () {
     const markdown = this.$refs.editor.value()
+
+    this.article.category = this.selectedCategory
+
     if (this.article.id) {
       this.article.body = markdown
 
@@ -93,7 +97,7 @@ export default class EditArticle extends Vue {
         this.$toasted.show("Article updated", { type: 'success' })
       })
     } else {
-      this.service.create(this.article.title, markdown, this.article.category)
+      this.service.create(this.article.title, markdown, this.article.category.id)
         .then(response => {
           this.$router.push({ name: 'news-article', params: { id: response.data.id, slug: response.data.slug } })
           this.$toasted.show("Article created", { type: 'success' })

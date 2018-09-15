@@ -1,12 +1,12 @@
 <template>
   <div class="inputWrapper">
     <select class="input" :class="classesCompiled" v-on:input="$emit('input', $event.target.value)">
-      <option value="" :selected="!selectedOption">{{ placeholder }}</option>
+      <option value="" :selected="!value">{{ placeholder }}</option>
       <option
         v-for="option in options"
         :key="option.value"
         :value="option.value"
-        :selected="selectedOption && selectedOption == option.value"
+        :selected="value == option.value"
       >
         {{ option.label }}
       </option>
@@ -24,7 +24,7 @@ import Component from 'vue-class-component'
 @Component({
   props: {
     options: Array,
-    selectedOption: [String, Number],
+    value: [String, Number, Object],
     errors: Array,
     multiline: Boolean,
     type: {
