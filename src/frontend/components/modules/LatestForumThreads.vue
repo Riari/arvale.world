@@ -16,7 +16,7 @@ import Component from 'vue-class-component'
 import ForumThreadService from '../../services/Forum/ThreadService'
 
 @Component
-export default class LatestForumThreads extends Vue {
+export default class LatestForumThreadsModule extends Vue {
   loading = true
   threads = []
 

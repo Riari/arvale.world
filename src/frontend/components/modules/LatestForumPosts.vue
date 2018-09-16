@@ -19,7 +19,7 @@ import Component from 'vue-class-component'
 import ForumPostService from '../../services/Forum/PostService'
 
 @Component
-export default class LatestForumPosts extends Vue {
+export default class LatestForumPostsModule extends Vue {
   loading = true
   posts = []
 

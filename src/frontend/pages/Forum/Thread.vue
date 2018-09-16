@@ -41,8 +41,8 @@
       </panel>
     </div>
     <div class="col-xs-3">
-      <latest-forum-threads></latest-forum-threads>
-      <latest-forum-posts></latest-forum-posts>
+      <latest-forum-threads-module></latest-forum-threads-module>
+      <latest-forum-posts-module></latest-forum-posts-module>
     </div>
   </div>
 </template>
@@ -55,16 +55,16 @@ import ForumThreadService from '../../services/Forum/ThreadService'
 import ForumPost from '../../components/Forum/Post.vue'
 import Editor from '../../components/Editor.vue'
 import Pagination from '../../components/Pagination.vue'
-import LatestForumThreads from '../../components/modules/LatestForumThreads.vue'
-import LatestForumPosts from '../../components/modules/LatestForumPosts.vue'
+import LatestForumThreadsModule from '../../components/modules/LatestForumThreads.vue'
+import LatestForumPostsModule from '../../components/modules/LatestForumPosts.vue'
 
 @Component({
   components: {
     ForumPost,
     Editor,
     Pagination,
-    LatestForumThreads,
-    LatestForumPosts
+    LatestForumThreadsModule,
+    LatestForumPostsModule
   }
 })
 export default class ForumThread extends mixins(UserStateMixin) {

@@ -22,8 +22,8 @@
       </panel>
     </div>
     <div class="col-xs-3">
-      <latest-forum-threads></latest-forum-threads>
-      <latest-forum-posts></latest-forum-posts>
+      <latest-forum-threads-module></latest-forum-threads-module>
+      <latest-forum-posts-module></latest-forum-posts-module>
     </div>
   </div>
 </template>
@@ -33,15 +33,15 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import ForumCategoryService from '../../services/Forum/CategoryService'
 import ForumCategoryRow from '../../components/Forum/CategoryRow.vue'
-import LatestForumThreads from '../../components/modules/LatestForumThreads.vue'
-import LatestForumPosts from '../../components/modules/LatestForumPosts.vue'
+import LatestForumThreadsModule from '../../components/modules/LatestForumThreads.vue'
+import LatestForumPostsModule from '../../components/modules/LatestForumPosts.vue'
 
 @Component({
   title: 'Forum',
   components: {
     ForumCategoryRow,
-    LatestForumThreads,
-    LatestForumPosts
+    LatestForumThreadsModule,
+    LatestForumPostsModule
   }
 })
 export default class ForumIndex extends Vue {
