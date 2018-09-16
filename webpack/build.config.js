@@ -19,6 +19,6 @@ module.exports = merge(baseConfig, {
 
 	output: {
     filename: '[name].[contenthash].js',
-		path: path.join(__dirname, '..', '..', 'dist', 'frontend')
+		path: path.join(__dirname, '..', '..', 'dist')
 	}
 })
