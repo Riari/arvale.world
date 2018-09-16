@@ -83,7 +83,7 @@ module.exports = {
       inject: true
     }),
     new CopyWebpackPlugin([
-      { from: path.join(__dirname, '..', '..', 'src', 'frontend', 'static', 'favicon.ico'), to: path.join('static', 'favicon.ico') }
+      { from: path.join(__dirname, '..', 'src', 'frontend', 'static', 'favicon.ico'), to: path.join('static', 'favicon.ico') }
     ]),
     new VueLoaderPlugin()
   ]
