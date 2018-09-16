@@ -25,9 +25,8 @@ export default class ForumPolicy extends Policy {
     const category = params.forumCategory
 
     if (!category) {
-      // Either this is a list request (/forum/category) or it's getByID
-      // request (/forum/category/:category) but no matching category was
-      // found
+      // Either this is a list request (/forum/category) or it's a getByID
+      // request (/forum/category/:category) but no matching category was found
       return true
     }
 
