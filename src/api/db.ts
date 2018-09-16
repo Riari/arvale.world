@@ -7,7 +7,6 @@ import { ForumPost } from './entities/ForumPost'
 import { Role } from './entities/Role'
 import { User } from './entities/User'
 import { Verification } from './entities/Verification'
-import config from './config'
 
 const connection = createConnection({
   type: 'postgres',
@@ -16,7 +15,7 @@ const connection = createConnection({
   username: process.env.DB_USERNAME || 'postgres',
   password: process.env.DB_PASSWORD || 'secret',
   database: process.env.DB_NAME || 'arvale-web',
-  logging: 'all',
+  logging: ['error'],
   entities: [
     Article,
     ArticleCategory,
