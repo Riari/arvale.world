@@ -1,6 +1,5 @@
 import { getManager } from 'typeorm'
 
-import config from '../../config'
 import Policy from '../Policy'
 import { User } from '../../entities/User'
 import { ForumCategory } from '../../entities/ForumCategory'

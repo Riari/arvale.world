@@ -61,7 +61,7 @@
 
           <p>No threads in this category yet.</p>
 
-          <router-link v-if="category.id" :to="{ name: 'forum-category-create-thread', params: { id: category.id } }">
+          <router-link v-if="category.id && isUserAuthenticated" :to="{ name: 'forum-category-create-thread', params: { id: category.id } }">
             Start a discussion
           </router-link>
         </div>
