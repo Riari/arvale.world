@@ -26,6 +26,7 @@
         <nav class="panel">
           <router-link to="/">Welcome</router-link>
           <router-link to="/news">News</router-link>
+          <router-link to="/forum">Forum</router-link>
         </nav>
       </div>
     </div>
