@@ -48,6 +48,7 @@ emitter.on('article.updated', async ({ article, previouslyPublished }: { article
 
       forumCategory.threadCount++
       forumCategory.postCount++
+      forumCategory.updateLatestPost()
       forumCategory.save()
     }
 
