@@ -27,10 +27,6 @@ Permission<>Role assignments are defined in `src/policy/permissions.json`. These
 
 At the top of the file are generic, non-route based permissions for reference in the frontend; the rest are route-based, where the key is a permission name derived from the HTTP verb and URL parts (minus parameters) of a successfully routed request.
 
-### Production
-
-Run `npm run build:api` to create a production build of the API. Database settings can be overridden from the defaults via the `DB_*` environment variables (see below).
-
 ### Environment
 
 The following environment variables are used by the API:
