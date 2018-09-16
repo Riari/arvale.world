@@ -64,6 +64,10 @@ export default class ForumPost extends Vue {
       border-left: 5px solid $color-primary;
       background: rgba(255, 255, 255, .05);
     }
+
+    img {
+      max-width: 100%;
+    }
   }
 }
 </style>
