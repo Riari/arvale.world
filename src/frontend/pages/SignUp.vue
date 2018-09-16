@@ -1,6 +1,6 @@
 <template>
-  <div class="row center-xs">
-    <div class="col-xs-4">
+  <div class="row center-sm">
+    <div class="col-xs-12 col-sm-4">
       <input-text
         @keyup.enter="signUp"
         :fullWidth="true"

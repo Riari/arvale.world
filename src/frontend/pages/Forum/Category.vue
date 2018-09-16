@@ -1,6 +1,6 @@
 <template>
   <div class="forum-category-index row">
-    <div class="col-xs-9">
+    <div class="col-xs-12 col-sm-9">
       <panel :title="category.name" :loading="loading">
         <div class="links">
           <router-link to="/forum">← Return to forum index</router-link>
@@ -9,16 +9,16 @@
         <div v-if="category.children && category.children.length">
           <hr>
           <div class="row">
-            <div class="col-xs-5">
+            <div class="col-xs-8 col-sm-5">
               <div class="title">Subcategories</div>
             </div>
-            <div class="col-xs-2 thread-count-header">
+            <div class="col-sm-2 hide-xs-only thread-count-header">
               Threads
             </div>
-            <div class="col-xs-2 post-count-header">
+            <div class="col-sm-2 hide-xs-only post-count-header">
               Posts
             </div>
-            <div class="col-xs-3 latest-post-header">
+            <div class="col-xs-4 col-sm-3 latest-post-header">
               Latest post
             </div>
           </div>
@@ -67,7 +67,7 @@
         </div>
       </panel>
     </div>
-    <div class="col-xs-3">
+    <div class="col-xs-12 col-sm-3">
       <latest-forum-threads-module></latest-forum-threads-module>
       <latest-forum-posts-module></latest-forum-posts-module>
     </div>

@@ -1,11 +1,11 @@
 <template>
   <transition name="fade">
     <div v-if="server" class="server-status panel">
-      Server: <span :class="{ offline: !server.online }">{{ server.online ? 'Online' : 'Offline' }}</span>
-      <template v-if="server.online">
-        Current Module: <span>{{ server.module_name }}</span>
-        Players: <span>{{ server.current_players }} / {{ server.max_players }}</span>
-      </template>
+      Server: <em :class="{ offline: !server.online }">{{ server.online ? 'Online' : 'Offline' }}</em>
+      <span class="hide-xs" v-if="server.online">
+        Current Module: <em>{{ server.module_name }}</em>
+        Players: <em>{{ server.current_players }} / {{ server.max_players }}</em>
+      </span>
     </div>
   </transition>
 </template>
@@ -48,9 +48,10 @@ export default class ServerStatus extends Vue {
 @import "../../scss/variables";
 
 .server-status {
-  span {
+  em {
     display: inline-block;
     color: $color-primary;
+    font-style: normal;
 
     &:not(:last-child) {
       margin-right: .6em;

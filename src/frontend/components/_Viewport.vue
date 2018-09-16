@@ -1,9 +1,9 @@
 <template>
-  <div class="container viewport">
+  <div class="row viewport">
     <div class="top">
       <server-status></server-status>
 
-      <div v-if="canUser('administrate')" class="admin-links panel">
+      <div v-if="canUser('administrate')" class="admin-links panel hide-xs-only">
         <router-link to="/admin">Admin console &nbsp; <icon name="sliders"></icon></router-link>
       </div>
 
@@ -17,12 +17,12 @@
     </div>
 
     <div class="row main-bar">
-      <div class="col-xs-3 text-center">
+      <div class="col-md-3 hide-xs hide-sm show-md text-center">
         <router-link class="logo" to="/">
           <img src="../static/images/logo.png">
         </router-link>
       </div>
-      <div class="col-xs-9">
+      <div class="col-xs-12 col-sm-12 col-md-9">
         <nav class="panel">
           <router-link to="/">Welcome</router-link>
           <router-link to="/news">News</router-link>
@@ -61,10 +61,21 @@ export default class Viewport extends mixins(UserStateMixin) {
 <style lang="scss">
 @import "../scss/variables";
 
-.container.viewport {
+.row.viewport {
+  position: relative;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+
+  .row .row {
+    & > :first-child {
+      padding-left: 0;
+    }
+
+    & > :last-child {
+      padding-right: 0;
+    }
+  }
 }
 
 .top {
@@ -84,6 +95,10 @@ export default class Viewport extends mixins(UserStateMixin) {
 
     &:not(:first-child) {
       margin-top: 0;
+    }
+
+    &.server-status {
+      margin-left: 0;
     }
 
     a {
@@ -157,7 +172,7 @@ export default class Viewport extends mixins(UserStateMixin) {
 }
 
 .content {
-  margin: 6em 1em 2em 1em;
+  margin: 6em 0 2em 0;
 
   h1 {
     margin: 0;

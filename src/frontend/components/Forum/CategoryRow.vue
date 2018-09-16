@@ -2,15 +2,15 @@
   <div class="forum-category">
     <template v-if="showDetails">
       <div class="row">
-        <div class="col-xs-5">
+        <div class="col-xs-8 col-sm-5">
           <router-link :to="{ name: 'forum-category', params: { id: category.id, slug: category.slug } }">
             {{ category.name }}
           </router-link>
         </div>
-        <div class="col-xs-2 thread-count">
+        <div class="col-sm-2 hide-xs-only thread-count">
           {{ category.threadCount }}
         </div>
-        <div class="col-xs-2 post-count">
+        <div class="col-sm-2 hide-xs-only post-count">
           {{ category.postCount }}
         </div>
         <div v-if="category.latestPostThreadId" class="col-xs-3 latest-post">
@@ -23,7 +23,7 @@
             {{ category.latestPostAuthor }}
           </router-link>
         </div>
-        <div v-else class="col-xs-3 latest-post">
+        <div v-else class="col-xs-4 col-sm-3 latest-post">
           -
         </div>
       </div>

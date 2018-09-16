@@ -1,6 +1,6 @@
 <template>
-  <div class="row center-xs">
-    <div class="col-xs-8">
+  <div class="row center-sm">
+    <div class="col-xs-12 col-sm-8">
       <div v-if="article" class="panel article">
         <div class="actions" v-if="canUser('administrate')">
           <tag v-if="!article.published">Unpublished</tag>

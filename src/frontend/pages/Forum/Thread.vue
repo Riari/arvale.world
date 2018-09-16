@@ -1,6 +1,6 @@
 <template>
   <div class="forum-thread row">
-    <div class="col-xs-9">
+    <div class="col-xs-12 col-sm-9">
       <panel :title="`Viewing thread: ${thread.title}`" :loading="loading">
         <div class="tags">
           <tag v-if="thread.pinnedAt" class="pinned">Pinned</tag>
@@ -8,16 +8,16 @@
         </div>
 
         <div class="row details">
-          <div class="col-xs-4">
+          <div class="col-xs-6 col-sm-4">
             <router-link to="/forum">← Return to forum index</router-link>
           </div>
-          <div v-if="thread.category" class="col-xs-4 category">
+          <div v-if="thread.category" class="col-xs-6 col-sm-4 category">
             Posted in
             <router-link :to="{ name: 'forum-category', params: { id: thread.category.id, slug: thread.category.slug } }">
               {{ thread.category.name }}
             </router-link>
           </div>
-          <div v-if="thread.author" class="col-xs-4 author">
+          <div v-if="thread.author" class="col-xs-12 hide-xs-only col-sm-4 author">
             Started by
             <user-link :user="thread.author"></user-link>
             {{ thread.createdAt | moment('from') }}
@@ -40,7 +40,7 @@
         </div>
       </panel>
     </div>
-    <div class="col-xs-3">
+    <div class="col-xs-12 col-sm-3">
       <latest-forum-threads-module></latest-forum-threads-module>
       <latest-forum-posts-module></latest-forum-posts-module>
     </div>

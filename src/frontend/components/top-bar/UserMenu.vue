@@ -1,13 +1,14 @@
 <template>
   <span>
-    <router-link
-      to="/user/account"
+    <a
+      href="#"
       class="account panel"
+      @click="toggleUserMenu"
       @mouseenter.native="showUserMenu"
       @mouseleave.native="hideUserMenu"
     >
       Hello, <span :style="{ color: usernameColor }">{{ user.name }}</span> <icon name="chevron-down"></icon>
-    </router-link>
+    </a>
     <transition name="fade">
       <div
         v-show="isVisible"
@@ -44,11 +45,16 @@ export default class UserMenu extends Vue {
     return this.user.roles.length ? this.user.roles[0].colour : '#fff'
   }
 
+  toggleUserMenu (event) {
+    event.preventDefault()
+    this.isVisible ? this.hideUserMenu() : this.showUserMenu()
+  }
+
   showUserMenu () {
     this.isVisible = true
 
     if (this.hideTimeout) {
-      clearInterval(this.hideTimeout)
+      clearTimeout(this.hideTimeout)
     }
   }
 

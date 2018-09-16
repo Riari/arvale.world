@@ -24,7 +24,6 @@
     "express-handlebars": "^3.0.0",
     "express-mailer": "^0.3.1",
     "feather-icons": "^4.7.3",
-    "flexboxgrid": "^6.3.1",
     "js-cookie": "^2.2.0",
     "jsonwebtoken": "^8.3.0",
     "node-cache": "^4.2.0",

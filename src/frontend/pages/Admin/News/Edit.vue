@@ -1,6 +1,6 @@
 <template>
-  <div class="row center-xs">
-    <div class="col-xs-8">
+  <div class="row center-sm">
+    <div class="col-xs-12 col-sm-8">
       <panel :title="this.article.id ? 'Edit Article' : 'Create Article'">
         <input-text
           v-model="article.title"

@@ -43,8 +43,8 @@ export default class App extends Vue {
 
 <style lang="scss">
 @import url("https://fonts.googleapis.com/css?family=Cinzel+Decorative|Neuton:400,400i,700");
-@import "~flexboxgrid/dist/flexboxgrid.min.css";
 @import "scss/variables";
+@import "scss/grid/main";
 
 html, body {
   padding: 0;
@@ -70,6 +70,20 @@ h2 {
 
 h3 {
   font-size: 1.4em;
+}
+
+@media screen and (max-width: 41em) {
+  h1 {
+    font-size: 1.8em;
+  }
+
+  h2 {
+    font-size: 1.5em;
+  }
+
+  h3 {
+    font-size: 1.2em;
+  }
 }
 
 a {
@@ -117,6 +131,14 @@ pre {
   }
 }
 
+@media screen and (max-width: 41em) {
+  .row-gutterless-xs {
+    & > div {
+      padding: 0;
+    }
+  }
+}
+
 .fade-enter-active, .fade-leave-active {
   transition: opacity .3s;
 }
@@ -138,6 +160,7 @@ pre {
 
 .container {
   position: relative;
+  margin: 0 auto;
 }
 
 .empty {

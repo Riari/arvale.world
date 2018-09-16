@@ -1,12 +1,12 @@
 <template>
   <div class="forum-post" :id="`post-${post.number}`">
-    <div class="row">
-      <div class="col-xs-2">
+    <div class="row row-gutterless-xs">
+      <div class="col-xs-12 col-sm-2">
         <div class="author-pane">
           <div class="name"><user-link :user="post.author"></user-link></div>
         </div>
       </div>
-      <div class="col-xs-10">
+      <div class="col-xs-12 col-sm-10">
         <div class="body">
           <div class="number">
             <a :href="`${$router.currentRoute.path}#post-${post.number}`">#{{ post.number }}</a>
