@@ -2,7 +2,7 @@
   <transition name="fade">
     <div v-if="server" class="server-status panel">
       Server: <em :class="{ offline: !server.online }">{{ server.online ? 'Online' : 'Offline' }}</em>
-      <span class="hide-xs" v-if="server.online">
+      <span class="hide-xs-only" v-if="server.online">
         Current Module: <em>{{ server.module_name }}</em>
         Players: <em>{{ server.current_players }} / {{ server.max_players }}</em>
       </span>
